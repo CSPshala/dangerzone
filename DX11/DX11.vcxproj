@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E6E6758C-6F61-443C-83BE-0895931B8557}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DX11</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DX11.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="source\core\CSGD_DirectInput.h" />
+    <ClInclude Include="source\core\CTimer.h" />
+    <ClInclude Include="source\core\Game.h" />
+    <ClInclude Include="source\gamestates\IGamestate.h" />
+    <ClInclude Include="source\gamestates\StateMainGame.h" />
+    <ClInclude Include="source\Globals.h" />
+    <ClInclude Include="source\particles\Emitter.h" />
+    <ClInclude Include="source\particles\Particle.h" />
+    <ClInclude Include="source\rendering\Camera.h" />
+    <ClInclude Include="source\rendering\D3D.h" />
+    <ClInclude Include="source\rendering\FlatShader.h" />
+    <ClInclude Include="source\rendering\ForwardRenderer.h" />
+    <ClInclude Include="source\rendering\IRenderContext.h" />
+    <ClInclude Include="source\rendering\IShader.h" />
+    <ClInclude Include="source\rendering\Model.h" />
+    <ClInclude Include="source\rendering\ParticleContext.h" />
+    <ClInclude Include="source\rendering\ParticleShader.h" />
+    <ClInclude Include="source\rendering\TestModelContext.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DX11.cpp" />
+    <ClCompile Include="source\core\CSGD_DirectInput.cpp" />
+    <ClCompile Include="source\core\CTimer.cpp" />
+    <ClCompile Include="source\core\Game.cpp" />
+    <ClCompile Include="source\gamestates\IGamestate.cpp" />
+    <ClCompile Include="source\gamestates\StateMainGame.cpp" />
+    <ClCompile Include="source\Globals.cpp" />
+    <ClCompile Include="source\particles\Emitter.cpp" />
+    <ClCompile Include="source\particles\Particle.cpp" />
+    <ClCompile Include="source\rendering\Camera.cpp" />
+    <ClCompile Include="source\rendering\D3D.cpp" />
+    <ClCompile Include="source\rendering\FlatShader.cpp" />
+    <ClCompile Include="source\rendering\ForwardRenderer.cpp" />
+    <ClCompile Include="source\rendering\IRenderContext.cpp" />
+    <ClCompile Include="source\rendering\IShader.cpp" />
+    <ClCompile Include="source\rendering\Model.cpp" />
+    <ClCompile Include="source\rendering\ParticleContext.cpp" />
+    <ClCompile Include="source\rendering\ParticleShader.cpp" />
+    <ClCompile Include="source\rendering\TestModelContext.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DX11.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DX11.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
