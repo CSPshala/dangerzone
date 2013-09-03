@@ -88,6 +88,7 @@ void StateMainGame::Update(float deltaTime)
 
 void StateMainGame::Render()
 {
+	m_Renderer->Render();
 }
 
 ////////////////////////////////////////

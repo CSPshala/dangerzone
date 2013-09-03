@@ -13,7 +13,6 @@
 #include "../Globals.h"
 #include "D3D.h"
 #include "Camera.h"
-#include "Model.h"
 #include "../particles/Emitter.h"
 
 ////////////////////////////////////////
@@ -27,8 +26,6 @@ FRenderer::FRenderer()
 {
 	m_D3D = nullptr;
 	m_Camera = nullptr;
-	m_Model = nullptr;	
-	m_Emitter = nullptr;
 }
 
 FRenderer::FRenderer(const FRenderer& in)
@@ -88,54 +85,13 @@ bool FRenderer::Initialize()
 		return false;
 	}	
 	
-	// Create the model object.
-	m_Model = new Model;
-	if(!m_Model)
-	{
-		return false;
-	}
 	
-	// Initialize the model object.
-	result = m_Model->Initialize();
-	if(!result)
-	{
-		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize the model object.", L"Error", MB_OK);
-		return false;
-	}	
-
-	m_Emitter = new Emitter();
-	if(!m_Emitter)
-	{
-		return false;
-	}
-
-	result = m_Emitter->Initialize();
-	if(!result)
-	{
-		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize the emitter object.", L"Error", MB_OK);
-		return false;
-	}
 
 	return true;
 }
 
 void FRenderer::Shutdown()
-{
-	// Release the model object.
-	if(m_Model)
-	{
-		m_Model->Shutdown();
-		delete m_Model;
-		m_Model = 0;
-	}
-
-	if(m_Emitter)
-	{
-		m_Emitter->Shutdown();
-		delete m_Emitter;
-		m_Emitter = 0;
-	}
-
+{	
 	// Release the matrix constant buffer.
 	if(m_matrixBuffer)
 	{
@@ -188,11 +144,6 @@ bool FRenderer::_render()
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
 
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.	
-	m_Emitter->Render();
-
-	m_Model->Render();	
-	
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 
@@ -233,16 +184,19 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	unsigned int bufferNumber;
 
 	// Matrices for rendering
-	D3DXMATRIX viewMatrix, projectionMatrix, worldMatrix;
+	D3DXMATRIX viewMatrix, orthoMatrix, worldMatrix;
 
-	ApplicationSettings::g_Camera->GetViewMatrix(viewMatrix);
+	// 2D view matrix is always identity
+	D3DXMatrixIdentity(&viewMatrix);
+	viewMatrix._33 = 0.0;
+	
 	ApplicationSettings::g_D3D->GetWorldMatrix(worldMatrix);
-	ApplicationSettings::g_D3D->GetProjectionMatrix(projectionMatrix);
+	ApplicationSettings::g_D3D->GetOrthoMatrix(orthoMatrix);
 
 	// Transpose the matrices to prepare them for the shader.
 	D3DXMatrixTranspose(&worldMatrix, &worldMatrix);
 	D3DXMatrixTranspose(&viewMatrix, &viewMatrix);
-	D3DXMatrixTranspose(&projectionMatrix, &projectionMatrix);
+	D3DXMatrixTranspose(&orthoMatrix, &orthoMatrix);
 
 	// Lock the constant buffer so it can be written to.
 	result = ApplicationSettings::g_DeviceContext->Map(m_matrixBuffer, 0, 
@@ -259,7 +213,7 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	// Copy the matrices into the constant buffer.
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
-	dataPtr->projection = projectionMatrix;
+	dataPtr->ortho = orthoMatrix;
 	dataPtr->camPos = D3DXVECTOR4(ApplicationSettings::g_Camera->GetPosition(),1.0f);
 
 	// Unlock the constant buffer.

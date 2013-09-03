@@ -98,8 +98,6 @@ void Game::Update()
 
 void Game::Render()
 {
-	m_Renderer.Render();
-
 	// Current state render
 	m_CurrentState->Render();
 }

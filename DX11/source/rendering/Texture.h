@@ -1,69 +1,54 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"ForwardRenderer.h"
+//	File Name	:	"Texture.h"
 //	
-//	Author Name	:	JC Ricks copy pastaing from: http://www.rastertek.com/dx11tut03.html
+//	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handles forward DX11 rendering
+//	Purpose		:	Handle a 2D texture
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _FRENDERER_H
-#define _FRENDERER_H
+#ifndef _TEXTURE_H
+#define _TEXTURE_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../Globals.h"
+#include <d3d11.h>
+#include <D3DX11tex.h>
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class Emitter;
-class D3D;
-class Camera;
+
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
 
 
-class FRenderer
+class Texture
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	FRenderer();
-	FRenderer(const FRenderer&);
-	~FRenderer();
+	Texture();
+	Texture(const Texture& copy);
+	~Texture();
 
 	/********** Public Utility Functions ************/
-	bool Initialize();
+	bool Initialize(wchar_t* fileName);
 	void Shutdown();
-	bool Render();
 
 	/********** Public Accessors ************/
-	Camera* GetCamera() { return m_Camera; }
+	ID3D11ShaderResourceView* GetTexture();
 
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
-	D3D* m_D3D;
-	Camera*     m_Camera;
-
-	struct MatrixBufferType
-	{
-		D3DXMATRIX world;
-		D3DXMATRIX view;
-		D3DXMATRIX ortho;
-		D3DXVECTOR4 camPos;
-	};
-
-	ID3D11Buffer* m_matrixBuffer;
+	ID3D11ShaderResourceView* m_texture;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	bool _render();
-	bool CreateConstantShaderBuffer();
-	bool UpdateConstantShaderBuffer();
+
 };
 #endif
