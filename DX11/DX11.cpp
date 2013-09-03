@@ -12,6 +12,7 @@ ATOM				MyRegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 HWND MakeWindow(HINSTANCE hInstance);
+int  FindOsVersion();
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -196,4 +197,28 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+int  FindOsVersion()
+{
+	// Find what version of windows we're on for the DirectX SDK
+	OSVERSIONINFO versionInfo;
+	versionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	// Get version
+	if(GetVersionEx(&versionInfo))
+	{
+		//Win8?
+		if(versionInfo.dwMajorVersion == 6 && versionInfo.dwMinorVersion >= 1)
+		{
+			return 8;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	else
+	{
+		return -1;
+	}
 }

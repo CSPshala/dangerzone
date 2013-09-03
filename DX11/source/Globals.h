@@ -1,6 +1,9 @@
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
+// Tell compiler to shut up that I'm forcing old versions of DirectX headers
+#pragma warning( disable: 4005 )
+
 #include <windows.h>
 #include <tchar.h>
 
