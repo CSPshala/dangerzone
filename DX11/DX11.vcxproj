@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -91,6 +91,7 @@
     <ClInclude Include="source\Globals.h" />
     <ClInclude Include="source\particles\Emitter.h" />
     <ClInclude Include="source\particles\Particle.h" />
+    <ClInclude Include="source\rendering\Bitmap.h" />
     <ClInclude Include="source\rendering\Camera.h" />
     <ClInclude Include="source\rendering\D3D.h" />
     <ClInclude Include="source\rendering\FlatShader.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="source\Globals.cpp" />
     <ClCompile Include="source\particles\Emitter.cpp" />
     <ClCompile Include="source\particles\Particle.cpp" />
+    <ClCompile Include="source\rendering\Bitmap.cpp" />
     <ClCompile Include="source\rendering\Camera.cpp" />
     <ClCompile Include="source\rendering\D3D.cpp" />
     <ClCompile Include="source\rendering\FlatShader.cpp" />

@@ -86,7 +86,6 @@ void TestModelContext::RenderBuffers()
 
 	ApplicationSettings::g_Camera->GetViewMatrix(viewMatrix);
 	ApplicationSettings::g_D3D->GetWorldMatrix(worldMatrix);
-	ApplicationSettings::g_D3D->GetProjectionMatrix(projectionMatrix);
 
 	// Set vertex buffer stride and offset.
 	stride = sizeof(VertexType); 
