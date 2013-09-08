@@ -1,18 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"ParticleContext.h"
+//	File Name	:	"SpriteContext.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handle bilboarded particle's render context
+//	Purpose		:	Handles rendering of a sprite
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _PARTICLECONTEXT_H
-#define _PARTICLECONTEXT_H
+#ifndef _DIFFUSECONTEXT_H
+#define _DIFFUSECONTEXT_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
 #include "IRenderContext.h"
-#include "ParticleShader.h"
+#include "DiffuseShader.h"
+#include "Texture.h"
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -22,41 +24,52 @@
 ////////////////////////////////////////
 
 
-class ParticleContext : public IRenderContext
+class DiffuseContext : public IRenderContext
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	ParticleContext();
-	~ParticleContext();
+	DiffuseContext();
+	~DiffuseContext();
 
 	/********** Public Utility Functions ************/
-
-	bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);
-	void Shutdown();
-	void RenderBuffers();
+	bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);	
+	void Shutdown();		
+	/** Positions should be time based before passed to update */
+	bool Update(float posX, float posY);
+	void Render();
 
 	/********** Public Accessors ************/
+	int GetIndexCount();	
 
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
-	// Vertex struct
-	struct ParticleVertex {
+	struct bitmapVertex
+	{
 		D3DXVECTOR3 position;
-		D3DXVECTOR4 color;
+		D3DXVECTOR2 texture;
 	};
 
-	// DX11 Stuff
-	ID3D11Buffer*   m_vertexBuffer;
-	// Shader
-	ParticleShader* m_particleShader;
+	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
+	int m_vertexCount, m_indexCount;
+
+	int m_bitmapWidth, m_bitmapHeight;
+	float m_prevPosX, m_prevPosY;	
+
+	// Shaders
+	DiffuseShader* m_diffuseShade;
+
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
 	bool InitializeBuffers();
+	bool UpdateBuffers(float posX, float posY);
+	void RenderBuffers();	
 	void ShutdownBuffers();
+	bool LoadTexture(WCHAR* textureFilename);
+	void ReleaseTexture();
 };
 #endif

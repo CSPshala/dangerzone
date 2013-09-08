@@ -43,7 +43,7 @@ void StateMainGame::Enter(FRenderer* theRenderer)
 }
 
 void StateMainGame::Exit()
-{
+{	
 	m_DI = nullptr;
 	m_Renderer = nullptr;
 }
@@ -75,20 +75,28 @@ void StateMainGame::Input()
 void StateMainGame::Update(float deltaTime)
 {
 	// Make sure moveDelta is time-based
-	D3DXVec3Scale(&m_MoveDelta,&m_MoveDelta,deltaTime);
+	//D3DXVec3Scale(&m_MoveDelta,&m_MoveDelta,deltaTime);
 	// Set move delta for calculation by camera
-	m_Camera->SetMoveDelta(m_MoveDelta);
+	//m_Camera->SetMoveDelta(m_MoveDelta);
 
 	// Current rotation
-	D3DXVECTOR3 currentRot = m_Camera->GetRotation();
-	currentRot.x += m_MouseDelta.x * 0.2f;
-	currentRot.y += m_MouseDelta.y * 0.2f;
-	m_Camera->SetRotation(currentRot);
+	//D3DXVECTOR3 currentRot = m_Camera->GetRotation();
+	//currentRot.x += m_MouseDelta.x * 0.2f;
+	//currentRot.y += m_MouseDelta.y * 0.2f;
+	//m_Camera->SetRotation(currentRot);	
+
+	m_testSprite.Update(deltaTime);
+
+	m_Camera->Render();
 }
 
 void StateMainGame::Render()
 {
-	m_Renderer->Render();
+	m_Renderer->RenderStart();
+
+	m_testSprite.Render();
+	
+	m_Renderer->RenderEnd();
 }
 
 ////////////////////////////////////////

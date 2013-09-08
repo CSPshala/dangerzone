@@ -1,19 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"Texture.cpp"
+//	File Name	:	"TestObject.cpp"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handles a 2D texture 
+//	Purpose		:	Object to test 2d rendering
 ///////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../Globals.h"
-#include "Texture.h"
-#include <string>
-using namespace std;
-
+#include "TestObject.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -22,41 +18,27 @@ using namespace std;
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-Texture::Texture() : mTexture(nullptr)
+TestObject::TestObject() : mPosX(0.0f), mPosY(0.0f), mVelX(0.0f), mVelY(0.0f)
 {
+	m_diffuseContext.Initialize(L"paperbowser.png",64,64);
 }
 
-Texture::Texture(const Texture& copy)
+TestObject::~TestObject()
 {
-	mTexture = copy.mTexture;
+	m_diffuseContext.Shutdown();
 }
 
-Texture::~Texture()
-{	
-}
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool Texture::Initialize(const wchar_t* fileName)
+void TestObject::Update(float deltaTime)
 {
-	// Add path to filename
-	wstring filePath = L"resource/sprites/";
-	filePath += fileName;
-
-	// Load the texture in.
-	if(FAILED(D3DX11CreateShaderResourceViewFromFile(ApplicationSettings::g_Device, filePath.c_str(), NULL, NULL, &mTexture, NULL)))
-		return false;
-
-	return true;
+	m_diffuseContext.Update(mPosX,mPosY);
 }
 
-void Texture::Shutdown()
+void TestObject::Render()
 {
-	if(mTexture)
-	{
-		mTexture->Release();
-		mTexture = nullptr;
-	}
+	m_diffuseContext.Render();
 }
 
 ////////////////////////////////////////
@@ -66,10 +48,6 @@ void Texture::Shutdown()
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
-ID3D11ShaderResourceView* Texture::GetTexture()
-{
-	return mTexture;
-}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

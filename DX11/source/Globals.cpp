@@ -17,3 +17,9 @@ HINSTANCE	 WindowGlobals::g_hInstance = 0;
 HWND		 WindowGlobals::g_hWnd = 0;
 wchar_t		 WindowGlobals::g_szWINDOW_CLASS[15] = L"none";
 wchar_t		 WindowGlobals::g_szWINDOW_TITLE[15] = L"none";
+
+bool G_FLOAT_EPSILON(float left, float right)
+{
+	float dif = left - right;
+	return (dif < FLT_EPSILON && dif > -FLT_EPSILON);	
+}

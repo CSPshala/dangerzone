@@ -1,17 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"template.h"
+//	File Name	:	"TestObject.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Organize new h files
+//	Purpose		:	Object to test 2d rendering
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _BITMAP_H
-#define _BITMAP_H
+#ifndef _TESTOBJECT_H
+#define _TESTOBJECT_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "Texture.h"
+#include "../rendering/DiffuseContext.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -22,19 +22,26 @@
 ////////////////////////////////////////
 
 
-class Bitmap
+class TestObject
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-
+	TestObject();
+	~TestObject();
 	/********** Public Utility Functions ************/
-
+	void Update(float deltaTime);
+	void Render();
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
+	float mPosX, mPosY;
+	float mVelX, mVelY;
+
+	// Rendering
+	DiffuseContext m_diffuseContext;
 
 	/********** Private Accessors ************/
 

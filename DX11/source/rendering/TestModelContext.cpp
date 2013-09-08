@@ -33,7 +33,7 @@ TestModelContext::~TestModelContext()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool TestModelContext::Initialize()
+bool TestModelContext::Initialize(wchar_t* textureFilename, int bitmapWidth, int bitmapHeight)
 {
 	bool result;
 

@@ -31,7 +31,7 @@ public:
 	~TestModelContext();
 
 	/********** Public Utility Functions ************/
-	bool Initialize();	
+	bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);	
 	void Shutdown();	
 	void RenderBuffers();	
 

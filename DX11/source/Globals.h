@@ -17,8 +17,8 @@
 #include <d3d11.h>
 #include <d3dx10math.h>
 
-#include "rendering\D3D.h"
-#include "rendering\Camera.h"
+#include "rendering/D3D.h"
+#include "rendering/Camera.h"
 
 class WindowGlobals
 {
@@ -48,5 +48,9 @@ public:
 	static D3D*		   g_D3D;
 };
 
+//* Global helper functions */
+
+/** Determine whether two floats are within FLT_EPSILON of each other */
+bool G_FLOAT_EPSILON(float left, float right);
 
 #endif

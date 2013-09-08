@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IGamestate.h"
+#include "../objects/TestObject.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -52,6 +53,8 @@ private:
 	FRenderer*	m_Renderer;
 	// Ease of access to camera
 	Camera*		m_Camera;
+	// Test sprite
+	TestObject  m_testSprite;
 
 	// Movement delta
 	D3DXVECTOR3 m_MoveDelta;

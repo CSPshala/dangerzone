@@ -55,6 +55,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -69,6 +71,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,11 +93,13 @@
     <ClInclude Include="source\gamestates\IGamestate.h" />
     <ClInclude Include="source\gamestates\StateMainGame.h" />
     <ClInclude Include="source\Globals.h" />
+    <ClInclude Include="source\objects\TestObject.h" />
     <ClInclude Include="source\particles\Emitter.h" />
     <ClInclude Include="source\particles\Particle.h" />
-    <ClInclude Include="source\rendering\Bitmap.h" />
     <ClInclude Include="source\rendering\Camera.h" />
     <ClInclude Include="source\rendering\D3D.h" />
+    <ClInclude Include="source\rendering\DiffuseContext.h" />
+    <ClInclude Include="source\rendering\DiffuseShader.h" />
     <ClInclude Include="source\rendering\FlatShader.h" />
     <ClInclude Include="source\rendering\ForwardRenderer.h" />
     <ClInclude Include="source\rendering\IRenderContext.h" />
@@ -113,11 +119,13 @@
     <ClCompile Include="source\gamestates\IGamestate.cpp" />
     <ClCompile Include="source\gamestates\StateMainGame.cpp" />
     <ClCompile Include="source\Globals.cpp" />
+    <ClCompile Include="source\objects\TestObject.cpp" />
     <ClCompile Include="source\particles\Emitter.cpp" />
     <ClCompile Include="source\particles\Particle.cpp" />
-    <ClCompile Include="source\rendering\Bitmap.cpp" />
     <ClCompile Include="source\rendering\Camera.cpp" />
     <ClCompile Include="source\rendering\D3D.cpp" />
+    <ClCompile Include="source\rendering\DiffuseContext.cpp" />
+    <ClCompile Include="source\rendering\DiffuseShader.cpp" />
     <ClCompile Include="source\rendering\FlatShader.cpp" />
     <ClCompile Include="source\rendering\ForwardRenderer.cpp" />
     <ClCompile Include="source\rendering\IRenderContext.cpp" />

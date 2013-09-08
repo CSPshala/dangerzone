@@ -25,6 +25,9 @@
     <Filter Include="Source Files\particles">
       <UniqueIdentifier>{1bca92e7-fcdb-47d0-abec-8474f93a55cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{fa2466f6-08c9-4ee4-9f6e-fcbdc4962fbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -96,7 +99,13 @@
     <ClInclude Include="source\rendering\Texture.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\Bitmap.h">
+    <ClInclude Include="source\objects\TestObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\DiffuseShader.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\DiffuseContext.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
@@ -161,7 +170,13 @@
     <ClCompile Include="source\rendering\Texture.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\Bitmap.cpp">
+    <ClCompile Include="source\objects\TestObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\DiffuseShader.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\DiffuseContext.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>

@@ -116,40 +116,23 @@ void FRenderer::Shutdown()
 	return;
 }
 
-bool FRenderer::Render()
+void FRenderer::RenderStart()
 {
-	bool result;
+	UpdateConstantShaderBuffer();
 
+	// Clear the buffers to begin the scene.
+	m_D3D->BeginScene(0.2f, 0.2f, 0.0f, 1.0f);
+}
 
-	// Render the graphics scene.
-	result = _render();
-	if(!result)
-	{
-		return false;
-	}
-
-	return true;
+void FRenderer::RenderEnd()
+{
+	// Present the rendered scene to the screen.
+	m_D3D->EndScene();
 }
 
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool FRenderer::_render()
-{
-	UpdateConstantShaderBuffer();
-
-	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-
-	// Generate the view matrix based on the camera's position.
-	m_Camera->Render();
-
-	// Present the rendered scene to the screen.
-	m_D3D->EndScene();
-
-	return true;
-}
-
 bool FRenderer::CreateConstantShaderBuffer()
 {
 	D3D11_BUFFER_DESC matrixBufferDesc;
@@ -186,10 +169,7 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	// Matrices for rendering
 	D3DXMATRIX viewMatrix, orthoMatrix, worldMatrix;
 
-	// 2D view matrix is always identity
-	D3DXMatrixIdentity(&viewMatrix);
-	viewMatrix._33 = 0.0;
-	
+	ApplicationSettings::g_Camera->GetViewMatrix(viewMatrix);
 	ApplicationSettings::g_D3D->GetWorldMatrix(worldMatrix);
 	ApplicationSettings::g_D3D->GetOrthoMatrix(orthoMatrix);
 
@@ -223,8 +203,7 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	bufferNumber = 0;
 
 	// Finanly set the constant buffer in the vertex shader with the updated values.
-	ApplicationSettings::g_DeviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
-	ApplicationSettings::g_DeviceContext->GSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+	ApplicationSettings::g_DeviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);	
 
 	// Save matrix buffer setting
 	ApplicationSettings::g_constantShaderBuffer = m_matrixBuffer;

@@ -32,7 +32,7 @@ public:
 	~Texture();
 
 	/********** Public Utility Functions ************/
-	bool Initialize(wchar_t* fileName);
+	bool Initialize(const wchar_t* fileName);
 	void Shutdown();
 
 	/********** Public Accessors ************/
@@ -42,7 +42,7 @@ public:
 
 private:
 	/********** Private Members ************/
-	ID3D11ShaderResourceView* m_texture;
+	ID3D11ShaderResourceView* mTexture;
 
 	/********** Private Accessors ************/
 

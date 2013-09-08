@@ -28,7 +28,7 @@ public:
 	/********** Construct / Deconstruct / OP Overloads ************/
 
 	/********** Public Utility Functions ************/
-	virtual bool Initialize() = 0;	
+	virtual bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1) = 0;	
 	virtual void Shutdown() = 0;		
 	virtual void RenderBuffers() = 0;
 	/********** Public Accessors ************/

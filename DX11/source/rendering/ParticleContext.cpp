@@ -32,7 +32,7 @@ ParticleContext::~ParticleContext()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool ParticleContext::Initialize()
+bool ParticleContext::Initialize(wchar_t* textureFilename, int bitmapWidth, int bitmapHeight)
 {
 	bool result;
 

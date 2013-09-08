@@ -35,7 +35,8 @@ public:
 	/********** Public Utility Functions ************/
 	bool Initialize();
 	void Shutdown();
-	bool Render();
+	void RenderStart();
+	void RenderEnd();
 
 	/********** Public Accessors ************/
 	Camera* GetCamera() { return m_Camera; }
@@ -62,7 +63,6 @@ private:
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	bool _render();
 	bool CreateConstantShaderBuffer();
 	bool UpdateConstantShaderBuffer();
 };
