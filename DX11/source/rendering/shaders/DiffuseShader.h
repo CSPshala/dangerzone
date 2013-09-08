@@ -12,7 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IShader.h"
-#include "Texture.h"
+#include "../Texture.h"
 #include <string>
 using namespace std;
 ////////////////////////////////////////
@@ -56,7 +56,7 @@ private:
 	virtual void ShutdownShader();	
 	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
-	virtual void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);
+	virtual void RenderShader(int indexCount);
 	bool LoadTexture(const wchar_t* textureFilename);
 	void ReleaseTexture();
 };

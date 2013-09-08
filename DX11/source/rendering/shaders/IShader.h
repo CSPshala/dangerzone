@@ -38,8 +38,7 @@ public:
 	/********** Public Utility Functions ************/
 	bool Initialize(ID3D11Device* device, HWND hWnd);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext* deviceContext, int indexCount, D3DXMATRIX& worldMatrix, 
-		D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
+	bool Render(int indexCount);
 
 	/********** Public Accessors ************/
 
@@ -68,7 +67,7 @@ protected:
 		virtual bool InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename, const WCHAR* gsFilename = nullptr) = 0;		
 		virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 						   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix) = 0;
-		virtual void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount) = 0;
+		virtual void RenderShader(int indexCount) = 0;
 
 		// Virtual 
 		virtual void ShutdownShader();

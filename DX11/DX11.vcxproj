@@ -98,16 +98,16 @@
     <ClInclude Include="source\particles\Particle.h" />
     <ClInclude Include="source\rendering\Camera.h" />
     <ClInclude Include="source\rendering\D3D.h" />
-    <ClInclude Include="source\rendering\DiffuseContext.h" />
-    <ClInclude Include="source\rendering\DiffuseShader.h" />
-    <ClInclude Include="source\rendering\FlatShader.h" />
     <ClInclude Include="source\rendering\ForwardRenderer.h" />
-    <ClInclude Include="source\rendering\IRenderContext.h" />
-    <ClInclude Include="source\rendering\IShader.h" />
     <ClInclude Include="source\rendering\Model.h" />
-    <ClInclude Include="source\rendering\ParticleContext.h" />
-    <ClInclude Include="source\rendering\ParticleShader.h" />
-    <ClInclude Include="source\rendering\TestModelContext.h" />
+    <ClInclude Include="source\rendering\render contexts\DiffuseContext.h" />
+    <ClInclude Include="source\rendering\render contexts\IRenderContext.h" />
+    <ClInclude Include="source\rendering\render contexts\ParticleContext.h" />
+    <ClInclude Include="source\rendering\render contexts\TestModelContext.h" />
+    <ClInclude Include="source\rendering\shaders\DiffuseShader.h" />
+    <ClInclude Include="source\rendering\shaders\FlatShader.h" />
+    <ClInclude Include="source\rendering\shaders\IShader.h" />
+    <ClInclude Include="source\rendering\shaders\ParticleShader.h" />
     <ClInclude Include="source\rendering\Texture.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -124,16 +124,16 @@
     <ClCompile Include="source\particles\Particle.cpp" />
     <ClCompile Include="source\rendering\Camera.cpp" />
     <ClCompile Include="source\rendering\D3D.cpp" />
-    <ClCompile Include="source\rendering\DiffuseContext.cpp" />
-    <ClCompile Include="source\rendering\DiffuseShader.cpp" />
-    <ClCompile Include="source\rendering\FlatShader.cpp" />
     <ClCompile Include="source\rendering\ForwardRenderer.cpp" />
-    <ClCompile Include="source\rendering\IRenderContext.cpp" />
-    <ClCompile Include="source\rendering\IShader.cpp" />
     <ClCompile Include="source\rendering\Model.cpp" />
-    <ClCompile Include="source\rendering\ParticleContext.cpp" />
-    <ClCompile Include="source\rendering\ParticleShader.cpp" />
-    <ClCompile Include="source\rendering\TestModelContext.cpp" />
+    <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp" />
+    <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp" />
+    <ClCompile Include="source\rendering\render contexts\ParticleContext.cpp" />
+    <ClCompile Include="source\rendering\render contexts\TestModelContext.cpp" />
+    <ClCompile Include="source\rendering\shaders\DiffuseShader.cpp" />
+    <ClCompile Include="source\rendering\shaders\FlatShader.cpp" />
+    <ClCompile Include="source\rendering\shaders\IShader.cpp" />
+    <ClCompile Include="source\rendering\shaders\ParticleShader.cpp" />
     <ClCompile Include="source\rendering\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>

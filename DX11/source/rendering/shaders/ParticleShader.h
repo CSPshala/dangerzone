@@ -48,6 +48,6 @@ private:
 	virtual void ShutdownShader();	
 	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
-	virtual void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);
+	virtual void RenderShader(int indexCount);
 };
 #endif

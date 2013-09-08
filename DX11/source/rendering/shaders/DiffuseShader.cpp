@@ -9,8 +9,8 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "FlatShader.h"
-#include "../Globals.h"
+#include "DiffuseShader.h"
+#include "../../Globals.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -18,11 +18,12 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-FlatShader::FlatShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName) : IShader(vertexShaderName,pixelShaderName)	
+DiffuseShader::DiffuseShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName, wchar_t* textureFilename) : IShader(vertexShaderName,pixelShaderName),
+	m_sampleState(nullptr), m_textureFileName(textureFilename)
 {
 }
 
-FlatShader::~FlatShader()
+DiffuseShader::~DiffuseShader()
 {
 }
 
@@ -33,7 +34,7 @@ FlatShader::~FlatShader()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename,  const WCHAR* gsFilename)
+bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename,  const WCHAR* gsFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -41,6 +42,7 @@ bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* 
 	ID3D10Blob* pixelShaderBuffer;
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
 	unsigned int numElements;
+	D3D11_SAMPLER_DESC samplerDesc;
 
 	// Initialize the pointers this function will use to null.
 	errorMessage = 0;
@@ -48,7 +50,7 @@ bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* 
 	pixelShaderBuffer = 0;
 
 	// Compile the vertex shader code.
-	result = D3DX11CompileFromFile(vsFilename, NULL, NULL, "ColorVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
+	result = D3DX11CompileFromFile(vsFilename, NULL, NULL, "DiffuseVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
 				       &vertexShaderBuffer, &errorMessage, NULL);
 	if(FAILED(result))
 	{
@@ -67,7 +69,7 @@ bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* 
 	}
 
 	// Compile the pixel shader code.
-	result = D3DX11CompileFromFile(psFilename, NULL, NULL, "ColorPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
+	result = D3DX11CompileFromFile(psFilename, NULL, NULL, "DiffusePixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
 				       &pixelShaderBuffer, &errorMessage, NULL);
 	if(FAILED(result))
 	{
@@ -109,9 +111,9 @@ bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* 
 	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[0].InstanceDataStepRate = 0;
 
-	polygonLayout[1].SemanticName = "COLOR";
+	polygonLayout[1].SemanticName = "TEXCOORD";
 	polygonLayout[1].SemanticIndex = 0;
-	polygonLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	polygonLayout[1].InputSlot = 0;
 	polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -128,6 +130,32 @@ bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* 
 		return false;
 	}
 
+	// Create a texture sampler state description.
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = 0;
+	samplerDesc.BorderColor[1] = 0;
+	samplerDesc.BorderColor[2] = 0;
+	samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	// Create the texture sampler state.
+	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
+	if(FAILED(result))
+	{
+		return false;
+	}
+
+	// Load texture
+	if(!LoadTexture(m_textureFileName.c_str()))
+		return false;
+
 	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
 	vertexShaderBuffer->Release();
 	vertexShaderBuffer = 0;
@@ -141,37 +169,73 @@ bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* 
 	return true;
 }
 
-void FlatShader::ShutdownShader()
+void DiffuseShader::ShutdownShader()
 {
+	ReleaseTexture();
+
+	if(m_sampleState)
+	{
+		m_sampleState->Release();
+		m_sampleState = nullptr;
+	}
+
 	IShader::ShutdownShader();
 }
 
-bool FlatShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
+bool DiffuseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix)
 {
 	return true;		
 }
 
-void FlatShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void DiffuseShader::RenderShader(int indexCount)
 {
 	// Set the vertex input layout.
-	deviceContext->IASetInputLayout(m_layout);
+	ApplicationSettings::g_DeviceContext->IASetInputLayout(m_layout);
 
 	// Set the vertex and pixel shaders that will be used to render this triangle.
-	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-	deviceContext->GSSetShader(m_geometryShader, NULL, 0); // GS must be set to NULL or it seems like
-											   // another object's GS will affect this object
-	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+	ApplicationSettings::g_DeviceContext->VSSetShader(m_vertexShader, NULL, 0);
+	ApplicationSettings::g_DeviceContext->PSSetShader(m_pixelShader, NULL, 0);
+	ApplicationSettings::g_DeviceContext->PSSetSamplers(0,1,&m_sampleState);
+
+	ID3D11ShaderResourceView* theTex = m_texture->GetTexture();
+
+	// Set texture to sample
+	ApplicationSettings::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
 
 	// Render the triangle.
-	deviceContext->DrawIndexed(indexCount, 0, 0);
+	ApplicationSettings::g_DeviceContext->DrawIndexed(indexCount, 0, 0);
+}
 
-	return;
+bool DiffuseShader::LoadTexture(const wchar_t* textureFilename)
+{
+	m_texture = new Texture;
+	if(!m_texture)
+		return false;
+
+	if(!m_texture->Initialize(textureFilename))
+		return false;
+
+	return true;
+}
+
+void DiffuseShader::ReleaseTexture()
+{
+	if(m_texture)
+	{
+		m_texture->Shutdown();
+		delete m_texture;
+		m_texture = nullptr;
+	}
 }
 
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
+ID3D11ShaderResourceView* DiffuseShader::GetTexture()
+{
+	return m_texture->GetTexture();
+}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

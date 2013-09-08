@@ -68,21 +68,19 @@ void IShader::Shutdown()
 	return;
 }
 
-bool IShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, D3DXMATRIX& worldMatrix, 
-		D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix)
+bool IShader::Render(int indexCount)
 {
-	bool result;
-
-
 	// Set the shader parameters that it will use for rendering.
-	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+	// TODO: Implement
+	// bool result;
+	/*result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
 	if(!result)
 	{
 		return false;
-	}
+	}*/
 
 	// Now render the prepared buffers with the shader.
-	RenderShader(deviceContext, indexCount);
+	RenderShader(indexCount);
 
 	return true;
 }

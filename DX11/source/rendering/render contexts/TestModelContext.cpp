@@ -10,7 +10,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "TestModelContext.h"
-#include "../Globals.h"
+#include "../../Globals.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -101,9 +101,7 @@ void TestModelContext::RenderBuffers()
 	ApplicationSettings::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Render the model using the color shader.
-	m_FlatShade->Render(ApplicationSettings::g_DeviceContext, GetIndexCount(), 
-		worldMatrix, viewMatrix, projectionMatrix);
-	
+	m_FlatShade->Render(GetIndexCount());	
 }
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS

@@ -28,6 +28,12 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{fa2466f6-08c9-4ee4-9f6e-fcbdc4962fbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Rendering\shaders">
+      <UniqueIdentifier>{449d7e2c-c16f-4364-a7f3-78a8d98f972b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\contexts">
+      <UniqueIdentifier>{7afe92b3-3a23-4a08-9dd3-63b173b0b61f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,12 +66,6 @@
     <ClInclude Include="source\rendering\Model.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\IShader.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\FlatShader.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="source\rendering\Camera.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
@@ -84,29 +84,35 @@
     <ClInclude Include="source\particles\Particle.h">
       <Filter>Source Files\particles</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\IRenderContext.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\TestModelContext.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\ParticleContext.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\ParticleShader.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="source\rendering\Texture.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\objects\TestObject.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\DiffuseShader.h">
-      <Filter>Source Files\Rendering</Filter>
+    <ClInclude Include="source\rendering\render contexts\DiffuseContext.h">
+      <Filter>Source Files\Rendering\contexts</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\DiffuseContext.h">
-      <Filter>Source Files\Rendering</Filter>
+    <ClInclude Include="source\rendering\render contexts\IRenderContext.h">
+      <Filter>Source Files\Rendering\contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\render contexts\ParticleContext.h">
+      <Filter>Source Files\Rendering\contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\render contexts\TestModelContext.h">
+      <Filter>Source Files\Rendering\contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\shaders\DiffuseShader.h">
+      <Filter>Source Files\Rendering\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\shaders\FlatShader.h">
+      <Filter>Source Files\Rendering\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\shaders\IShader.h">
+      <Filter>Source Files\Rendering\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\shaders\ParticleShader.h">
+      <Filter>Source Files\Rendering\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -131,12 +137,6 @@
     <ClCompile Include="source\rendering\Model.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\IShader.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\FlatShader.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="source\rendering\Camera.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
@@ -155,29 +155,35 @@
     <ClCompile Include="source\particles\Particle.cpp">
       <Filter>Source Files\particles</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\IRenderContext.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\TestModelContext.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\ParticleContext.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\ParticleShader.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="source\rendering\Texture.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\objects\TestObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\DiffuseShader.cpp">
-      <Filter>Source Files\Rendering</Filter>
+    <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp">
+      <Filter>Source Files\Rendering\contexts</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\DiffuseContext.cpp">
-      <Filter>Source Files\Rendering</Filter>
+    <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp">
+      <Filter>Source Files\Rendering\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\render contexts\ParticleContext.cpp">
+      <Filter>Source Files\Rendering\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\render contexts\TestModelContext.cpp">
+      <Filter>Source Files\Rendering\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\shaders\DiffuseShader.cpp">
+      <Filter>Source Files\Rendering\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\shaders\FlatShader.cpp">
+      <Filter>Source Files\Rendering\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\shaders\IShader.cpp">
+      <Filter>Source Files\Rendering\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\shaders\ParticleShader.cpp">
+      <Filter>Source Files\Rendering\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

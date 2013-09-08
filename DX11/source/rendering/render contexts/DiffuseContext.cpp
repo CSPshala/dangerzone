@@ -10,7 +10,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "DiffuseContext.h"
-#include "../Globals.h"
+#include "../../Globals.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -248,7 +248,7 @@ void DiffuseContext::RenderBuffers()
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	ApplicationSettings::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_diffuseShade->Render(ApplicationSettings::g_DeviceContext,m_indexCount,worldMatrix,viewMatrix,orthoMatrix);
+	m_diffuseShade->Render(m_indexCount);
 }
 
 void DiffuseContext::ShutdownBuffers()

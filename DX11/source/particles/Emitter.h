@@ -15,7 +15,7 @@
 using std::vector;
 
 #include "../rendering/ForwardRenderer.h"
-#include "../rendering/ParticleContext.h"
+#include "../rendering/render contexts/ParticleContext.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS

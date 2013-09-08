@@ -1,19 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"TestModelContext.h"
+//	File Name	:	"template.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Render context for hardcoded test model
+//	Purpose		:	Organize new h files
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _TESTMODELCONTEXT_H
-#define _TESTMODELCONTEXT_H
+#ifndef _FLATSHADER_H_
+#define _FLATSHADER_H_
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "IRenderContext.h"
-#include "FlatShader.h"
-
+#include "IShader.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -23,44 +21,34 @@
 ////////////////////////////////////////
 
 
-class TestModelContext : public IRenderContext
+class FlatShader : public IShader
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	TestModelContext();
-	~TestModelContext();
+
+	FlatShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName);
+	~FlatShader();
 
 	/********** Public Utility Functions ************/
-	bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);	
-	void Shutdown();	
-	void RenderBuffers();	
 
 	/********** Public Accessors ************/
-	int GetIndexCount();
 
 	/********** Public Mutators  ************/	
 
 private:
+
+
 	/********** Private Members ************/
-	struct VertexType
-	{
-		D3DXVECTOR3 position;
-		D3DXVECTOR4 color;
-	};
-
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
-	int m_vertexCount, m_indexCount;
-
-	// Shaders
-	FlatShader* m_FlatShade;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	bool InitializeBuffers();
-	void ShutdownBuffers();
-	
+	virtual bool InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename, const WCHAR* gsFilename = nullptr);
+	virtual void ShutdownShader();	
+	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
+					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
+	virtual void RenderShader(int indexCount);
 };
 #endif

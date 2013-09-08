@@ -1,30 +1,28 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"ParticleShader.cpp"
+//	File Name	:	"templateCPP.cpp"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handle shading of particles
+//	Purpose		:	Organize new cpp files
 ///////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "ParticleShader.h"
-#include "../Globals.h"
+#include "FlatShader.h"
+#include "../../Globals.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-#define SAFE_RELEASE(in) { if(in) {in->Release(); in = nullptr;} }
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-ParticleShader::ParticleShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName, wchar_t* geometryShaderName) 
-	: IShader(vertexShaderName,pixelShaderName,geometryShaderName)
+FlatShader::FlatShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName) : IShader(vertexShaderName,pixelShaderName)	
 {
 }
 
-ParticleShader::~ParticleShader()
+FlatShader::~FlatShader()
 {
 }
 
@@ -35,17 +33,14 @@ ParticleShader::~ParticleShader()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool ParticleShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename,  const WCHAR* gsFilename)
+bool FlatShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename,  const WCHAR* gsFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
-	ID3D10Blob* geometryShaderBuffer;
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
 	unsigned int numElements;
-
-
 
 	// Initialize the pointers this function will use to null.
 	errorMessage = 0;
@@ -89,7 +84,6 @@ bool ParticleShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCH
 
 		return false;
 	}
-	
 
 	// Create the vertex shader from the buffer.
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
@@ -103,35 +97,6 @@ bool ParticleShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCH
 	if(FAILED(result))
 	{
 		return false;
-	}
-
-	if(gsFilename)
-	{
-		// Compile the geometry shader code.
-		result = D3DX11CompileFromFile(gsFilename, NULL, NULL, "GS_Billboard", "gs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
-			&geometryShaderBuffer, &errorMessage, NULL);
-		if(FAILED(result))
-		{
-			// If the shader failed to compile it should have writen something to the error message.
-			if(errorMessage)
-			{
-				OutputShaderErrorMessage(errorMessage, hwnd, gsFilename);
-			}
-			// If there was  nothing in the error message then it simply could not find the file itself.
-			else
-			{
-				MessageBox(hwnd, psFilename, L"Missing Shader File", MB_OK);
-			}
-
-			return false;
-		}
-
-		// Create geometry shader from the buffer.
-		result = device->CreateGeometryShader(geometryShaderBuffer->GetBufferPointer(), geometryShaderBuffer->GetBufferSize(), NULL, &m_geometryShader);
-		if(FAILED(result))
-		{
-			return false;
-		}
 	}
 
 	// Now setup the layout of the data that goes into the shader.
@@ -164,43 +129,42 @@ bool ParticleShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCH
 	}
 
 	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
-	/*vertexShaderBuffer->Release();
-	vertexShaderBuffer = 0;*/
-	SAFE_RELEASE(vertexShaderBuffer);
+	vertexShaderBuffer->Release();
+	vertexShaderBuffer = 0;
 
-	SAFE_RELEASE(pixelShaderBuffer);
+	pixelShaderBuffer->Release();
+	pixelShaderBuffer = 0;	
 
-	SAFE_RELEASE(geometryShaderBuffer);	
+	// Geometry shader should be null.
+	m_geometryShader = nullptr;
 
 	return true;
 }
 
-void ParticleShader::ShutdownShader()
+void FlatShader::ShutdownShader()
 {
 	IShader::ShutdownShader();
 }
 
-bool ParticleShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
+bool FlatShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix)
-{	
-
-	return true;
+{
+	return true;		
 }
 
-	void ParticleShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void FlatShader::RenderShader(int indexCount)
 {
 	// Set the vertex input layout.
-	deviceContext->IASetInputLayout(m_layout);
+	ApplicationSettings::g_DeviceContext->IASetInputLayout(m_layout);
 
 	// Set the vertex and pixel shaders that will be used to render this triangle.
-	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-	deviceContext->GSSetShader(m_geometryShader, NULL, 0);
-	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+	ApplicationSettings::g_DeviceContext->VSSetShader(m_vertexShader, NULL, 0);
+	ApplicationSettings::g_DeviceContext->GSSetShader(m_geometryShader, NULL, 0); // GS must be set to NULL or it seems like
+											   // another object's GS will affect this object
+	ApplicationSettings::g_DeviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Render the triangle.
-	deviceContext->Draw(1,0);
-
-	return;
+	ApplicationSettings::g_DeviceContext->DrawIndexed(indexCount, 0, 0);
 }
 
 ////////////////////////////////////////

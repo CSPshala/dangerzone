@@ -10,7 +10,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "ParticleContext.h"
-#include "../Globals.h"
+#include "../../Globals.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -98,10 +98,7 @@ void ParticleContext::RenderBuffers()
 	ApplicationSettings::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	// Render the model using the color shader.
-	m_particleShader->Render(ApplicationSettings::g_DeviceContext, 0, 
-		worldMatrix, viewMatrix, projectionMatrix);
-
-	return;
+	m_particleShader->Render(0);
 }
 
 ////////////////////////////////////////
