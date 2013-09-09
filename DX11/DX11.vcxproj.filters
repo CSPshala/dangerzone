@@ -13,26 +13,35 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Core">
-      <UniqueIdentifier>{ce1227cd-7042-4512-a835-f98b5befb94d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Rendering">
-      <UniqueIdentifier>{098edc62-ef2a-4e50-9836-44d47d6a2600}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameStates">
-      <UniqueIdentifier>{5ca0e153-0776-434b-a929-2ad789af412d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\particles">
       <UniqueIdentifier>{1bca92e7-fcdb-47d0-abec-8474f93a55cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects">
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{ce1227cd-7042-4512-a835-f98b5befb94d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gamestates">
+      <UniqueIdentifier>{5ca0e153-0776-434b-a929-2ad789af412d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects">
       <UniqueIdentifier>{fa2466f6-08c9-4ee4-9f6e-fcbdc4962fbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Rendering\shaders">
+    <Filter Include="Source Files\rendering">
+      <UniqueIdentifier>{098edc62-ef2a-4e50-9836-44d47d6a2600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rendering\shaders">
       <UniqueIdentifier>{449d7e2c-c16f-4364-a7f3-78a8d98f972b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Rendering\contexts">
+    <Filter Include="Source Files\rendering\contexts">
       <UniqueIdentifier>{7afe92b3-3a23-4a08-9dd3-63b173b0b61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\components">
+      <UniqueIdentifier>{068b092c-a119-4bbb-848a-4e2088914926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\events">
+      <UniqueIdentifier>{4391d052-d7cd-4275-a3cc-46a7f455e434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\messaging">
+      <UniqueIdentifier>{31df7b4f-0c85-42ff-bf1b-9c1fece08e4f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -49,34 +58,34 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\core\CTimer.h">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClInclude>
     <ClInclude Include="source\core\Game.h">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\ForwardRenderer.h">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\Globals.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\D3D.h">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\Model.h">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\Camera.h">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\core\CSGD_DirectInput.h">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClInclude>
     <ClInclude Include="source\gamestates\IGamestate.h">
-      <Filter>Source Files\GameStates</Filter>
+      <Filter>Source Files\gamestates</Filter>
     </ClInclude>
     <ClInclude Include="source\gamestates\StateMainGame.h">
-      <Filter>Source Files\GameStates</Filter>
+      <Filter>Source Files\gamestates</Filter>
     </ClInclude>
     <ClInclude Include="source\particles\Emitter.h">
       <Filter>Source Files\particles</Filter>
@@ -85,34 +94,40 @@
       <Filter>Source Files\particles</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\Texture.h">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\objects\TestObject.h">
-      <Filter>Source Files\Objects</Filter>
+      <Filter>Source Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\render contexts\DiffuseContext.h">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\render contexts\IRenderContext.h">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\render contexts\ParticleContext.h">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\render contexts\TestModelContext.h">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\shaders\DiffuseShader.h">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\shaders\FlatShader.h">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\shaders\IShader.h">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\shaders\ParticleShader.h">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\events\EventSystem.h">
+      <Filter>Source Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="source\events\IEventProcessor.h">
+      <Filter>Source Files\events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,34 +135,34 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\core\CTimer.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="source\core\Game.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\ForwardRenderer.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\Globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\D3D.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\Model.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\Camera.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\core\CSGD_DirectInput.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="source\gamestates\IGamestate.cpp">
-      <Filter>Source Files\GameStates</Filter>
+      <Filter>Source Files\gamestates</Filter>
     </ClCompile>
     <ClCompile Include="source\gamestates\StateMainGame.cpp">
-      <Filter>Source Files\GameStates</Filter>
+      <Filter>Source Files\gamestates</Filter>
     </ClCompile>
     <ClCompile Include="source\particles\Emitter.cpp">
       <Filter>Source Files\particles</Filter>
@@ -156,34 +171,40 @@
       <Filter>Source Files\particles</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\Texture.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\objects\TestObject.cpp">
-      <Filter>Source Files\Objects</Filter>
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\render contexts\ParticleContext.cpp">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\render contexts\TestModelContext.cpp">
-      <Filter>Source Files\Rendering\contexts</Filter>
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\shaders\DiffuseShader.cpp">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\shaders\FlatShader.cpp">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\shaders\IShader.cpp">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\shaders\ParticleShader.cpp">
-      <Filter>Source Files\Rendering\shaders</Filter>
+      <Filter>Source Files\rendering\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="source\events\EventSystem.cpp">
+      <Filter>Source Files\events</Filter>
+    </ClCompile>
+    <ClCompile Include="source\events\IEventProcessor.cpp">
+      <Filter>Source Files\events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

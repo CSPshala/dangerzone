@@ -1,22 +1,18 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"Game.h"
+//	File Name	:	"IEventProcessor.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Game class
+//	Purpose		:	Interface for an event processor recieve events
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _GAME_H
-#define _GAME_H
+#ifndef _IEVENTPROCESSOR_H
+#define _IEVENTPROCESSOR_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "CTimer.h"
-#include "../Globals.h"
-#include "../rendering/ForwardRenderer.h"
-#include "CSGD_DirectInput.h"
-#include "../gamestates/StateMainGame.h"
-#include "../events/EventSystem.h"
+#include "EventSystem.h"
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -26,55 +22,27 @@
 ////////////////////////////////////////
 
 
-class Game
+class IEventProcessor
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	Game();
-	~Game();
 
 	/********** Public Utility Functions ************/
-	bool Initialize();
-	bool Main();
-	bool Shutdown();
-
+	void RegisterForEvents();
+	void UnRegisterForEvents();
+	virtual void RecieveAndHandleEvent(int eventNumber) = 0;
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
-	
-		// Semi-Fixed timestep stuff
-		CTimer theTimer;	
-		float m_t;
-		float m_dt;
-		float m_frameDeltaTime;
-
-		// Rendering
-		FRenderer m_Renderer;
-
-		// Input
-		CSGD_DirectInput* m_DI;
-
-		// States
-		IGamestate*	   m_CurrentState;
-		StateMainGame* m_MainGame;
-
-		// Events
-		EventSystem*	m_EventSystem;
-
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	void Input();
-	void Update();
-	void Render();
-
-	void ChangeState(IGamestate* in);
 
 };
 #endif

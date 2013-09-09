@@ -51,6 +51,9 @@ bool Game::Initialize()
 	m_MainGame = new StateMainGame();
 	ChangeState(m_MainGame);
 
+	// Events
+	m_EventSystem = EventSystem::GetInstance();
+
 	return true;
 }
 
@@ -87,6 +90,9 @@ void Game::Input()
 
 void Game::Update()
 {
+	// Process any events
+	m_EventSystem->ProcessEvents();
+
 	// Semi-fixed timestamp updates
 	// REF: http://gafferongames.com/game-physics/fix-your-timestep/
 	m_frameDeltaTime = min(m_dt,theTimer.GetElapsedTime());
