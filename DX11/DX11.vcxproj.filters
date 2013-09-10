@@ -129,6 +129,9 @@
     <ClInclude Include="source\events\IEventProcessor.h">
       <Filter>Source Files\events</Filter>
     </ClInclude>
+    <ClInclude Include="source\core\RawInputParser.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="source\events\IEventProcessor.cpp">
       <Filter>Source Files\events</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\RawInputParser.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

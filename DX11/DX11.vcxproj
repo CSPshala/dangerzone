@@ -90,6 +90,7 @@
     <ClInclude Include="source\core\CSGD_DirectInput.h" />
     <ClInclude Include="source\core\CTimer.h" />
     <ClInclude Include="source\core\Game.h" />
+    <ClInclude Include="source\core\RawInputParser.h" />
     <ClInclude Include="source\events\EventSystem.h" />
     <ClInclude Include="source\events\IEventProcessor.h" />
     <ClInclude Include="source\gamestates\IGamestate.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="source\core\CSGD_DirectInput.cpp" />
     <ClCompile Include="source\core\CTimer.cpp" />
     <ClCompile Include="source\core\Game.cpp" />
+    <ClCompile Include="source\core\RawInputParser.cpp" />
     <ClCompile Include="source\events\EventSystem.cpp" />
     <ClCompile Include="source\events\IEventProcessor.cpp" />
     <ClCompile Include="source\gamestates\IGamestate.cpp" />
