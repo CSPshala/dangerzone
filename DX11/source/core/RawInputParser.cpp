@@ -9,6 +9,11 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include <Windows.h>
+#include <fstream>
+#include "RawInputParser.h"
+
+using namespace std;
 
 ////////////////////////////////////////
 //				MISC
@@ -18,97 +23,102 @@
 // Mouse: http://msdn.microsoft.com/en-us/library/windows/desktop/ms645578(v=vs.85).aspx
 // Keyboard: http://msdn.microsoft.com/en-us/library/windows/desktop/ms645575(v=vs.85).aspx
 
+// Wild guess at the size of the largest array of input I'd need
+const int RawInputParser::INPUTBUFFERSIZE(200);
+
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RawInputParser::RawInputParser()
+RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_inputBuffer(nullptr), m_inputBufferCount(0)
 {
     // Load our control scheme
-    ReadControls();
+    ReadControlConfig();
+
+	// Allocate for keyboard and mouse only for now
+	m_rawDevices = new RAWINPUTDEVICE[2];
+	// Mouse = 40 byte input structure size, Keyboard = 32 
+	// creating 40 as largest size for a buffer to be safe
+	m_inputBuffer = new RAWINPUT[INPUTBUFFERSIZE];
 }
 
 RawInputParser::~RawInputParser()
 {
+	if(m_rawDevices)
+	{
+		delete[] m_rawDevices;
+		m_rawDevices = nullptr;
+	}
 
+	if(m_inputBuffer)
+	{
+		delete[] m_inputBuffer;
+		m_inputBuffer = nullptr;
+	}
 }
 
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
 void RawInputParser::RegisterForRawInput()
-{
-    RAWINPUTDEVICE Rid[2];
-        
-    Rid[0].usUsagePage = 0x01; 
-    Rid[0].usUsage = 0x02; 
-    Rid[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
-    Rid[0].hwndTarget = 0;
+{        
+    m_rawDevices[0].usUsagePage = 0x01; 
+    m_rawDevices[0].usUsage = 0x02; 
+    m_rawDevices[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
+    m_rawDevices[0].hwndTarget = 0;
 
-    Rid[1].usUsagePage = 0x01; 
-    Rid[1].usUsage = 0x06; 
-    Rid[1].dwFlags = RIDEV_NOLEGACY;   // adds HID keyboard and also ignores legacy keyboard messages
-    Rid[1].hwndTarget = 0;
+    m_rawDevices[1].usUsagePage = 0x01; 
+    m_rawDevices[1].usUsage = 0x06; 
+    m_rawDevices[1].dwFlags = RIDEV_NOLEGACY;   // adds HID keyboard and also ignores legacy keyboard messages
+    m_rawDevices[1].hwndTarget = 0;
 
-    if (RegisterRawInputDevices(Rid, 2, sizeof(Rid[0])) == FALSE) {
+	if (RegisterRawInputDevices(m_rawDevices, 2, sizeof(m_rawDevices[0])) == FALSE) {
         //registration failed. Call GetLastError for the cause of the error
-        OutputDebugString (TEXT("Registration of raw input keyboard/mouse failed!\n"))
+        OutputDebugString (TEXT("Registration of raw input keyboard/mouse failed!\n"));
     }
 }
 
-void RawInputParser::ReadAndSendInput()
+void RawInputParser::ReadInput(LPARAM lParam)
 {
     UINT dwSize;
+	HRESULT hResult;
 
-    GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dwSize, 
-                    sizeof(RAWINPUTHEADER));
-    LPBYTE lpb = new BYTE[dwSize];
-    if (lpb == NULL) 
+	GetRawInputBuffer(NULL, &dwSize, sizeof(RAWINPUTHEADER));
+    
+	if (dwSize < INPUTBUFFERSIZE * sizeof(RAWINPUT) ) 
     {
-        return 0;
+		OutputDebugString (TEXT("GetRawInputData returned size too small for input buffer.\n"));
+        return;
     } 
 
-    if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize, 
-         sizeof(RAWINPUTHEADER)) != dwSize )
+	m_inputBufferCount = GetRawInputBuffer(m_inputBuffer,&dwSize,sizeof(RAWINPUTHEADER));
+
+	if(m_inputBufferCount == -1)
          OutputDebugString (TEXT("GetRawInputData does not return correct size !\n")); 
+		
+}
 
-    RAWINPUT* raw = (RAWINPUT*)lpb;
-
-    if (raw->header.dwType == RIM_TYPEKEYBOARD) 
-    {
-        hResult = StringCchPrintf(szTempOutput, STRSAFE_MAX_CCH, TEXT(" Kbd: make=%04x Flags:%04x Reserved:%04x ExtraInformation:%08x, msg=%04x VK=%04x \n"), 
-            raw->data.keyboard.MakeCode, 
-            raw->data.keyboard.Flags, 
-            raw->data.keyboard.Reserved, 
-            raw->Data.keyboard.ExtraInformation, 
-            raw->data.keyboard.Message, 
-            raw->data.keyboard.VKey);
-        if (FAILED(hResult))
-        {
-            // TODO: write error handler
-        }
-        OutputDebugString(szTempOutput);
-    }
-    else if (raw->header.dwType == RIM_TYPEMOUSE) 
-    {
-        hResult = StringCchPrintf(szTempOutput, STRSAFE_MAX_CCH, TEXT("Mouse: usFlags=%04x ulButtons=%04x usButtonFlags=%04x usButtonData=%04x ulRawButtons=%04x lLastX=%04x lLastY=%04x ulExtraInformation=%04x\r\n"), 
-            raw->data.mouse.usFlags, 
-            raw->data.mouse.ulButtons, 
-            raw->data.mouse.usButtonFlags, 
-            raw->data.mouse.usButtonData, 
-            raw->data.mouse.ulRawButtons, 
-            raw->data.mouse.lLastX, 
-            raw->data.mouse.lLastY, 
-            raw->data.mouse.ulExtraInformation);
-
-        if (FAILED(hResult))
-        {
-            // TODO: write error handler
-        }
-        OutputDebugString(szTempOutput);
-    } 
-
-    delete[] lpb; 
-    return 0;
+void RawInputParser::ProcessInput()
+{
+	// No input to process
+	if(m_inputBufferCount == -1)
+		return;
+	
+	// Pointer to current data
+	PRAWINPUT current = m_inputBuffer;
+	for(unsigned int i = 0; i < m_inputBufferCount; ++i)
+	{
+		if(current->header.dwType == RIM_TYPEKEYBOARD) 
+		{        
+			// DO stuff
+			HandleKeyboardInput(current);
+		}
+		else if(current->header.dwType == RIM_TYPEMOUSE) 
+		{
+			//DO stuff
+			HandleMouseInput(current);
+		}   
+	}
+	
 }
 
 void RawInputParser::RestartInput()
@@ -119,9 +129,18 @@ void RawInputParser::RestartInput()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-void RawInputParser::ReadControls()
+void RawInputParser::ReadControlConfig()
 {
 
+}
+
+void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
+{
+
+}
+
+void RawInputParser::HandleMouseInput(PRAWINPUT input)
+{
 }
 
 ////////////////////////////////////////
