@@ -11,8 +11,11 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include <string>
+#include <vector>
+#include <queue>
 #include "../events/EventSystem.h"
-
+using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -29,12 +32,7 @@ public:
     RawInputParser();
     ~RawInputParser();
 
-	/********** Public Utility Functions ************/
-
-    /** Takes care of windows API raw input registration */
-    void RegisterForRawInput();
-    /** Polls keys in control scheme for input and alerts listeners */
-    void ReadInput(LPARAM lParam);
+	/********** Public Utility Functions ************/    
 	/** Processess input gathered this frame and pushes it out */
 	void ProcessInput();
     /** Re-reads control scheme for input */
@@ -43,7 +41,7 @@ public:
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
-
+	    
 private:
 	/********** Private Members ************/
 	static const int INPUTBUFFERSIZE;
@@ -51,19 +49,28 @@ private:
 	RAWINPUTDEVICE* m_rawDevices;
 	PRAWINPUT		m_inputBuffer;
 	UINT			m_inputBufferCount;
+	deque<pair<string,int> >*		m_currentControls;
+	vector<string>  m_controlKeys;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-    
+	/** Polls keys in control scheme for input and alerts listeners */
+    void ReadInput();
+	/** Takes care of windows API raw input registration */
+    void RegisterForRawInput();
+	/** Loads the keywords used for player input */
+	void LoadControlKeys();
     /** Reads control .ini for keys to be checking for input */
     void ReadControlConfig();
 	/** Handles a single keyboard RAWINPUT structure */
 	void HandleKeyboardInput(PRAWINPUT input);
 	/** Handles a single mouse RAWINPUT structure */
 	void HandleMouseInput(PRAWINPUT input);
+	/** Find a control key value */
+	int FindKeyValue(string buffer);
 
 };
 #endif

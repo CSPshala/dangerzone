@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include <deque>
+#include <string>
 using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -32,7 +33,7 @@ public:
 
 	void RegisterProcessor(IEventProcessor* toRegister);
 	void UnRegisterProcessor(IEventProcessor* toUnRegister);
-	void SendEvent(int eventNumber);
+	void SendEvent(string event);
 
 	void ProcessEvents();
 
@@ -53,7 +54,7 @@ private:
 	// Queue of event processors
 	deque<IEventProcessor*> m_clients;
 	// Queue of events to send
-	deque<int> m_events;
+	deque<string> m_events;
 
 	/********** Private Accessors ************/
 

@@ -17,6 +17,7 @@
 #include "CSGD_DirectInput.h"
 #include "../gamestates/StateMainGame.h"
 #include "../events/EventSystem.h"
+#include "RawInputParser.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -56,6 +57,7 @@ private:
 
 		// Input
 		CSGD_DirectInput* m_DI;
+		RawInputParser m_InputParser;
 
 		// States
 		IGamestate*	   m_CurrentState;

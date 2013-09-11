@@ -44,7 +44,7 @@ bool Game::Initialize()
 	// Input
 	m_DI = CSGD_DirectInput::GetInstance();
 	m_DI->InitDirectInput(WindowGlobals::g_hWnd,WindowGlobals::g_hInstance,DI_KEYBOARD | DI_MOUSE, DI_MOUSE);
-
+	
 	// States
 	m_CurrentState = nullptr;
 
@@ -90,6 +90,8 @@ void Game::Input()
 
 void Game::Update()
 {
+	// Input
+	m_InputParser.ProcessInput();
 	// Process any events
 	m_EventSystem->ProcessEvents();
 

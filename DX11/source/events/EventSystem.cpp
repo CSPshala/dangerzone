@@ -48,9 +48,9 @@ void EventSystem::UnRegisterProcessor(IEventProcessor* toUnRegister)
 	}
 }
 
-void EventSystem::SendEvent(int eventNumber)
+void EventSystem::SendEvent(string event)
 {
-	m_events.push_back(eventNumber);
+	m_events.push_back(event);
 }
 
 void EventSystem::ProcessEvents()
@@ -59,7 +59,7 @@ void EventSystem::ProcessEvents()
 	if(m_events.size() == 0)
 		return;
 
-	for( deque<int>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
+	for( deque<string>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
 		for( deque<IEventProcessor*>::iterator processIter = m_clients.begin(); processIter != m_clients.end(); ++processIter)
 			(*processIter)->RecieveAndHandleEvent(*eventIter);	
 

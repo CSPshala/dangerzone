@@ -29,16 +29,21 @@ const int RawInputParser::INPUTBUFFERSIZE(200);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_inputBuffer(nullptr), m_inputBufferCount(0)
+RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_inputBuffer(nullptr), m_inputBufferCount(0),
+	m_currentControls(nullptr)
 {
-    // Load our control scheme
-    ReadControlConfig();
-
 	// Allocate for keyboard and mouse only for now
 	m_rawDevices = new RAWINPUTDEVICE[2];
 	// Mouse = 40 byte input structure size, Keyboard = 32 
 	// creating 40 as largest size for a buffer to be safe
 	m_inputBuffer = new RAWINPUT[INPUTBUFFERSIZE];
+
+	// Derp
+	LoadControlKeys();
+    // Load our control scheme
+    ReadControlConfig();
+	// Register for raw
+	RegisterForRawInput();
 }
 
 RawInputParser::~RawInputParser()
@@ -77,14 +82,13 @@ void RawInputParser::RegisterForRawInput()
     }
 }
 
-void RawInputParser::ReadInput(LPARAM lParam)
+void RawInputParser::ReadInput()
 {
-    UINT dwSize;
-	HRESULT hResult;
+    UINT dwSize;	
 
 	GetRawInputBuffer(NULL, &dwSize, sizeof(RAWINPUTHEADER));
     
-	if (dwSize < INPUTBUFFERSIZE * sizeof(RAWINPUT) ) 
+	if (dwSize > INPUTBUFFERSIZE * sizeof(RAWINPUT) ) 
     {
 		OutputDebugString (TEXT("GetRawInputData returned size too small for input buffer.\n"));
         return;
@@ -99,6 +103,8 @@ void RawInputParser::ReadInput(LPARAM lParam)
 
 void RawInputParser::ProcessInput()
 {
+	ReadInput();
+
 	// No input to process
 	if(m_inputBufferCount == -1)
 		return;
@@ -117,21 +123,90 @@ void RawInputParser::ProcessInput()
 			//DO stuff
 			HandleMouseInput(current);
 		}   
+
+		current = NEXTRAWINPUTBLOCK(current);
 	}
 	
 }
 
 void RawInputParser::RestartInput()
 {
-
+	// Reload and re-read config file
+	ReadControlConfig();
 }
 
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
+void RawInputParser::LoadControlKeys()
+{
+	// Load in control key vector
+	fstream keyFile(L"resource/data/controlstrings.txt",ios::in);
+
+	if(!keyFile.is_open())
+		return;
+
+	// Rando number for char, 30 > more than we'll need
+	char keyBuff[30];
+
+	// Line by line
+	while(!keyFile.eof())
+	{
+		keyFile.getline(keyBuff,30);
+		
+		//Paranoid check
+		if(keyFile.eof())
+			break;
+
+		m_controlKeys.push_back(string(keyBuff));
+
+	}
+
+	keyFile.close();
+}
+
 void RawInputParser::ReadControlConfig()
 {
+	if(m_currentControls)
+	{
+		delete m_currentControls;
+		m_currentControls = nullptr;
+	}
 
+	if(m_currentControls == nullptr)
+	{
+		m_currentControls = new deque<pair<string,int> >;
+	}
+
+	// Load in control key vector
+	fstream configFile(L"resource/config/user.cfg",ios::in);
+
+	if(!configFile.is_open())
+		return;
+
+	// Rando number for char, 30 > more than we'll need
+	char keyBuff[30];
+
+	// Line by line
+	while(!configFile.eof())
+	{
+		configFile.get(keyBuff,30,':');
+		configFile.get(keyBuff,30);
+
+		//Paranoid check
+		if(configFile.eof())
+			break;
+		
+		char* context = nullptr;
+		char* tokPos = strtok_s(&keyBuff[1]," ",&context);
+		string command(tokPos);
+		string key(context);		
+
+		int keyCode = FindKeyValue(key);
+		m_currentControls->push_back(pair<string,int>(command,keyCode));
+	}
+
+	configFile.close();
 }
 
 void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
@@ -141,6 +216,17 @@ void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
 
 void RawInputParser::HandleMouseInput(PRAWINPUT input)
 {
+}
+
+int RawInputParser::FindKeyValue(string buffer)
+{
+	for(unsigned int i = 0; i < m_controlKeys.size(); ++i)
+	{
+		if(buffer == m_controlKeys[i])
+			return i + 1;
+	}
+
+	return -1;
 }
 
 ////////////////////////////////////////

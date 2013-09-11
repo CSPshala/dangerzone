@@ -30,7 +30,7 @@ public:
 	/********** Public Utility Functions ************/
 	void RegisterForEvents();
 	void UnRegisterForEvents();
-	virtual void RecieveAndHandleEvent(int eventNumber) = 0;
+	virtual void RecieveAndHandleEvent(string event) = 0;
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
