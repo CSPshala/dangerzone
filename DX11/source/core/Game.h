@@ -56,8 +56,7 @@ private:
 		FRenderer m_Renderer;
 
 		// Input
-		CSGD_DirectInput* m_DI;
-		RawInputParser m_InputParser;
+		//CSGD_DirectInput* m_DI;
 
 		// States
 		IGamestate*	   m_CurrentState;

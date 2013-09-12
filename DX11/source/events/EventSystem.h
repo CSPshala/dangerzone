@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include <deque>
+#include <vector>
 #include <string>
 using namespace std;
 ////////////////////////////////////////
@@ -33,13 +34,17 @@ public:
 
 	void RegisterProcessor(IEventProcessor* toRegister);
 	void UnRegisterProcessor(IEventProcessor* toUnRegister);
-	void SendEvent(string event);
+	void SendEvent(int event);
 
 	void ProcessEvents();
 
 	/********** Public Accessors ************/	
 
 	/********** Public Mutators  ************/	
+
+	/********** Public Event Enum *****************/
+	enum Events {UP = 1,DOWN,LEFT,RIGHT,JUMP,ATTACK};
+	
 
 private:
 	/********** Construct / Deconstruct / OP Overloads ************/
@@ -54,7 +59,8 @@ private:
 	// Queue of event processors
 	deque<IEventProcessor*> m_clients;
 	// Queue of events to send
-	deque<string> m_events;
+	deque<int> m_events;
+	
 
 	/********** Private Accessors ************/
 

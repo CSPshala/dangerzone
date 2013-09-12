@@ -48,7 +48,7 @@ void EventSystem::UnRegisterProcessor(IEventProcessor* toUnRegister)
 	}
 }
 
-void EventSystem::SendEvent(string event)
+void EventSystem::SendEvent(int event)
 {
 	m_events.push_back(event);
 }
@@ -59,9 +59,9 @@ void EventSystem::ProcessEvents()
 	if(m_events.size() == 0)
 		return;
 
-	for( deque<string>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
+	for( deque<int>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
 		for( deque<IEventProcessor*>::iterator processIter = m_clients.begin(); processIter != m_clients.end(); ++processIter)
-			(*processIter)->RecieveAndHandleEvent(*eventIter);	
+			(*processIter)->ReceiveAndHandleEvent(*eventIter);	
 
 	// We've sent all of our events, clear the event queue
 	m_events.clear();

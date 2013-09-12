@@ -3,6 +3,7 @@
 // TODO: reference additional headers your program requires here
 #include "DX11.h"
 #include "source\core\Game.h"
+#include "source\core\RawInputParser.h"
 
 
 #define MAX_LOADSTRING 15
@@ -13,6 +14,9 @@ LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 HWND MakeWindow(HINSTANCE hInstance);
 int  FindOsVersion();
+
+// Raw input reader
+RawInputParser g_InputParser;
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -47,6 +51,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	if(!theGame.Initialize()) {
 		return false; }
 
+	// Register for input
+	g_InputParser.RegisterForRawInput();
+
 	while(WindowGlobals::g_hWnd)
 	{
 		// Main message loop:
@@ -60,6 +67,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 
+		g_InputParser.ProcessInput();
 		theGame.Main();
 
 	}
@@ -146,35 +154,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
-	case WM_COMMAND:
-		wmId    = LOWORD(wParam);
-		wmEvent = HIWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		case IDM_ABOUT:
-			DialogBox(WindowGlobals::g_hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+		case WM_INPUT:
+			{
+				g_InputParser.ReadInput(lParam);
+			}
 			break;
-		case IDM_EXIT:
-			DestroyWindow(hWnd);
+		case WM_COMMAND:
+			wmId    = LOWORD(wParam);
+			wmEvent = HIWORD(wParam);
+			// Parse the menu selections:
+			switch (wmId)
+			{
+			case IDM_ABOUT:
+				DialogBox(WindowGlobals::g_hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+				break;
+			case IDM_EXIT:
+				DestroyWindow(hWnd);
+				break;
+			case IDM_CLOSE:
+				DestroyWindow(hWnd);
+				break;
+			default:
+				return DefWindowProc(hWnd, message, wParam, lParam);
+			}
 			break;
-		case IDM_CLOSE:
-			DestroyWindow(hWnd);
+		case WM_PAINT:
+			hdc = BeginPaint(hWnd, &ps);
+			// TODO: Add any drawing code here...
+			EndPaint(hWnd, &ps);
+			break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
-		break;
-	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code here...
-		EndPaint(hWnd, &ps);
-		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 }

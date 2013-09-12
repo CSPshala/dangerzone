@@ -32,7 +32,7 @@ StateMainGame::~StateMainGame()
 void StateMainGame::Enter(FRenderer* theRenderer)
 {
 	// Set DI
-	m_DI = CSGD_DirectInput::GetInstance();
+	//m_DI = CSGD_DirectInput::GetInstance();
 	// Set renderer
 	m_Renderer = theRenderer;
 	// Set camera
@@ -44,7 +44,7 @@ void StateMainGame::Enter(FRenderer* theRenderer)
 
 void StateMainGame::Exit()
 {	
-	m_DI = nullptr;
+	//m_DI = nullptr;
 	m_Renderer = nullptr;
 }
 
@@ -53,23 +53,23 @@ void StateMainGame::Input()
 	m_MoveDelta = D3DXVECTOR3(0,0,0);
 	m_MouseDelta = D3DXVECTOR3(0,0,0);
 
-	if(m_DI->KeyDown(DIK_W)) {
-		m_MoveDelta.z += 10.0f; }
+	//if(m_DI->KeyDown(DIK_W)) {
+	//	m_MoveDelta.z += 10.0f; }
 
-	if(m_DI->KeyDown(DIK_S)) {
-		m_MoveDelta.z -= 10.0f; }
+	//if(m_DI->KeyDown(DIK_S)) {
+	//	m_MoveDelta.z -= 10.0f; }
 
-	if(m_DI->KeyDown(DIK_D)) {
-		m_MoveDelta.x += 10.0f; }
+	//if(m_DI->KeyDown(DIK_D)) {
+	//	m_MoveDelta.x += 10.0f; }
 
-	if(m_DI->KeyDown(DIK_A)) {
-		m_MoveDelta.x -= 10.0f; }
-	
-	// Mouselook
-	// Yaw (rotate on camera's Y axis, so X mouse movement
-	m_MouseDelta.y = static_cast<float>(m_DI->MouseMovementX());
-	// Pitch (rotate on camera's X axis, so Y mouse movement (negative cause I'm a weirdo)
-	m_MouseDelta.x = static_cast<float>(-m_DI->MouseMovementY());
+	//if(m_DI->KeyDown(DIK_A)) {
+	//	m_MoveDelta.x -= 10.0f; }
+	//
+	//// Mouselook
+	//// Yaw (rotate on camera's Y axis, so X mouse movement
+	//m_MouseDelta.y = static_cast<float>(m_DI->MouseMovementX());
+	//// Pitch (rotate on camera's X axis, so Y mouse movement (negative cause I'm a weirdo)
+	//m_MouseDelta.x = static_cast<float>(-m_DI->MouseMovementY());
 }
 
 void StateMainGame::Update(float deltaTime)

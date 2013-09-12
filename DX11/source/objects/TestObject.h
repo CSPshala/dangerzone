@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "../rendering/render contexts/DiffuseContext.h"
+#include "../events/IEventProcessor.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -22,7 +23,7 @@
 ////////////////////////////////////////
 
 
-class TestObject
+class TestObject : public IEventProcessor
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
@@ -31,14 +32,19 @@ public:
 	/********** Public Utility Functions ************/
 	void Update(float deltaTime);
 	void Render();
+	void ReceiveAndHandleEvent(int event);
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
+
+	/********** Public Enum ****************/
+	enum InputFlags{UP = 1, DOWN = 2, LEFT = 4, RIGHT = 8, JUMP = 16, ATTACK = 32};
 
 private:
 	/********** Private Members ************/
 	float mPosX, mPosY;
 	float mVelX, mVelY;
+	int  mInputFlags; // Each bit corresponds to  forwards or backwards velocity
 
 	// Rendering
 	DiffuseContext m_diffuseContext;

@@ -23,27 +23,20 @@ using namespace std;
 // Mouse: http://msdn.microsoft.com/en-us/library/windows/desktop/ms645578(v=vs.85).aspx
 // Keyboard: http://msdn.microsoft.com/en-us/library/windows/desktop/ms645575(v=vs.85).aspx
 
-// Wild guess at the size of the largest array of input I'd need
-const int RawInputParser::INPUTBUFFERSIZE(200);
+const int RawInputParser::NUM_RAW_DEVICES(1);
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_inputBuffer(nullptr), m_inputBufferCount(0),
-	m_currentControls(nullptr)
+RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(nullptr)
 {
 	// Allocate for keyboard and mouse only for now
-	m_rawDevices = new RAWINPUTDEVICE[2];
-	// Mouse = 40 byte input structure size, Keyboard = 32 
-	// creating 40 as largest size for a buffer to be safe
-	m_inputBuffer = new RAWINPUT[INPUTBUFFERSIZE];
+	m_rawDevices = new RAWINPUTDEVICE[NUM_RAW_DEVICES];
 
 	// Derp
 	LoadControlKeys();
     // Load our control scheme
     ReadControlConfig();
-	// Register for raw
-	RegisterForRawInput();
 }
 
 RawInputParser::~RawInputParser()
@@ -53,12 +46,6 @@ RawInputParser::~RawInputParser()
 		delete[] m_rawDevices;
 		m_rawDevices = nullptr;
 	}
-
-	if(m_inputBuffer)
-	{
-		delete[] m_inputBuffer;
-		m_inputBuffer = nullptr;
-	}
 }
 
 ////////////////////////////////////////
@@ -66,66 +53,44 @@ RawInputParser::~RawInputParser()
 ////////////////////////////////////////
 void RawInputParser::RegisterForRawInput()
 {        
+ //   m_rawDevices[0].usUsagePage = 0x01; 
+ //   m_rawDevices[0].usUsage = 0x02; 
+	//m_rawDevices[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
+ //   m_rawDevices[0].hwndTarget = 0;
+
     m_rawDevices[0].usUsagePage = 0x01; 
-    m_rawDevices[0].usUsage = 0x02; 
-    m_rawDevices[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
+    m_rawDevices[0].usUsage = 0x06; 
+    m_rawDevices[0].dwFlags = RIDEV_NOLEGACY | RIDEV_APPKEYS;   // adds HID keyboard and also ignores legacy keyboard messages
     m_rawDevices[0].hwndTarget = 0;
 
-    m_rawDevices[1].usUsagePage = 0x01; 
-    m_rawDevices[1].usUsage = 0x06; 
-    m_rawDevices[1].dwFlags = RIDEV_NOLEGACY;   // adds HID keyboard and also ignores legacy keyboard messages
-    m_rawDevices[1].hwndTarget = 0;
-
-	if (RegisterRawInputDevices(m_rawDevices, 2, sizeof(m_rawDevices[0])) == FALSE) {
+	if (RegisterRawInputDevices(m_rawDevices, NUM_RAW_DEVICES, sizeof(m_rawDevices[0])) == FALSE) {
         //registration failed. Call GetLastError for the cause of the error
         OutputDebugString (TEXT("Registration of raw input keyboard/mouse failed!\n"));
     }
 }
 
-void RawInputParser::ReadInput()
+void RawInputParser::ReadInput(LPARAM lParam)
 {
-    UINT dwSize;	
+    UINT dwSize = 40;
 
-	GetRawInputBuffer(NULL, &dwSize, sizeof(RAWINPUTHEADER));
-    
-	if (dwSize > INPUTBUFFERSIZE * sizeof(RAWINPUT) ) 
-    {
-		OutputDebugString (TEXT("GetRawInputData returned size too small for input buffer.\n"));
-        return;
-    } 
-
-	m_inputBufferCount = GetRawInputBuffer(m_inputBuffer,&dwSize,sizeof(RAWINPUTHEADER));
-
-	if(m_inputBufferCount == -1)
-         OutputDebugString (TEXT("GetRawInputData does not return correct size !\n")); 
-		
+	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, &m_inputBuffer, &dwSize, sizeof(RAWINPUTHEADER));		
 }
 
 void RawInputParser::ProcessInput()
 {
-	ReadInput();
-
-	// No input to process
-	if(m_inputBufferCount == -1)
-		return;
-	
 	// Pointer to current data
-	PRAWINPUT current = m_inputBuffer;
-	for(unsigned int i = 0; i < m_inputBufferCount; ++i)
-	{
-		if(current->header.dwType == RIM_TYPEKEYBOARD) 
-		{        
-			// DO stuff
-			HandleKeyboardInput(current);
-		}
-		else if(current->header.dwType == RIM_TYPEMOUSE) 
-		{
-			//DO stuff
-			HandleMouseInput(current);
-		}   
+	RAWINPUT* current = (RAWINPUT*)m_inputBuffer;
 
-		current = NEXTRAWINPUTBLOCK(current);
+	if(current->header.dwType == RIM_TYPEKEYBOARD) 
+	{        
+		// DO stuff
+		HandleKeyboardInput(current);
 	}
+	else if(current->header.dwType == RIM_TYPEMOUSE) 
+	{
+		//DO stuff
+		HandleMouseInput(current);
+	}   	
 	
 }
 
@@ -175,7 +140,7 @@ void RawInputParser::ReadControlConfig()
 
 	if(m_currentControls == nullptr)
 	{
-		m_currentControls = new deque<pair<string,int> >;
+		m_currentControls = new deque<pair<int,int> >;
 	}
 
 	// Load in control key vector
@@ -202,8 +167,7 @@ void RawInputParser::ReadControlConfig()
 		string command(tokPos);
 		string key(context);		
 
-		int keyCode = FindKeyValue(key);
-		m_currentControls->push_back(pair<string,int>(command,keyCode));
+		m_currentControls->push_back(FindKeyAndEventValue(command,key));		
 	}
 
 	configFile.close();
@@ -211,22 +175,47 @@ void RawInputParser::ReadControlConfig()
 
 void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
 {
+	deque<pair<int,int> >::iterator iter = m_currentControls->begin();
+	while(iter != m_currentControls->end())
+	{
+		if(input->data.keyboard.VKey == (*iter).second)			
+			EventSystem::GetInstance()->SendEvent((*iter).first); //Send this key's event
 
+		++iter;
+	}
 }
 
 void RawInputParser::HandleMouseInput(PRAWINPUT input)
 {
 }
 
-int RawInputParser::FindKeyValue(string buffer)
+pair<int,int> RawInputParser::FindKeyAndEventValue(string command, string key)
 {
+	pair<int,int> eventAndKey;
+
+	// Event code
+	if(command == "up")
+		eventAndKey.first = static_cast<int>(EventSystem::UP);
+	else if(command == "down")
+		eventAndKey.first = static_cast<int>(EventSystem::DOWN);
+	else if(command == "left")
+		eventAndKey.first = static_cast<int>(EventSystem::LEFT);
+	else if(command == "right")
+		eventAndKey.first = static_cast<int>(EventSystem::RIGHT);
+	else if(command == "jump")
+		eventAndKey.first = static_cast<int>(EventSystem::JUMP);
+	else if(command == "attack")
+		eventAndKey.first = static_cast<int>(EventSystem::ATTACK);
+
+
+	// Keycode for command
 	for(unsigned int i = 0; i < m_controlKeys.size(); ++i)
 	{
-		if(buffer == m_controlKeys[i])
-			return i + 1;
+		if(key == m_controlKeys[i])
+			eventAndKey.second = i + 1;
 	}
-
-	return -1;
+	
+	return eventAndKey;
 }
 
 ////////////////////////////////////////

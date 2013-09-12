@@ -37,6 +37,10 @@ public:
 	void ProcessInput();
     /** Re-reads control scheme for input */
     void RestartInput();
+	/** Polls keys in control scheme for input and alerts listeners */
+    void ReadInput(LPARAM lParam);
+	/** Takes care of windows API raw input registration */
+    void RegisterForRawInput();
 
 	/********** Public Accessors ************/
 
@@ -44,12 +48,11 @@ public:
 	    
 private:
 	/********** Private Members ************/
-	static const int INPUTBUFFERSIZE;
-	
+	static const int NUM_RAW_DEVICES;
+
 	RAWINPUTDEVICE* m_rawDevices;
-	PRAWINPUT		m_inputBuffer;
-	UINT			m_inputBufferCount;
-	deque<pair<string,int> >*		m_currentControls;
+	LPBYTE		    m_inputBuffer[40];
+	deque<pair<int,int> >*		m_currentControls;
 	vector<string>  m_controlKeys;
 
 	/********** Private Accessors ************/
@@ -57,10 +60,7 @@ private:
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	/** Polls keys in control scheme for input and alerts listeners */
-    void ReadInput();
-	/** Takes care of windows API raw input registration */
-    void RegisterForRawInput();
+
 	/** Loads the keywords used for player input */
 	void LoadControlKeys();
     /** Reads control .ini for keys to be checking for input */
@@ -70,7 +70,7 @@ private:
 	/** Handles a single mouse RAWINPUT structure */
 	void HandleMouseInput(PRAWINPUT input);
 	/** Find a control key value */
-	int FindKeyValue(string buffer);
+	pair<int,int> FindKeyAndEventValue(string command, string key);
 
 };
 #endif
