@@ -1,17 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"IEventProcessor.h"
+//	File Name	:	"IInputEventProcessor.h"
 //	
 //	Author Name	:	JC Ricks
 //	
 //	Purpose		:	Interface for an event processor recieve events
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _IEVENTPROCESSOR_H
-#define _IEVENTPROCESSOR_H
+#ifndef _IInputEventProcessor_H
+#define _IInputEventProcessor_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "EventSystem.h"
+#include "InputEventSystem.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -22,7 +22,7 @@
 ////////////////////////////////////////
 
 
-class IEventProcessor
+class IInputEventProcessor
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/

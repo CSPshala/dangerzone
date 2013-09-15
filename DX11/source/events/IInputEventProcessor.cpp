@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"IEventProcessor.cpp"
+//	File Name	:	"IInputEventProcessor.cpp"
 //	
 //	Author Name	:	JC Ricks
 //	
@@ -9,7 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "IEventProcessor.h"
+#include "IInputEventProcessor.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -22,14 +22,14 @@
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-void IEventProcessor::RegisterForEvents()
+void IInputEventProcessor::RegisterForEvents()
 {
-	EventSystem::GetInstance()->RegisterProcessor(this);
+	InputEventSystem::GetInstance()->RegisterProcessor(this);
 }
 
-void IEventProcessor::UnRegisterForEvents()
+void IInputEventProcessor::UnRegisterForEvents()
 {
-	EventSystem::GetInstance()->UnRegisterProcessor(this);
+	InputEventSystem::GetInstance()->UnRegisterProcessor(this);
 }
 
 ////////////////////////////////////////

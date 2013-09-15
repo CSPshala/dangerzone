@@ -9,7 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include <Windows.h>
+#include "../Globals.h"
 #include <fstream>
 #include "RawInputParser.h"
 
@@ -28,7 +28,7 @@ const int RawInputParser::NUM_RAW_DEVICES(1);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(nullptr)
+RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(nullptr), m_receivedInput(false)
 {
 	// Allocate for keyboard and mouse only for now
 	m_rawDevices = new RAWINPUTDEVICE[NUM_RAW_DEVICES];
@@ -73,11 +73,15 @@ void RawInputParser::ReadInput(LPARAM lParam)
 {
     UINT dwSize = 40;
 
-	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, &m_inputBuffer, &dwSize, sizeof(RAWINPUTHEADER));		
+	if(GetRawInputData((HRAWINPUT)lParam, RID_INPUT, &m_inputBuffer, &dwSize, sizeof(RAWINPUTHEADER)) > 0)	
+		m_receivedInput = true;	
 }
 
 void RawInputParser::ProcessInput()
 {
+	if(!m_receivedInput)
+		return;
+
 	// Pointer to current data
 	RAWINPUT* current = (RAWINPUT*)m_inputBuffer;
 
@@ -92,6 +96,7 @@ void RawInputParser::ProcessInput()
 		HandleMouseInput(current);
 	}   	
 	
+	m_receivedInput = false;
 }
 
 void RawInputParser::RestartInput()
@@ -140,7 +145,7 @@ void RawInputParser::ReadControlConfig()
 
 	if(m_currentControls == nullptr)
 	{
-		m_currentControls = new deque<pair<int,int> >;
+		m_currentControls = new deque<pair<int,pair<int,bool> > >;
 	}
 
 	// Load in control key vector
@@ -175,44 +180,59 @@ void RawInputParser::ReadControlConfig()
 
 void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
 {
-	deque<pair<int,int> >::iterator iter = m_currentControls->begin();
+	deque<pair<int,pair<int,bool> > >::iterator iter = m_currentControls->begin();
 	while(iter != m_currentControls->end())
 	{
-		if(input->data.keyboard.VKey == (*iter).second)			
-			EventSystem::GetInstance()->SendEvent((*iter).first); //Send this key's event
+		if(input->data.keyboard.VKey == (*iter).second.first)	
+		{
+			// Buffer the input
+			if((input->data.keyboard.Flags == RI_KEY_MAKE) && (*iter).second.second == true)
+				return;
+			if((input->data.keyboard.Flags & RI_KEY_BREAK) && (*iter).second.second == false)
+				return;	
 
+			// Toggle down flag
+			(*iter).second.second = !(*iter).second.second;
+
+			InputEventSystem::GetInstance()->SendEvent((*iter).first); //Send this key's event
+		}
 		++iter;
 	}
+
+	
 }
 
 void RawInputParser::HandleMouseInput(PRAWINPUT input)
 {
 }
 
-pair<int,int> RawInputParser::FindKeyAndEventValue(string command, string key)
+pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, string key)
 {
-	pair<int,int> eventAndKey;
+	pair<int,pair<int,bool> > eventAndKey;
 
 	// Event code
 	if(command == "up")
-		eventAndKey.first = static_cast<int>(EventSystem::UP);
+		eventAndKey.first = static_cast<int>(InputEventSystem::UP);
 	else if(command == "down")
-		eventAndKey.first = static_cast<int>(EventSystem::DOWN);
+		eventAndKey.first = static_cast<int>(InputEventSystem::DOWN);
 	else if(command == "left")
-		eventAndKey.first = static_cast<int>(EventSystem::LEFT);
+		eventAndKey.first = static_cast<int>(InputEventSystem::LEFT);
 	else if(command == "right")
-		eventAndKey.first = static_cast<int>(EventSystem::RIGHT);
+		eventAndKey.first = static_cast<int>(InputEventSystem::RIGHT);
 	else if(command == "jump")
-		eventAndKey.first = static_cast<int>(EventSystem::JUMP);
+		eventAndKey.first = static_cast<int>(InputEventSystem::JUMP);
 	else if(command == "attack")
-		eventAndKey.first = static_cast<int>(EventSystem::ATTACK);
+		eventAndKey.first = static_cast<int>(InputEventSystem::ATTACK);
 
 
 	// Keycode for command
 	for(unsigned int i = 0; i < m_controlKeys.size(); ++i)
 	{
 		if(key == m_controlKeys[i])
-			eventAndKey.second = i + 1;
+		{
+			eventAndKey.second.first = i + 1;
+			eventAndKey.second.second = false;
+		}
 	}
 	
 	return eventAndKey;

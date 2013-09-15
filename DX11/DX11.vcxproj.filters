@@ -123,14 +123,14 @@
     <ClInclude Include="source\rendering\shaders\ParticleShader.h">
       <Filter>Source Files\rendering\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="source\events\EventSystem.h">
-      <Filter>Source Files\events</Filter>
-    </ClInclude>
-    <ClInclude Include="source\events\IEventProcessor.h">
-      <Filter>Source Files\events</Filter>
-    </ClInclude>
     <ClInclude Include="source\core\RawInputParser.h">
       <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\events\InputEventSystem.h">
+      <Filter>Source Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="source\events\IInputEventProcessor.h">
+      <Filter>Source Files\events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,14 +203,14 @@
     <ClCompile Include="source\rendering\shaders\ParticleShader.cpp">
       <Filter>Source Files\rendering\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="source\events\EventSystem.cpp">
-      <Filter>Source Files\events</Filter>
-    </ClCompile>
-    <ClCompile Include="source\events\IEventProcessor.cpp">
-      <Filter>Source Files\events</Filter>
-    </ClCompile>
     <ClCompile Include="source\core\RawInputParser.cpp">
       <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\events\InputEventSystem.cpp">
+      <Filter>Source Files\events</Filter>
+    </ClCompile>
+    <ClCompile Include="source\events\IInputEventProcessor.cpp">
+      <Filter>Source Files\events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

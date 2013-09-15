@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 #include <queue>
-#include "../events/EventSystem.h"
+#include "../events/InputEventSystem.h"
 using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -52,7 +52,8 @@ private:
 
 	RAWINPUTDEVICE* m_rawDevices;
 	LPBYTE		    m_inputBuffer[40];
-	deque<pair<int,int> >*		m_currentControls;
+	bool			m_receivedInput;
+	deque<pair<int,pair<int,bool> > >*		m_currentControls;
 	vector<string>  m_controlKeys;
 
 	/********** Private Accessors ************/
@@ -70,7 +71,7 @@ private:
 	/** Handles a single mouse RAWINPUT structure */
 	void HandleMouseInput(PRAWINPUT input);
 	/** Find a control key value */
-	pair<int,int> FindKeyAndEventValue(string command, string key);
+	pair<int,pair<int,bool> > FindKeyAndEventValue(string command, string key);
 
 };
 #endif

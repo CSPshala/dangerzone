@@ -16,7 +16,7 @@
 #include "../rendering/ForwardRenderer.h"
 #include "CSGD_DirectInput.h"
 #include "../gamestates/StateMainGame.h"
-#include "../events/EventSystem.h"
+#include "../events/InputEventSystem.h"
 #include "RawInputParser.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -63,7 +63,7 @@ private:
 		StateMainGame* m_MainGame;
 
 		// Events
-		EventSystem*	m_EventSystem;
+		InputEventSystem*	m_InputEventSystem;
 
 
 	/********** Private Accessors ************/

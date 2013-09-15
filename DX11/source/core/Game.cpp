@@ -36,6 +36,7 @@ bool Game::Initialize()
 	theTimer.Start();
 	m_t = 0.0f;
 	m_dt = 1.0f / 60.0f;
+	m_dt *= 1000;
 	m_frameDeltaTime = 0.0f;
 
 	// Rendering
@@ -52,7 +53,10 @@ bool Game::Initialize()
 	ChangeState(m_MainGame);
 
 	// Events
-	m_EventSystem = EventSystem::GetInstance();
+	m_InputEventSystem = InputEventSystem::GetInstance();
+
+	// Pop the timer once
+	//theTimer.GetElapsedTime();
 
 	return true;
 }
@@ -91,13 +95,13 @@ void Game::Input()
 void Game::Update()
 {
 	// Process any events
-	m_EventSystem->ProcessEvents();
+	m_InputEventSystem->ProcessEvents();
 
-	// Semi-fixed timestamp updates
+	// MIGHT need Semi-fixed timestamp updates for game physics later removed some code here
+	// that WAS trying to utilize this, but it was too early and dumb rite now
 	// REF: http://gafferongames.com/game-physics/fix-your-timestep/
-	m_frameDeltaTime = min(m_dt,theTimer.GetElapsedTime());
-	m_t += m_frameDeltaTime; // Keep track of "actual game time" compared to real time
-		
+	m_frameDeltaTime = theTimer.GetElapsedTime();
+
 	// Current state update
 	m_CurrentState->Update(m_frameDeltaTime);
 }

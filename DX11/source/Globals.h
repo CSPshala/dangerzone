@@ -1,16 +1,22 @@
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
-// Tell compiler to shut up that I'm forcing old versions of DirectX headers
-#pragma warning( disable: 4005 )
-
 #include <windows.h>
+#define WIN32_LEAN_AND_MEAN
+
 #include <tchar.h>
+#include <iostream>
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dx11.lib")
 #pragma comment(lib, "d3dx10.lib")
+
+#ifdef _DEBUG
+#define LOG(x) std::cout << x << std::endl
+#else
+#define LOG(x)
+#endif
 
 #include <dxgi.h>
 #include <d3dcommon.h>

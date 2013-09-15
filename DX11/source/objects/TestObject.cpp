@@ -9,6 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include "../Globals.h"
 #include "TestObject.h"
 
 ////////////////////////////////////////
@@ -36,10 +37,10 @@ TestObject::~TestObject()
 void TestObject::Update(float deltaTime)
 {	
 	// Update velocities then add to position
-	mVelY = 25.0f * (mInputFlags & UP);
-	mVelY -= 25.0f * (mInputFlags & DOWN);
-	mVelX = 25.0f * (mInputFlags & RIGHT);
-	mVelX -= 25.0f * (mInputFlags & LEFT);
+	mVelY = 500.0f  * ((mInputFlags & DOWN) > 1);
+	mVelY -= 500.0f * (mInputFlags & UP);
+	mVelX = 500.0f  * ((mInputFlags & RIGHT) > 3);
+	mVelX -= 500.0f * ((mInputFlags & LEFT) > 2);
 
 	mPosY += mVelY * deltaTime;
 	mPosX += mVelX * deltaTime;
@@ -56,32 +57,32 @@ void TestObject::ReceiveAndHandleEvent(int event)
 {
 	switch(event)
 	{
-	case EventSystem::UP:
+	case InputEventSystem::UP:
 		{
 			mInputFlags ^= UP;
 		}
 		break;
-	case EventSystem::DOWN:
+	case InputEventSystem::DOWN:
 		{
 			mInputFlags ^= DOWN;
 		}
 		break;
-	case EventSystem::LEFT:
+	case InputEventSystem::LEFT:
 		{
 			mInputFlags ^= LEFT;
 		}
 		break;
-	case EventSystem::RIGHT:
+	case InputEventSystem::RIGHT:
 		{
 			mInputFlags ^= RIGHT;
 		}
 		break;
-	case EventSystem::JUMP:
+	case InputEventSystem::JUMP:
 		{
 			mInputFlags ^= JUMP;
 		}
 		break;
-	case EventSystem::ATTACK:
+	case InputEventSystem::ATTACK:
 		{
 			mInputFlags ^= ATTACK;
 		}

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"EventSystem.cpp"
+//	File Name	:	"InputEventSystem.cpp"
 //	
 //	Author Name	:	JC Ricks
 //	
@@ -9,36 +9,37 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "EventSystem.h"
-#include "IEventProcessor.h"
+#include "../Globals.h"
+#include "InputEventSystem.h"
+#include "IInputEventProcessor.h"
 
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-EventSystem* EventSystem::m_instance = nullptr;
+InputEventSystem* InputEventSystem::m_instance = nullptr;
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-EventSystem::EventSystem()
+InputEventSystem::InputEventSystem()
 {
 }
 
-EventSystem::~EventSystem()
+InputEventSystem::~InputEventSystem()
 {
 }
 
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-void EventSystem::RegisterProcessor(IEventProcessor* toRegister)
+void InputEventSystem::RegisterProcessor(IInputEventProcessor* toRegister)
 {
 	m_clients.push_back(toRegister);
 }
 
-void EventSystem::UnRegisterProcessor(IEventProcessor* toUnRegister)
+void InputEventSystem::UnRegisterProcessor(IInputEventProcessor* toUnRegister)
 {
-	for( deque<IEventProcessor*>::iterator iter = m_clients.begin(); iter != m_clients.end(); ++iter)
+	for( deque<IInputEventProcessor*>::iterator iter = m_clients.begin(); iter != m_clients.end(); ++iter)
 	{
 		if((*iter) == toUnRegister)
 		{
@@ -48,34 +49,35 @@ void EventSystem::UnRegisterProcessor(IEventProcessor* toUnRegister)
 	}
 }
 
-void EventSystem::SendEvent(int event)
+void InputEventSystem::SendEvent(int event)
 {
 	m_events.push_back(event);
 }
 
-void EventSystem::ProcessEvents()
+void InputEventSystem::ProcessEvents()
 {
 	// Bail if there's no events
 	if(m_events.size() == 0)
 		return;
 
+	
 	for( deque<int>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
-		for( deque<IEventProcessor*>::iterator processIter = m_clients.begin(); processIter != m_clients.end(); ++processIter)
+		for( deque<IInputEventProcessor*>::iterator processIter = m_clients.begin(); processIter != m_clients.end(); ++processIter)
 			(*processIter)->ReceiveAndHandleEvent(*eventIter);	
 
 	// We've sent all of our events, clear the event queue
 	m_events.clear();
 }
 
-EventSystem* EventSystem::GetInstance()
+InputEventSystem* InputEventSystem::GetInstance()
 {
 	if(m_instance == nullptr)
-		m_instance = new EventSystem;
+		m_instance = new InputEventSystem;
 
 	return m_instance;
 }
 
-void EventSystem::DeleteInstance()
+void InputEventSystem::DeleteInstance()
 {
 	if(m_instance)
 	{

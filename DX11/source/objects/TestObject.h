@@ -12,7 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "../rendering/render contexts/DiffuseContext.h"
-#include "../events/IEventProcessor.h"
+#include "../events/IInputEventProcessor.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -23,7 +23,7 @@
 ////////////////////////////////////////
 
 
-class TestObject : public IEventProcessor
+class TestObject : public IInputEventProcessor
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/

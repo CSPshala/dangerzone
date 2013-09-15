@@ -11,7 +11,7 @@
 #ifndef CTIMER_H
 #define CTIMER_H
 
-#include <Windows.h>
+#include "../Globals.h"
 
 class CTimer
 {

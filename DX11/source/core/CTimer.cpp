@@ -31,6 +31,10 @@ float CTimer::GetElapsedTime(void)
 		QueryPerformanceCounter((LARGE_INTEGER*)&m_nCurrentTime);
 
 		float fElapsedTime = (m_nCurrentTime - nPrevTime) * m_fSecPerCount;		
+		// Lock that timestep a bit
+		if(fElapsedTime > 0.125f)
+			fElapsedTime = 0.125f;
+
 		m_fTotalTime += fElapsedTime;
 		return fElapsedTime;
 	}

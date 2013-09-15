@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"EventSystem.h"
+//	File Name	:	"InputEventSystem.h"
 //	
 //	Author Name	:	JC Ricks
 //	
 //	Purpose		:	Singleton to quickly process event codes to and from listeners
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _EVENTSYSTEM_H
-#define _EVENTSYSTEM_H
+#ifndef _InputEventSystem_H
+#define _InputEventSystem_H
 
 ////////////////////////////////////////
 //				INCLUDES
@@ -18,22 +18,22 @@ using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class IEventProcessor;
+class IInputEventProcessor;
 
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
 
 
-class EventSystem
+class InputEventSystem
 {
 public:	
 	/********** Public Utility Functions ************/
-	static EventSystem* GetInstance();
+	static InputEventSystem* GetInstance();
 	static void DeleteInstance();
 
-	void RegisterProcessor(IEventProcessor* toRegister);
-	void UnRegisterProcessor(IEventProcessor* toUnRegister);
+	void RegisterProcessor(IInputEventProcessor* toRegister);
+	void UnRegisterProcessor(IInputEventProcessor* toUnRegister);
 	void SendEvent(int event);
 
 	void ProcessEvents();
@@ -43,21 +43,22 @@ public:
 	/********** Public Mutators  ************/	
 
 	/********** Public Event Enum *****************/
-	enum Events {UP = 1,DOWN,LEFT,RIGHT,JUMP,ATTACK};
+	enum Events {ATTACKOFF = -6, JUMPOFF, RIGHTOFF, LEFTOFF, DOWNOFF, UPOFF,
+		INVALID, UP ,DOWN,LEFT,RIGHT,JUMP,ATTACK};
 	
 
 private:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	EventSystem();
-	~EventSystem();
-	EventSystem(const EventSystem&);
-	EventSystem& operator=(const EventSystem&);
+	InputEventSystem();
+	~InputEventSystem();
+	InputEventSystem(const InputEventSystem&);
+	InputEventSystem& operator=(const InputEventSystem&);
 
 	/********** Private Members ************/	
 	// Singleton Instance
-	static EventSystem* m_instance;
+	static InputEventSystem* m_instance;
 	// Queue of event processors
-	deque<IEventProcessor*> m_clients;
+	deque<IInputEventProcessor*> m_clients;
 	// Queue of events to send
 	deque<int> m_events;
 	

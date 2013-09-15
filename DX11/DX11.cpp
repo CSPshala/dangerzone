@@ -5,10 +5,21 @@
 #include "source\core\Game.h"
 #include "source\core\RawInputParser.h"
 
+#ifdef _DEBUG
+#pragma comment(linker, "/SUBSYSTEM:Console")
+#include <vld_def.h>
+#include <vld.h>
+#else
+#pragma comment(linker, "/SUBSYSTEM:Windows")
+#endif
 
 #define MAX_LOADSTRING 15
 
 // Forward declarations of functions included in this code module:
+int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
+                     _In_opt_ HINSTANCE hPrevInstance,
+                     _In_ LPTSTR    lpCmdLine,
+                     _In_ int       nCmdShow);
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
@@ -17,6 +28,26 @@ int  FindOsVersion();
 
 // Raw input reader
 RawInputParser g_InputParser;
+
+// Console "main" - only called in Debug Mode
+//		Calls Windows' WinMain
+int main(int argc, char* argv[])
+{
+	srand(time_t(0));
+	std::cout << "Running " << GetCommandLine() << " in Debug Mode\n\n";
+	std::cout << "Debug Log:\n------------\n\n";
+	std::cout << "``_```_``````_`_````````__````````__`````````_`````_`\n"
+				<< "`|`|`|`|`___|`|`|`___```\\`\\``````/`/__``_`__|`|`__|`|\n"
+				<< "`|`|_|`|/`_`\\`|`|/`_`\\```\\`\\`/\\`/`/`_`\\|`'__|`|/`_``|\n"
+				<< "`|``_``|``__/`|`|`(_)`|```\\`V``V`/`(_)`|`|``|`|`(_|`|\n"
+				<< "`|_|`|_|\\___|_|_|\\___/`````\\_/\\_/`\\___/|_|``|_|\\__,_|\n"
+				<< "`````````````````````````````````````````````````````\n";
+
+	_tWinMain(GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOWDEFAULT);
+
+	LOG("Main finished.\n");
+	return 0;
+}
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
