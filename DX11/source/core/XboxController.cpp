@@ -1,15 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"IGamestate.cpp"
+//	File Name	:	"XboxController.cpp"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Organize new cpp files
+//	Purpose		:	Encapsulate a single xbox controller's input
 ///////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "StateMainGame.h"
+#include "XboxController.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -18,52 +18,33 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-StateMainGame::StateMainGame()
-{
+XboxController::XboxController(int controllerNumber) : m_controllerNumber(controllerNumber)
+{	
 }
 
-StateMainGame::~StateMainGame()
+XboxController::~XboxController()
 {
 }
 
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-void StateMainGame::Enter(FRenderer* theRenderer)
+int XboxController::GetState(XINPUT_STATE& state)
 {
-	// Set renderer
-	m_Renderer = theRenderer;
-	// Set camera
-	m_Camera = theRenderer->GetCamera();
-	// Move delta cleared out
-	m_MoveDelta = D3DXVECTOR3(0,0,0);
-	m_MouseDelta = D3DXVECTOR3(0,0,0);
+	int result = 0;
+	SecureZeroMemory(&m_state,sizeof(XINPUT_STATE));
+	result = XInputGetState(m_controllerNumber,&m_state);
+	state = m_state;
+	return result;
 }
 
-void StateMainGame::Exit()
-{	
-	m_Renderer = nullptr;
-}
-
-void StateMainGame::Input()
+void XboxController::Vibrate(int leftVal, int rightVal)
 {
-
-}
-
-void StateMainGame::Update(float deltaTime)
-{
-	m_testSprite.Update(deltaTime);
-
-	m_Camera->Render();
-}
-
-void StateMainGame::Render()
-{
-	m_Renderer->RenderStart();
-
-	m_testSprite.Render();
-	
-	m_Renderer->RenderEnd();
+	XINPUT_VIBRATION vibration;
+	SecureZeroMemory(&vibration,sizeof(XINPUT_VIBRATION));
+	vibration.wLeftMotorSpeed = leftVal;
+	vibration.wRightMotorSpeed = rightVal;
+	XInputSetState(m_controllerNumber,&vibration);
 }
 
 ////////////////////////////////////////
@@ -73,6 +54,10 @@ void StateMainGame::Render()
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
+int XboxController::GetControllerNumber()
+{
+	return m_controllerNumber;
+}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

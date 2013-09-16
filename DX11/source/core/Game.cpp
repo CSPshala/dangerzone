@@ -41,10 +41,6 @@ bool Game::Initialize()
 
 	// Rendering
 	m_Renderer.Initialize();
-
-	// Input
-	//m_DI = CSGD_DirectInput::GetInstance();
-	//m_DI->InitDirectInput(WindowGlobals::g_hWnd,WindowGlobals::g_hInstance,DI_KEYBOARD | DI_MOUSE, DI_MOUSE);
 	
 	// States
 	m_CurrentState = nullptr;
@@ -54,9 +50,6 @@ bool Game::Initialize()
 
 	// Events
 	m_InputEventSystem = InputEventSystem::GetInstance();
-
-	// Pop the timer once
-	//theTimer.GetElapsedTime();
 
 	return true;
 }
@@ -73,7 +66,6 @@ bool Game::Main()
 bool Game::Shutdown()
 {
 	m_Renderer.Shutdown();
-	//m_DI->ShutdownDirectInput();
 
 	return true;
 }
@@ -84,9 +76,6 @@ bool Game::Shutdown()
 ////////////////////////////////////////
 void Game::Input()
 {
-	// Get info about our device states
-	//m_DI->ReadDevices();
-
 	// Current state input
 	m_CurrentState->Input();
 

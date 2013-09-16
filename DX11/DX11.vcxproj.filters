@@ -78,9 +78,6 @@
     <ClInclude Include="source\rendering\Camera.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="source\core\CSGD_DirectInput.h">
-      <Filter>Source Files\core</Filter>
-    </ClInclude>
     <ClInclude Include="source\gamestates\IGamestate.h">
       <Filter>Source Files\gamestates</Filter>
     </ClInclude>
@@ -132,6 +129,12 @@
     <ClInclude Include="source\events\IInputEventProcessor.h">
       <Filter>Source Files\events</Filter>
     </ClInclude>
+    <ClInclude Include="source\core\XbInputParser.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\XboxController.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -157,9 +160,6 @@
     </ClCompile>
     <ClCompile Include="source\rendering\Camera.cpp">
       <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\core\CSGD_DirectInput.cpp">
-      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="source\gamestates\IGamestate.cpp">
       <Filter>Source Files\gamestates</Filter>
@@ -211,6 +211,12 @@
     </ClCompile>
     <ClCompile Include="source\events\IInputEventProcessor.cpp">
       <Filter>Source Files\events</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\XbInputParser.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\XboxController.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

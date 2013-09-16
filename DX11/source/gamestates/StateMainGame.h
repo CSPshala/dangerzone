@@ -45,10 +45,7 @@ public:
 
 private:
 	/********** Private Members ************/
-
-	// TODO: Bundle all this into a player class
-	// Ease of access for DirectInput
-	CSGD_DirectInput* m_DI;
+	
 	// Ease of access to renderer
 	FRenderer*	m_Renderer;
 	// Ease of access to camera

@@ -1,17 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"IGamestate.h"
+//	File Name	:	"XboxController.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Gamestate interface to be inherited
+//	Purpose		:	Encapsulate a single xbox controller's input
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _IGAMESTATE_H
-#define _IGAMESTATE_H
+#ifndef _XBOXCONTROLLER_H
+#define _XBOXCONTROLLER_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../rendering/ForwardRenderer.h"
+#include "../Globals.h"
+#include <XInput.h>
+#pragma comment(lib,"XInput.lib")
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -21,26 +24,25 @@
 ////////////////////////////////////////
 
 
-class IGamestate
+class XboxController
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-
-
+	XboxController(int controllerNumber = -1);
+	~XboxController();
 	/********** Public Utility Functions ************/
-	virtual void Enter(FRenderer* theRenderer) = 0;
-	virtual void Exit() = 0;
-
-	virtual void Input() = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void Render() = 0;
+	int GetState(XINPUT_STATE& state);	
+	void Vibrate(int leftVal = 0, int rightVal = 0);
 
 	/********** Public Accessors ************/
+	int GetControllerNumber();
 
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
+	XINPUT_STATE m_state;
+	int m_controllerNumber;
 
 	/********** Private Accessors ************/
 

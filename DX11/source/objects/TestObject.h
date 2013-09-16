@@ -33,6 +33,7 @@ public:
 	void Update(float deltaTime);
 	void Render();
 	void ReceiveAndHandleEvent(int event);
+	void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo event);
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
@@ -44,6 +45,10 @@ private:
 	/********** Private Members ************/
 	float mPosX, mPosY;
 	float mVelX, mVelY;
+	float mLSXMod, mRSXMod;
+	float mLSYMod, mRSYMod;
+	bool  mKeyMove; // Toggles joystick movement off if keyboard input is detected
+
 	int  mInputFlags; // Each bit corresponds to  forwards or backwards velocity
 
 	// Rendering

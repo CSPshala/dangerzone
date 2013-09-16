@@ -2,8 +2,9 @@
 
 // TODO: reference additional headers your program requires here
 #include "DX11.h"
-#include "source\core\Game.h"
-#include "source\core\RawInputParser.h"
+#include "source/core/Game.h"
+#include "source/core/RawInputParser.h"
+#include "source/core/XbInputParser.h"
 
 #ifdef _DEBUG
 #pragma comment(linker, "/SUBSYSTEM:Console")
@@ -27,7 +28,9 @@ HWND MakeWindow(HINSTANCE hInstance);
 int  FindOsVersion();
 
 // Raw input reader
-RawInputParser g_InputParser;
+RawInputParser g_RawInputParser;
+// Xbox controller input reader
+XbInputParser g_XbInputParser;
 
 // Console "main" - only called in Debug Mode
 //		Calls Windows' WinMain
@@ -83,7 +86,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return false; }
 
 	// Register for input
-	g_InputParser.RegisterForRawInput();
+	g_RawInputParser.RegisterForRawInput();
 
 	while(WindowGlobals::g_hWnd)
 	{
@@ -97,8 +100,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		g_XbInputParser.ReadInput();
 
-		g_InputParser.ProcessInput();
+		g_RawInputParser.ProcessInput();
+
+		g_XbInputParser.ProcessInput();
+
 		theGame.Main();
 
 	}
@@ -187,7 +194,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_INPUT:
 			{
-				g_InputParser.ReadInput(lParam);
+				g_RawInputParser.ReadInput(lParam);
 			}
 			break;
 		case WM_COMMAND:

@@ -14,7 +14,6 @@
 #include "CTimer.h"
 #include "../Globals.h"
 #include "../rendering/ForwardRenderer.h"
-#include "CSGD_DirectInput.h"
 #include "../gamestates/StateMainGame.h"
 #include "../events/InputEventSystem.h"
 #include "RawInputParser.h"
@@ -54,9 +53,6 @@ private:
 
 		// Rendering
 		FRenderer m_Renderer;
-
-		// Input
-		//CSGD_DirectInput* m_DI;
 
 		// States
 		IGamestate*	   m_CurrentState;

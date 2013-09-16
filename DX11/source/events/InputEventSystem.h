@@ -28,13 +28,23 @@ class IInputEventProcessor;
 class InputEventSystem
 {
 public:	
+
+	struct JoystickInfo
+	{
+		short mLeftStickX;
+		short mLeftStickY;
+		short mRightStickX;
+		short mRightStickY;
+	};
+
 	/********** Public Utility Functions ************/
 	static InputEventSystem* GetInstance();
 	static void DeleteInstance();
 
 	void RegisterProcessor(IInputEventProcessor* toRegister);
 	void UnRegisterProcessor(IInputEventProcessor* toUnRegister);
-	void SendEvent(int event);
+	void SendEvent(int event, int clientNumber = 0);
+	void SendJoystickEvent(JoystickInfo eventData, int clientNumber = 0);
 
 	void ProcessEvents();
 
@@ -46,6 +56,7 @@ public:
 	enum Events {ATTACKOFF = -6, JUMPOFF, RIGHTOFF, LEFTOFF, DOWNOFF, UPOFF,
 		INVALID, UP ,DOWN,LEFT,RIGHT,JUMP,ATTACK};
 	
+	static const int NUM_ALLOWED_PLAYERS;	
 
 private:
 	/********** Construct / Deconstruct / OP Overloads ************/
@@ -58,9 +69,11 @@ private:
 	// Singleton Instance
 	static InputEventSystem* m_instance;
 	// Queue of event processors
-	deque<IInputEventProcessor*> m_clients;
+	vector<IInputEventProcessor*> m_clients;
 	// Queue of events to send
-	deque<int> m_events;
+	deque<pair<int,int> > m_events;
+	// Queue of joystick events to send
+	deque<pair<JoystickInfo,int> > m_joystickEvents;
 	
 
 	/********** Private Accessors ************/

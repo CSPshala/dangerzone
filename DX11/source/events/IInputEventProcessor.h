@@ -31,6 +31,7 @@ public:
 	void RegisterForEvents();
 	void UnRegisterForEvents();
 	virtual void ReceiveAndHandleEvent(int event) = 0;
+	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo event) = 0;
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	

@@ -1,39 +1,40 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"IGamestate.h"
+//	File Name	:	"XbInputParser.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Gamestate interface to be inherited
+//	Purpose		:	Manage xbox controller input event sending and parsing
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _IGAMESTATE_H
-#define _IGAMESTATE_H
+#ifndef _XBINPUTPARSER_H
+#define _XBINPUTPARSER_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../rendering/ForwardRenderer.h"
+#include "XboxController.h"
+#include <vector>
+#include <string>
+using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
+
 
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
 
 
-class IGamestate
+class XbInputParser
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-
+	XbInputParser();
+	~XbInputParser();
 
 	/********** Public Utility Functions ************/
-	virtual void Enter(FRenderer* theRenderer) = 0;
-	virtual void Exit() = 0;
-
-	virtual void Input() = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void Render() = 0;
+	void ReadInput();
+	void ProcessInput();
 
 	/********** Public Accessors ************/
 
@@ -41,12 +42,18 @@ public:
 
 private:
 	/********** Private Members ************/
+	// Current controls mapped for each player
+	vector<vector<pair<bool,pair<int,int> > >*> m_currentControls;
+	vector<pair<XINPUT_STATE,int> > m_currentFrameData;
+	vector<int> m_oldPacketNumbers;
+	vector<XboxController*> m_controllers;
+	vector<pair<string,int> > m_controlStrings;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-
+	void LoadControls();
 };
 #endif

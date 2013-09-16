@@ -90,10 +90,11 @@
   <ItemGroup>
     <ClInclude Include="DX11.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="source\core\CSGD_DirectInput.h" />
     <ClInclude Include="source\core\CTimer.h" />
     <ClInclude Include="source\core\Game.h" />
     <ClInclude Include="source\core\RawInputParser.h" />
+    <ClInclude Include="source\core\XbInputParser.h" />
+    <ClInclude Include="source\core\XboxController.h" />
     <ClInclude Include="source\events\InputEventSystem.h" />
     <ClInclude Include="source\events\IInputEventProcessor.h" />
     <ClInclude Include="source\gamestates\IGamestate.h" />
@@ -119,10 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp" />
-    <ClCompile Include="source\core\CSGD_DirectInput.cpp" />
     <ClCompile Include="source\core\CTimer.cpp" />
     <ClCompile Include="source\core\Game.cpp" />
     <ClCompile Include="source\core\RawInputParser.cpp" />
+    <ClCompile Include="source\core\XbInputParser.cpp" />
+    <ClCompile Include="source\core\XboxController.cpp" />
     <ClCompile Include="source\events\InputEventSystem.cpp" />
     <ClCompile Include="source\events\IInputEventProcessor.cpp" />
     <ClCompile Include="source\gamestates\IGamestate.cpp" />
