@@ -135,6 +135,21 @@
     <ClInclude Include="source\core\XboxController.h">
       <Filter>Source Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="source\components\IComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\ComponentFactory.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\Entity.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\WorldManager.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\CMessages.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -217,6 +232,21 @@
     </ClCompile>
     <ClCompile Include="source\core\XboxController.cpp">
       <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\IComponent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\ComponentFactory.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\Entity.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\WorldManager.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\CMessages.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

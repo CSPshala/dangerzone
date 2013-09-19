@@ -1,0 +1,17 @@
+///////////////////////////////////////////////////////////////////////////
+//	File Name	:	"CMessages.h"
+//	
+//	Author Name	:	JC Ricks
+//	
+//	Purpose		:	Defines component messages
+///////////////////////////////////////////////////////////////////////////
+#ifndef _CMESSAGES_H
+#define _CMESSAGES_H
+
+//*******MESSAGE INTERFACE*********/
+class IMessage
+{
+	virtual int GetType() = 0;
+};
+
+#endif

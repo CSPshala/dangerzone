@@ -54,6 +54,14 @@ public:
 	static D3D*		   g_D3D;
 };
 
+namespace ENUMS
+{
+	// Add enums here for created components
+	namespace COMPONENTS {
+		enum { PLAYER_CONTROLLER = 0, RENDERING, INVALID_COMPONENT };
+	};
+};
+
 //* Global helper functions */
 
 /** Determine whether two floats are within FLT_EPSILON of each other */
