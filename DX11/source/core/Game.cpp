@@ -68,7 +68,12 @@ bool Game::Main()
 
 bool Game::Shutdown()
 {
+	ChangeState(nullptr);
+	delete m_MainGame;
+
+	// Shut down all game level singletons
 	m_Renderer->Shutdown();
+	m_Renderer->DeleteInstance();
 	m_InputEventSystem->DeleteInstance();
 
 	return true;
@@ -80,9 +85,7 @@ bool Game::Shutdown()
 ////////////////////////////////////////
 bool Game::Input()
 {
-	// Current state input
-	m_CurrentState->Input();
-	// Process any events
+	// Process any input events
 	if(!m_InputEventSystem->ProcessEvents())
 		return false;
 
@@ -102,10 +105,7 @@ void Game::Update()
 
 void Game::Render()
 {
-	m_Renderer->RenderStart();
-	m_Renderer->RenderEnd();
-	// Current state render
-	m_CurrentState->Render();
+	m_Renderer->RenderQueue();
 }
 
 void Game::ChangeState(IGamestate* in)

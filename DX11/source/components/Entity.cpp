@@ -67,8 +67,11 @@ void Entity::Shutdown()
 {
 	for(deque<IComponent*>::iterator iter = m_components.begin(); iter != m_components.end(); ++iter)		
 	{
-		delete (*iter);
-		(*iter) = nullptr;
+		if(*iter)
+		{
+			delete (*iter);
+			(*iter) = nullptr;
+		}
 	}
 }
 ////////////////////////////////////////

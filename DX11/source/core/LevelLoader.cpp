@@ -122,8 +122,8 @@ bool LevelLoader::LoadInitialData(string filename)
 	{
 		for( xml_node level = levelset.child("level"); level; level = level.next_sibling("level"))
 		{			
-			m_levelList.push_back (level.attribute("fileName").value());
-			m_levelNames.push_back(level.attribute("name").value());
+			m_levelList.push_back(level.attribute("fileName").as_string());
+			m_levelNames.push_back(level.attribute("name").as_string());			
 		}
 	}
 
@@ -133,6 +133,7 @@ bool LevelLoader::LoadInitialData(string filename)
 
 	for(xml_node component = doc.child("validComponents").child("component"); component; component = component.next_sibling("component"))	
 		m_validComponents.push_back(pair<string,int>(component.attribute("typeName").value(),component.attribute("type").as_int()));	
+
 
 	return true;
 }
@@ -295,6 +296,7 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 
 	return component;
 }
+
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////

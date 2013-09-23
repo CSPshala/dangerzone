@@ -35,10 +35,7 @@ public:
 	/********** Public Utility Functions ************/
 	void Enter();
 	void Exit(); 
-
-	void Input();
 	void Update(float deltaTime);
-	void Render();
 
 	/********** Public Accessors ************/
 

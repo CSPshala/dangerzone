@@ -50,20 +50,9 @@ void StateMainGame::Exit()
 	m_worldManager.Shutdown();
 }
 
-void StateMainGame::Input()
-{
-
-}
-
 void StateMainGame::Update(float deltaTime)
 {
-	m_worldManager.Update(deltaTime);	
-
-	m_Camera->Render();
-}
-
-void StateMainGame::Render()
-{	
+	m_worldManager.Update(deltaTime);		
 }
 
 ////////////////////////////////////////

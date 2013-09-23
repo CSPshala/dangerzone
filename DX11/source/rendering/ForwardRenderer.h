@@ -36,8 +36,7 @@ public:
 
 	bool Initialize();
 	void Shutdown();
-	void RenderStart();
-	void RenderEnd();
+	void RenderQueue();	
 
 	/********** Public Accessors ************/
 	Camera* GetCamera() { return m_Camera; }

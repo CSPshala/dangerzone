@@ -46,6 +46,11 @@ RawInputParser::~RawInputParser()
 		delete[] m_rawDevices;
 		m_rawDevices = nullptr;
 	}
+
+	if(m_currentControls)
+	{
+		delete m_currentControls;
+	}
 }
 
 ////////////////////////////////////////

@@ -13,6 +13,7 @@
 #include "D3D.h"
 #include "Camera.h"
 #include "render contexts/ContextManager.h"
+#include "TextureManager.h"
 #include "render contexts/DiffuseContext.h"
 
 ////////////////////////////////////////
@@ -79,6 +80,10 @@ bool FRenderer::Initialize()
 		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize constant shader buffer.", L"Error", MB_OK);
 		return false;
 	}	
+
+	// Render (it's really update, sigh) camera once and update for view/orth/world mats that 
+	// never need to change ever again
+	m_Camera->Render();
 	UpdateConstantShaderBuffer();
 	
 	m_diffuseContext = static_cast<DiffuseContext*>(ContextManager::GetInstance()->GetRenderContext("diffuse"));
@@ -88,6 +93,9 @@ bool FRenderer::Initialize()
 
 void FRenderer::Shutdown()
 {	
+	ContextManager::GetInstance()->DeleteInstance();
+	TextureManager::GetInstance()->DeleteInstance();
+
 	// Release the matrix constant buffer.
 	if(m_matrixBuffer)
 	{
@@ -112,16 +120,8 @@ void FRenderer::Shutdown()
 	return;
 }
 
-void FRenderer::RenderStart()
+void FRenderer::RenderQueue()
 {
-	static bool runOnce = false;
-
-	if(!runOnce)
-	{
-		UpdateConstantShaderBuffer();
-		runOnce = true;
-	}
-
 	// Add components to buffer in order based on layer
 	unsigned int size = m_renderQueue.size();
 
@@ -137,10 +137,7 @@ void FRenderer::RenderStart()
 	m_D3D->BeginScene(0.2f, 0.2f, 0.0f, 1.0f);
 
 	m_diffuseContext->RenderBuffers(0,size);
-}
 
-void FRenderer::RenderEnd()
-{	
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 
