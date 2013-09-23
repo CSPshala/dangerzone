@@ -22,13 +22,13 @@ using namespace std;
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-Texture::Texture() : mTexture(nullptr)
+Texture::Texture() : m_texture(nullptr), m_width(0), m_height(0)
 {
 }
 
 Texture::Texture(const Texture& copy)
 {
-	mTexture = copy.mTexture;
+	m_texture = copy.m_texture;
 }
 
 Texture::~Texture()
@@ -37,25 +37,32 @@ Texture::~Texture()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool Texture::Initialize(const wchar_t* fileName)
+bool Texture::Initialize(const char* fileName)
 {
 	// Add path to filename
-	wstring filePath = L"resource/sprites/";
+	string filePath = "resource/sprites/";
 	filePath += fileName;
 
 	// Load the texture in.
-	if(FAILED(D3DX11CreateShaderResourceViewFromFile(ApplicationSettings::g_Device, filePath.c_str(), NULL, NULL, &mTexture, NULL)))
+	if(FAILED(D3DX11CreateShaderResourceViewFromFileA(ApplicationSettings::g_Device, filePath.c_str(), NULL, NULL, &m_texture, NULL)))
 		return false;
+
+	D3DX11_IMAGE_INFO texDesc;
+	if(FAILED(D3DX11GetImageInfoFromFileA(filePath.c_str(),NULL,&texDesc,NULL)))
+		return false;
+	
+	m_width = texDesc.Width;
+	m_height = texDesc.Height;
 
 	return true;
 }
 
 void Texture::Shutdown()
 {
-	if(mTexture)
+	if(m_texture)
 	{
-		mTexture->Release();
-		mTexture = nullptr;
+		m_texture->Release();
+		m_texture = nullptr;
 	}
 }
 
@@ -68,7 +75,17 @@ void Texture::Shutdown()
 ////////////////////////////////////////
 ID3D11ShaderResourceView* Texture::GetTexture()
 {
-	return mTexture;
+	return m_texture;
+}
+
+int Texture::GetHeight()
+{
+	return m_height;
+}
+
+int Texture::GetWidth()
+{
+	return m_width;
 }
 
 ////////////////////////////////////////

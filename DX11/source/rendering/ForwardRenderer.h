@@ -12,13 +12,16 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "../Globals.h"
+#include "../components/RenderComponent.h"
+#include <queue>
+using namespace std;
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class Emitter;
 class D3D;
 class Camera;
+class DiffuseContext;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -27,12 +30,10 @@ class Camera;
 class FRenderer
 {
 public:
-	/********** Construct / Deconstruct / OP Overloads ************/
-	FRenderer();
-	FRenderer(const FRenderer&);
-	~FRenderer();
-
 	/********** Public Utility Functions ************/
+	static FRenderer* GetInstance();
+	static void DeleteInstance();
+
 	bool Initialize();
 	void Shutdown();
 	void RenderStart();
@@ -40,13 +41,31 @@ public:
 
 	/********** Public Accessors ************/
 	Camera* GetCamera() { return m_Camera; }
+	void AddRenderComponentToFrame(RenderComponent* component);
 
 	/********** Public Mutators  ************/	
 
 private:
+	/********** Construct / Deconstruct / OP Overloads ************/
+	FRenderer();
+	FRenderer(const FRenderer&);
+	~FRenderer();
+	FRenderer& operator=(const FRenderer&);
+
 	/********** Private Members ************/
+	static FRenderer* m_instance;
+
 	D3D* m_D3D;
 	Camera*     m_Camera;
+
+	class layerCompare
+	{
+	public:
+		bool operator() (const RenderComponent* e1, const RenderComponent* e2) const
+		{
+			return e1->getLayer() < e2->getLayer();
+		}
+	};
 
 	struct MatrixBufferType
 	{
@@ -57,6 +76,11 @@ private:
 	};
 
 	ID3D11Buffer* m_matrixBuffer;
+
+	// Contexts
+	DiffuseContext* m_diffuseContext;
+	// Staging priority queue for render components
+	priority_queue<RenderComponent*,vector<RenderComponent*>,layerCompare> m_renderQueue;
 
 	/********** Private Accessors ************/
 

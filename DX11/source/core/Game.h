@@ -16,7 +16,7 @@
 #include "../rendering/ForwardRenderer.h"
 #include "../gamestates/StateMainGame.h"
 #include "../events/InputEventSystem.h"
-#include "RawInputParser.h"
+#include "../input/RawInputParser.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -52,7 +52,7 @@ private:
 		float m_frameDeltaTime;
 
 		// Rendering
-		FRenderer m_Renderer;
+		FRenderer* m_Renderer;
 
 		// States
 		IGamestate*	   m_CurrentState;
@@ -61,13 +61,12 @@ private:
 		// Events
 		InputEventSystem*	m_InputEventSystem;
 
-
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	void Input();
+	bool Input();
 	void Update();
 	void Render();
 

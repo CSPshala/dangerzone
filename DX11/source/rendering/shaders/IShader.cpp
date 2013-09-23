@@ -9,6 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include "../../Globals.h"
 #include "IShader.h"
 ////////////////////////////////////////
 //				MISC
@@ -21,20 +22,20 @@ IShader::IShader()
 {
 }
 
-IShader::IShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName, wchar_t* geometryShaderName)
+IShader::IShader(char* vertexShaderName, char* pixelShaderName, char* geometryShaderName)
 {
 	m_geometryShader = nullptr;
 	m_pixelShader = nullptr;
 	m_vertexShader = nullptr;
 
-	wstring shaderPath = L"resource/shaders/";
+	string shaderPath = "resource/shaders/";
 
-	m_VertexShaderPath = shaderPath + vertexShaderName + L".vs";
-	m_PixelShaderPath  = shaderPath + pixelShaderName + L".ps";
+	m_VertexShaderPath = shaderPath + vertexShaderName + ".vs";
+	m_PixelShaderPath  = shaderPath + pixelShaderName + ".ps";
 
 	if(geometryShaderName)
 	{
-		m_GeometryShaderPath = shaderPath + geometryShaderName + L".gs";
+		m_GeometryShaderPath = shaderPath + geometryShaderName + ".gs";
 	}
 }
 
@@ -68,7 +69,7 @@ void IShader::Shutdown()
 	return;
 }
 
-bool IShader::Render(int indexCount)
+bool IShader::Render(int indexCount,int offset)
 {
 	// Set the shader parameters that it will use for rendering.
 	// TODO: Implement
@@ -80,7 +81,7 @@ bool IShader::Render(int indexCount)
 	}*/
 
 	// Now render the prepared buffers with the shader.
-	RenderShader(indexCount);
+	RenderShader(indexCount,offset);
 
 	return true;
 }
@@ -121,7 +122,7 @@ void IShader::ShutdownShader()
 	return;
 }
 
-void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const WCHAR* shaderFilename)
+void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const char* shaderFilename)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -134,8 +135,8 @@ void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, cons
 	// Get the length of the message.
 	bufferSize = errorMessage->GetBufferSize();
 
-	wstring output = shaderFilename;
-	output += L"-error.txt";
+	string output = shaderFilename;
+	output += "-error.txt";
 
 	// Open a file to write the error message to.
 	fout.open(output);
@@ -153,11 +154,9 @@ void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, cons
 	errorMessage->Release();
 	errorMessage = 0;
 
-	wstring msgTxt = L"Error compiling shader.  Check " + output + L" for message.";
+	string msgTxt = "Error compiling shader.  Check " + output + " for message.";
 
-	// Pop a message up on the screen to notify the user to check the text file for compile errors.
-	MessageBox(hwnd,msgTxt.c_str(), shaderFilename, MB_OK);
-
+	LOG(msgTxt);
 	return;
 }
 

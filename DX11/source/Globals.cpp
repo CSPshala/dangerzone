@@ -1,12 +1,17 @@
 #include "Globals.h"
 // NOTE: Now defining previously declared globals
 
+#ifdef _DEBUG
+std::stringstream DEBUGLOG::G_DEBUGLOGSTREAM = std::stringstream();
+#endif 
+
 const int				ApplicationSettings::g_ResolutionW = 1024;
 const int				ApplicationSettings::g_ResolutionH = 768;
 const bool				ApplicationSettings::g_FullScreen = false;
 const bool				ApplicationSettings::g_VSync = true;
 const float				ApplicationSettings::g_ScreenFar = 1000.0f;
 const float				ApplicationSettings::g_ScreenNear = 0.1f;
+const int				ApplicationSettings::g_MaxRenderComponents = 500;
 ID3D11Device*			ApplicationSettings::g_Device = nullptr;
 ID3D11DeviceContext*	ApplicationSettings::g_DeviceContext = nullptr;
 Camera*					ApplicationSettings::g_Camera = nullptr;

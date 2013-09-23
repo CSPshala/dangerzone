@@ -18,7 +18,7 @@
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-
+class RenderComponent;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -32,16 +32,15 @@ public:
 	~DiffuseContext();
 
 	/********** Public Utility Functions ************/
-	bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);	
-	void Shutdown();		
-	/** Positions should be time based before passed to update */
-	bool Update(float posX, float posY);
-	void Render();
+	bool Initialize(char* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);
+	bool UpdateBuffers();
+	void RenderBuffers(unsigned int bufferIndex = 0,unsigned int numberToRender = 1);
+	void Shutdown();
 
-	/********** Public Accessors ************/
-	int GetIndexCount();	
+	/********** Public Accessors ************/	
 
-	/********** Public Mutators  ************/	
+	/********** Public Mutators  ************/
+	void AddRenderCompToCurrentRenderBuffer(RenderComponent* component);
 
 private:
 	/********** Private Members ************/
@@ -51,11 +50,13 @@ private:
 		D3DXVECTOR2 texture;
 	};
 
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
-	int m_vertexCount, m_indexCount;
+	static const int QUAD_VERT_COUNT;
 
+	bitmapVertex* m_vertexInfo;
+
+	int m_nextVertexInfoIndex;
 	int m_bitmapWidth, m_bitmapHeight;
-	float m_prevPosX, m_prevPosY;	
+	float m_prevPosX, m_prevPosY;
 
 	// Shaders
 	DiffuseShader* m_diffuseShade;
@@ -66,10 +67,5 @@ private:
 
 	/********** Private Utility Functions ************/
 	bool InitializeBuffers();
-	bool UpdateBuffers(float posX, float posY);
-	void RenderBuffers();	
-	void ShutdownBuffers();
-	bool LoadTexture(WCHAR* textureFilename);
-	void ReleaseTexture();
 };
 #endif

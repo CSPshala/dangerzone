@@ -17,7 +17,9 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-
+IInputEventProcessor::IInputEventProcessor() : m_playerNumber(-1)
+{
+}
 
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
@@ -39,6 +41,10 @@ void IInputEventProcessor::UnRegisterForEvents()
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
+int IInputEventProcessor::getPlayerNumber()
+{
+	return m_playerNumber;
+}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

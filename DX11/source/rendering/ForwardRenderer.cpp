@@ -10,14 +10,15 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "ForwardRenderer.h"
-#include "../Globals.h"
 #include "D3D.h"
 #include "Camera.h"
-#include "../particles/Emitter.h"
+#include "render contexts/ContextManager.h"
+#include "render contexts/DiffuseContext.h"
 
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+FRenderer* FRenderer::m_instance(nullptr);
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
@@ -28,15 +29,9 @@ FRenderer::FRenderer()
 	m_Camera = nullptr;
 }
 
-FRenderer::FRenderer(const FRenderer& in)
-{
-}
-
 FRenderer::~FRenderer()
 {
 }
-
-
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
@@ -84,8 +79,9 @@ bool FRenderer::Initialize()
 		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize constant shader buffer.", L"Error", MB_OK);
 		return false;
 	}	
+	UpdateConstantShaderBuffer();
 	
-	
+	m_diffuseContext = static_cast<DiffuseContext*>(ContextManager::GetInstance()->GetRenderContext("diffuse"));
 
 	return true;
 }
@@ -118,16 +114,55 @@ void FRenderer::Shutdown()
 
 void FRenderer::RenderStart()
 {
-	UpdateConstantShaderBuffer();
+	static bool runOnce = false;
+
+	if(!runOnce)
+	{
+		UpdateConstantShaderBuffer();
+		runOnce = true;
+	}
+
+	// Add components to buffer in order based on layer
+	unsigned int size = m_renderQueue.size();
+
+	for(unsigned int i = 0; i < size; ++i)
+	{
+		m_diffuseContext->AddRenderCompToCurrentRenderBuffer(m_renderQueue.top());
+		m_renderQueue.pop();
+	}
+
+	m_diffuseContext->UpdateBuffers();
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.2f, 0.2f, 0.0f, 1.0f);
+
+	m_diffuseContext->RenderBuffers(0,size);
 }
 
 void FRenderer::RenderEnd()
-{
+{	
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
+
+	// Get rid of old priority queue
+	m_renderQueue = priority_queue<RenderComponent*,vector<RenderComponent*>,FRenderer::layerCompare>();
+}
+
+FRenderer* FRenderer::GetInstance()
+{
+	if(m_instance == nullptr)
+		m_instance = new FRenderer;
+
+	return m_instance;
+}
+
+void FRenderer::DeleteInstance()
+{
+	if(m_instance)
+	{
+		delete m_instance;
+		m_instance = nullptr;
+	}
 }
 
 ////////////////////////////////////////
@@ -214,6 +249,10 @@ bool FRenderer::UpdateConstantShaderBuffer()
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
+void FRenderer::AddRenderComponentToFrame(RenderComponent* component)
+{
+	m_renderQueue.push(component);
+}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

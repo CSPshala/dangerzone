@@ -39,25 +39,35 @@ InputEventSystem::~InputEventSystem()
 ////////////////////////////////////////
 void InputEventSystem::RegisterProcessor(IInputEventProcessor* toRegister)
 {
-	// Only 4 are allowed currently, add them in order
-	for(int i = 0; i < NUM_ALLOWED_PLAYERS; ++i)
-		if(m_clients[i] == nullptr)
-		{
-			m_clients[i] = toRegister;
-			break;
-		}
+	// Only 4 are allowed currently, add based on player number
+	if(m_clients[toRegister->getPlayerNumber() - 1] == nullptr)	
+	{
+		m_clients[toRegister->getPlayerNumber() - 1] = toRegister;	
+	}
+	else
+	{
+		LOG("InputEventSystem tried to register an InputEventProcessor with an existing player# :" << toRegister->getPlayerNumber() );
+	}
 
 }
 
 void InputEventSystem::UnRegisterProcessor(IInputEventProcessor* toUnRegister)
 {
-	for( vector<IInputEventProcessor*>::iterator iter = m_clients.begin(); iter != m_clients.end(); ++iter)
+	// Only 4 are allowed currently, add based on player number
+	if(m_clients[toUnRegister->getPlayerNumber() - 1] != nullptr)	
 	{
-		if((*iter) == toUnRegister)
+		if(m_clients[toUnRegister->getPlayerNumber() - 1] == toUnRegister)
 		{
-			*iter = nullptr;
-			break;
+			m_clients[toUnRegister->getPlayerNumber() - 1] = nullptr;	
 		}
+		else
+		{
+			LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor with a Registered player# :" << toUnRegister->getPlayerNumber() );
+		}
+	}
+	else
+	{
+		LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor with player# :" << toUnRegister->getPlayerNumber() );
 	}
 }
 
@@ -71,13 +81,16 @@ void InputEventSystem::SendJoystickEvent(JoystickInfo eventData, int clientNumbe
 	m_joystickEvents.push_back(pair<JoystickInfo,int>(eventData,clientNumber));
 }
 
-void InputEventSystem::ProcessEvents()
-{
+bool InputEventSystem::ProcessEvents()
+{	
 	// Bail if there's no events
 	if(m_events.size() != 0)
 	{	
 		for( deque<pair<int,int>>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
 		{
+			if((*eventIter).first == InputEventSystem::QUIT)
+				return false;
+
 			if(m_clients[(*eventIter).second])
 				m_clients[(*eventIter).second]->ReceiveAndHandleEvent((*eventIter).first);
 		}
@@ -94,6 +107,8 @@ void InputEventSystem::ProcessEvents()
 				m_clients[(*joyIter).second]->ReceiveAndHandleJoystickEvent((*joyIter).first);
 		}
 	}
+
+	return true;
 }
 
 InputEventSystem* InputEventSystem::GetInstance()

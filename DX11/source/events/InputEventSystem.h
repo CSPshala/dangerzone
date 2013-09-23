@@ -46,15 +46,14 @@ public:
 	void SendEvent(int event, int clientNumber = 0);
 	void SendJoystickEvent(JoystickInfo eventData, int clientNumber = 0);
 
-	void ProcessEvents();
+	bool ProcessEvents();
 
 	/********** Public Accessors ************/	
 
 	/********** Public Mutators  ************/	
 
 	/********** Public Event Enum *****************/
-	enum Events {ATTACKOFF = -6, JUMPOFF, RIGHTOFF, LEFTOFF, DOWNOFF, UPOFF,
-		INVALID, UP ,DOWN,LEFT,RIGHT,JUMP,ATTACK};
+	enum Events {INVALID = 0, UP ,DOWN,LEFT,RIGHT,JUMP,ATTACK,QUIT,LAST_EVENT};
 	
 	static const int NUM_ALLOWED_PLAYERS;	
 

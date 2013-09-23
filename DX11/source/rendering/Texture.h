@@ -32,17 +32,21 @@ public:
 	~Texture();
 
 	/********** Public Utility Functions ************/
-	bool Initialize(const wchar_t* fileName);
+	bool Initialize(const char* fileName);
 	void Shutdown();
 
 	/********** Public Accessors ************/
 	ID3D11ShaderResourceView* GetTexture();
+	int	GetWidth();
+	int GetHeight();
 
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
-	ID3D11ShaderResourceView* mTexture;
+	ID3D11ShaderResourceView* m_texture;
+	int m_width;
+	int m_height;
 
 	/********** Private Accessors ************/
 

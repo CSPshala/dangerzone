@@ -28,7 +28,7 @@ public:
 
 
 	/********** Public Utility Functions ************/
-	virtual void Enter(FRenderer* theRenderer) = 0;
+	virtual void Enter() = 0;
 	virtual void Exit() = 0;
 
 	virtual void Input() = 0;

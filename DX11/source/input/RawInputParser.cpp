@@ -223,6 +223,8 @@ pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, s
 		eventAndKey.first = static_cast<int>(InputEventSystem::JUMP);
 	else if(command == "attack")
 		eventAndKey.first = static_cast<int>(InputEventSystem::ATTACK);
+	else if(command == "quit")
+		eventAndKey.first = static_cast<int>(InputEventSystem::QUIT);
 
 
 	// Keycode for command

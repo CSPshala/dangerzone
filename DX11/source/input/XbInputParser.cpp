@@ -211,6 +211,8 @@ void XbInputParser::LoadControls()
 						eventAndKey.second.first = static_cast<int>(InputEventSystem::JUMP);
 					else if(command == "attack")
 						eventAndKey.second.first = static_cast<int>(InputEventSystem::ATTACK);
+					else if(command == "quit")
+						eventAndKey.second.first = static_cast<int>(InputEventSystem::QUIT);
 
 					eventAndKey.second.second = m_controlStrings[x].second;
 					eventAndKey.first = false;

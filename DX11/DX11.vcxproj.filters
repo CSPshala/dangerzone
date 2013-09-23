@@ -43,6 +43,12 @@
     <Filter Include="Source Files\messaging">
       <UniqueIdentifier>{31df7b4f-0c85-42ff-bf1b-9c1fece08e4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\xml">
+      <UniqueIdentifier>{ebe62f62-16b2-4d2f-832b-3e5c05944360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{892ed442-c5da-4d11-a0fd-ce960010226f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,9 +78,6 @@
     <ClInclude Include="source\rendering\D3D.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\Model.h">
-      <Filter>Source Files\rendering</Filter>
-    </ClInclude>
     <ClInclude Include="source\rendering\Camera.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
@@ -84,17 +87,8 @@
     <ClInclude Include="source\gamestates\StateMainGame.h">
       <Filter>Source Files\gamestates</Filter>
     </ClInclude>
-    <ClInclude Include="source\particles\Emitter.h">
-      <Filter>Source Files\particles</Filter>
-    </ClInclude>
-    <ClInclude Include="source\particles\Particle.h">
-      <Filter>Source Files\particles</Filter>
-    </ClInclude>
     <ClInclude Include="source\rendering\Texture.h">
       <Filter>Source Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\objects\TestObject.h">
-      <Filter>Source Files\objects</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\render contexts\DiffuseContext.h">
       <Filter>Source Files\rendering\contexts</Filter>
@@ -102,26 +96,11 @@
     <ClInclude Include="source\rendering\render contexts\IRenderContext.h">
       <Filter>Source Files\rendering\contexts</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\render contexts\ParticleContext.h">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\render contexts\TestModelContext.h">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClInclude>
     <ClInclude Include="source\rendering\shaders\DiffuseShader.h">
-      <Filter>Source Files\rendering\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\shaders\FlatShader.h">
       <Filter>Source Files\rendering\shaders</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\shaders\IShader.h">
       <Filter>Source Files\rendering\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\shaders\ParticleShader.h">
-      <Filter>Source Files\rendering\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="source\core\RawInputParser.h">
-      <Filter>Source Files\core</Filter>
     </ClInclude>
     <ClInclude Include="source\events\InputEventSystem.h">
       <Filter>Source Files\events</Filter>
@@ -129,16 +108,7 @@
     <ClInclude Include="source\events\IInputEventProcessor.h">
       <Filter>Source Files\events</Filter>
     </ClInclude>
-    <ClInclude Include="source\core\XbInputParser.h">
-      <Filter>Source Files\core</Filter>
-    </ClInclude>
-    <ClInclude Include="source\core\XboxController.h">
-      <Filter>Source Files\core</Filter>
-    </ClInclude>
     <ClInclude Include="source\components\IComponent.h">
-      <Filter>Source Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="source\components\ComponentFactory.h">
       <Filter>Source Files\components</Filter>
     </ClInclude>
     <ClInclude Include="source\components\Entity.h">
@@ -149,6 +119,36 @@
     </ClInclude>
     <ClInclude Include="source\components\CMessages.h">
       <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\xml\pugiconfig.hpp">
+      <Filter>Source Files\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="source\xml\pugixml.hpp">
+      <Filter>Source Files\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="source\input\RawInputParser.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="source\input\XbInputParser.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="source\input\XboxController.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\LevelLoader.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\RenderComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\PlayerControllerComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\TextureManager.h">
+      <Filter>Source Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="source\rendering\render contexts\ContextManager.h">
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +170,6 @@
     <ClCompile Include="source\rendering\D3D.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\Model.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
     <ClCompile Include="source\rendering\Camera.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
@@ -182,17 +179,8 @@
     <ClCompile Include="source\gamestates\StateMainGame.cpp">
       <Filter>Source Files\gamestates</Filter>
     </ClCompile>
-    <ClCompile Include="source\particles\Emitter.cpp">
-      <Filter>Source Files\particles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\particles\Particle.cpp">
-      <Filter>Source Files\particles</Filter>
-    </ClCompile>
     <ClCompile Include="source\rendering\Texture.cpp">
       <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\objects\TestObject.cpp">
-      <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp">
       <Filter>Source Files\rendering\contexts</Filter>
@@ -200,26 +188,11 @@
     <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp">
       <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\render contexts\ParticleContext.cpp">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\render contexts\TestModelContext.cpp">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClCompile>
     <ClCompile Include="source\rendering\shaders\DiffuseShader.cpp">
-      <Filter>Source Files\rendering\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\shaders\FlatShader.cpp">
       <Filter>Source Files\rendering\shaders</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\shaders\IShader.cpp">
       <Filter>Source Files\rendering\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\shaders\ParticleShader.cpp">
-      <Filter>Source Files\rendering\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="source\core\RawInputParser.cpp">
-      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="source\events\InputEventSystem.cpp">
       <Filter>Source Files\events</Filter>
@@ -227,16 +200,7 @@
     <ClCompile Include="source\events\IInputEventProcessor.cpp">
       <Filter>Source Files\events</Filter>
     </ClCompile>
-    <ClCompile Include="source\core\XbInputParser.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\core\XboxController.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
     <ClCompile Include="source\components\IComponent.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="source\components\ComponentFactory.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="source\components\Entity.cpp">
@@ -247,6 +211,33 @@
     </ClCompile>
     <ClCompile Include="source\components\CMessages.cpp">
       <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\xml\pugixml.cpp">
+      <Filter>Source Files\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="source\input\RawInputParser.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="source\input\XbInputParser.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="source\input\XboxController.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\LevelLoader.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\RenderComponent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\PlayerControllerComponent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\TextureManager.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="source\rendering\render contexts\ContextManager.cpp">
+      <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

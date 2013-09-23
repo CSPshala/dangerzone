@@ -14,10 +14,11 @@
 #include "../components/CMessages.h"
 #include "../components/Entity.h"
 #include "../components/IComponent.h"
+#include "LevelLoader.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-WorldManager* WorldManager::m_instance(nullptr);
+
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
@@ -35,41 +36,23 @@ WorldManager::~WorldManager()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-void WorldManager::Initialize()
-{
+bool WorldManager::Initialize()
+{	
+	return true;
 }
 
 void WorldManager::Update(float deltaTime)
 {
 	for(deque<Entity*>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter)
-		(*iter)->UpdateComponents(deltaTime);
+		(*iter)->Update(deltaTime);
 }
 
 void WorldManager::Shutdown()
-{
-	CleanupEntitiesAndComponents();
+{	
+	CleanupEntities();
 }
 
-WorldManager* WorldManager::GetInstance()
-{
-	if(m_instance == nullptr)
-		m_instance = new WorldManager;
-
-	return m_instance;
-}
-
-void WorldManager::DeleteInstance()
-{
-	if(m_instance)
-	{
-		delete m_instance;
-		m_instance = nullptr;
-	}
-}
-////////////////////////////////////////
-//		PRIVATE UTILITY FUNCTIONS
-////////////////////////////////////////
-void WorldManager::CleanupEntitiesAndComponents()
+void WorldManager::CleanupEntities()
 {
 	for(deque<Entity*>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter)
 	{
@@ -79,6 +62,9 @@ void WorldManager::CleanupEntitiesAndComponents()
 	}
 }
 
+////////////////////////////////////////
+//		PRIVATE UTILITY FUNCTIONS
+////////////////////////////////////////
 void WorldManager::KillEntity(Entity* entity)
 {
 	for(deque<Entity*>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter)

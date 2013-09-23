@@ -1,0 +1,4 @@
+<validComponents>
+	<component typeName="player_controller" type="0" />
+	<component typeName="rendering" type="1" />
+</validComponents>

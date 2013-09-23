@@ -31,6 +31,12 @@ Game::~Game()
 ////////////////////////////////////////
 bool Game::Initialize()
 {
+	bool result = true;
+
+	// Events
+	m_InputEventSystem = InputEventSystem::GetInstance();
+	m_Renderer = FRenderer::GetInstance();
+	
 	// Timer operations
 	theTimer.Reset();
 	theTimer.Start();
@@ -38,25 +44,22 @@ bool Game::Initialize()
 	m_dt = 1.0f / 60.0f;
 	m_dt *= 1000;
 	m_frameDeltaTime = 0.0f;
-
 	// Rendering
-	m_Renderer.Initialize();
+	m_Renderer->Initialize();
 	
 	// States
 	m_CurrentState = nullptr;
 
-	m_MainGame = new StateMainGame();
-	ChangeState(m_MainGame);
+	m_MainGame = new StateMainGame("levellist");
+	ChangeState(m_MainGame);	
 
-	// Events
-	m_InputEventSystem = InputEventSystem::GetInstance();
-
-	return true;
+	return result;
 }
 
 bool Game::Main()
 {
-	Input();
+	if(!Input())
+		return false;
 	Update();
 	Render();
 
@@ -65,7 +68,8 @@ bool Game::Main()
 
 bool Game::Shutdown()
 {
-	m_Renderer.Shutdown();
+	m_Renderer->Shutdown();
+	m_InputEventSystem->DeleteInstance();
 
 	return true;
 }
@@ -74,18 +78,19 @@ bool Game::Shutdown()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-void Game::Input()
+bool Game::Input()
 {
 	// Current state input
 	m_CurrentState->Input();
+	// Process any events
+	if(!m_InputEventSystem->ProcessEvents())
+		return false;
 
+	return true;
 }
 
 void Game::Update()
 {
-	// Process any events
-	m_InputEventSystem->ProcessEvents();
-
 	// MIGHT need Semi-fixed timestamp updates for game physics later removed some code here
 	// that WAS trying to utilize this, but it was too early and dumb rite now
 	// REF: http://gafferongames.com/game-physics/fix-your-timestep/
@@ -97,6 +102,8 @@ void Game::Update()
 
 void Game::Render()
 {
+	m_Renderer->RenderStart();
+	m_Renderer->RenderEnd();
 	// Current state render
 	m_CurrentState->Render();
 }
@@ -111,7 +118,7 @@ void Game::ChangeState(IGamestate* in)
 	m_CurrentState = in;
 
 	if(m_CurrentState) {
-		m_CurrentState->Enter(&m_Renderer); }		
+		m_CurrentState->Enter(); }		
 }
 
 ////////////////////////////////////////

@@ -10,6 +10,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "StateMainGame.h"
+#include "../rendering/ForwardRenderer.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -18,7 +19,8 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-StateMainGame::StateMainGame()
+StateMainGame::StateMainGame(std::string levelListFilename) : m_Camera(nullptr),
+	m_levelListFilename(levelListFilename)
 {
 }
 
@@ -29,20 +31,23 @@ StateMainGame::~StateMainGame()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-void StateMainGame::Enter(FRenderer* theRenderer)
-{
-	// Set renderer
-	m_Renderer = theRenderer;
+void StateMainGame::Enter()
+{	
 	// Set camera
-	m_Camera = theRenderer->GetCamera();
+	m_Camera = FRenderer::GetInstance()->GetCamera();
 	// Move delta cleared out
 	m_MoveDelta = D3DXVECTOR3(0,0,0);
 	m_MouseDelta = D3DXVECTOR3(0,0,0);
+	//Start up worldmanager then loader to populate it
+	m_worldManager.Initialize();
+	m_levelLoader.Initialize(m_levelListFilename,&m_worldManager);
+	m_levelLoader.NextLevel();	
 }
 
 void StateMainGame::Exit()
 {	
-	m_Renderer = nullptr;
+	m_levelLoader.Shutdown();
+	m_worldManager.Shutdown();
 }
 
 void StateMainGame::Input()
@@ -52,18 +57,13 @@ void StateMainGame::Input()
 
 void StateMainGame::Update(float deltaTime)
 {
-	m_testSprite.Update(deltaTime);
+	m_worldManager.Update(deltaTime);	
 
 	m_Camera->Render();
 }
 
 void StateMainGame::Render()
-{
-	m_Renderer->RenderStart();
-
-	m_testSprite.Render();
-	
-	m_Renderer->RenderEnd();
+{	
 }
 
 ////////////////////////////////////////

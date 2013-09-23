@@ -29,7 +29,7 @@ class DiffuseShader : public IShader
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
 
-	DiffuseShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName, wchar_t* textureFilename);
+	DiffuseShader(char* vertexShaderName,char* pixelShaderName,char* textureFilename);
 	~DiffuseShader();
 
 	/********** Public Utility Functions ************/
@@ -45,19 +45,19 @@ private:
 	/********** Private Members ************/
 	ID3D11SamplerState* m_sampleState;
 	Texture* m_texture;
-	wstring  m_textureFileName;
+	string  m_textureFileName;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	virtual bool InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename, const WCHAR* gsFilename = nullptr);
+	virtual bool InitializeShader(ID3D11Device* device, HWND hwnd, const char* vsFilename, const char* psFilename, const char* gsFilename = nullptr);
 	virtual void ShutdownShader();	
 	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
-	virtual void RenderShader(int indexCount);
-	bool LoadTexture(const wchar_t* textureFilename);
+	virtual void RenderShader(int indexCount,int offset);
+	bool LoadTexture(string textureFilename);
 	void ReleaseTexture();
 };
 #endif

@@ -21,6 +21,7 @@ using namespace std;
 class IComponent;
 class Entity;
 class IMessage;
+class LevelLoader;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -29,29 +30,23 @@ class IMessage;
 class WorldManager
 {
 public:
-	
-
+	/********** Construct / Deconstruct / OP Overloads ************/
+	WorldManager();
+	~WorldManager();
 	/********** Public Utility Functions ************/
-	static WorldManager* GetInstance();
-	static void DeleteInstance();
-	void Initialize();
+	bool Initialize();
 	void Update(float deltaTime);
 	void Shutdown();
+	/** WARNING do not call this unless you want ALL objects in world gone **/
+	void CleanupEntities();
 	/********** Public Accessors ************/
 	deque<IComponent*>& GetComponentCategory(int componentCategory);
 
 	/********** Public Mutators  ************/	
-	void AddEntity(Entity* entity);
+	void AddEntity(Entity* entity);	
 
 private:
-	/********** Construct / Deconstruct / OP Overloads ************/
-	WorldManager();
-	~WorldManager();
-	WorldManager(const WorldManager&);
-	WorldManager& operator=(const WorldManager&);
-	/********** Private Members ************/
-	// Singleton instanace
-	static WorldManager* m_instance;
+	/********** Private Members ************/	
 
 	// List of entities
 	deque<Entity*> m_entities;
@@ -62,8 +57,7 @@ private:
 
 	/********** Private Mutators ************/
 
-	/********** Private Utility Functions ************/
-	void CleanupEntitiesAndComponents();
+	/********** Private Utility Functions ************/	
 	void KillEntity(Entity* entity);
 	void KillEntity(int entityId);
 };

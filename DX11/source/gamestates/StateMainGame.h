@@ -12,7 +12,8 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IGamestate.h"
-#include "../objects/TestObject.h"
+#include "../core/WorldManager.h"
+#include "../core/LevelLoader.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -28,11 +29,11 @@ class StateMainGame : public IGamestate
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	StateMainGame();
+	StateMainGame(std::string levelListFilename);
 	~StateMainGame();
 
 	/********** Public Utility Functions ************/
-	void Enter(FRenderer* theRenderer);
+	void Enter();
 	void Exit(); 
 
 	void Input();
@@ -45,18 +46,20 @@ public:
 
 private:
 	/********** Private Members ************/
-	
-	// Ease of access to renderer
-	FRenderer*	m_Renderer;
 	// Ease of access to camera
 	Camera*		m_Camera;
-	// Test sprite
-	TestObject  m_testSprite;
+
+	// Filename of level file
+	std::string m_levelListFilename;
 
 	// Movement delta
 	D3DXVECTOR3 m_MoveDelta;
 	D3DXVECTOR3 m_MouseDelta;
 
+	// World Manager for this state's current level
+	WorldManager m_worldManager;
+	// Level loader that populates world manager's levels
+	LevelLoader m_levelLoader;
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/

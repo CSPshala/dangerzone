@@ -10,6 +10,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "DiffuseShader.h"
+#include "../TextureManager.h"
 #include "../../Globals.h"
 ////////////////////////////////////////
 //				MISC
@@ -18,7 +19,7 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-DiffuseShader::DiffuseShader(wchar_t* vertexShaderName, wchar_t* pixelShaderName, wchar_t* textureFilename) : IShader(vertexShaderName,pixelShaderName),
+DiffuseShader::DiffuseShader(char* vertexShaderName, char* pixelShaderName, char* textureFilename) : IShader(vertexShaderName,pixelShaderName),
 	m_sampleState(nullptr), m_textureFileName(textureFilename)
 {
 }
@@ -34,7 +35,7 @@ DiffuseShader::~DiffuseShader()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHAR* vsFilename, const WCHAR* psFilename,  const WCHAR* gsFilename)
+bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char* vsFilename, const char* psFilename,  const char* gsFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -50,7 +51,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHA
 	pixelShaderBuffer = 0;
 
 	// Compile the vertex shader code.
-	result = D3DX11CompileFromFile(vsFilename, NULL, NULL, "DiffuseVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
+	result = D3DX11CompileFromFileA(vsFilename, NULL, NULL, "DiffuseVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
 				       &vertexShaderBuffer, &errorMessage, NULL);
 	if(FAILED(result))
 	{
@@ -62,14 +63,14 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHA
 		// If there was nothing in the error message then it simply could not find the shader file itself.
 		else
 		{
-			MessageBox(hwnd, vsFilename, L"Missing Shader File", MB_OK);
+			LOG("Missing shader file: " << vsFilename);
 		}
 
 		return false;
 	}
 
 	// Compile the pixel shader code.
-	result = D3DX11CompileFromFile(psFilename, NULL, NULL, "DiffusePixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
+	result = D3DX11CompileFromFileA(psFilename, NULL, NULL, "DiffusePixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, 
 				       &pixelShaderBuffer, &errorMessage, NULL);
 	if(FAILED(result))
 	{
@@ -81,7 +82,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHA
 		// If there was  nothing in the error message then it simply could not find the file itself.
 		else
 		{
-			MessageBox(hwnd, psFilename, L"Missing Shader File", MB_OK);
+			LOG("Missing shader file: " << psFilename);
 		}
 
 		return false;
@@ -153,7 +154,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const WCHA
 	}
 
 	// Load texture
-	if(!LoadTexture(m_textureFileName.c_str()))
+	if(!LoadTexture(m_textureFileName))
 		return false;
 
 	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
@@ -188,7 +189,7 @@ bool DiffuseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DX
 	return true;		
 }
 
-void DiffuseShader::RenderShader(int indexCount)
+void DiffuseShader::RenderShader(int indexCount,int offset)
 {
 	// Set the vertex input layout.
 	ApplicationSettings::g_DeviceContext->IASetInputLayout(m_layout);
@@ -204,29 +205,21 @@ void DiffuseShader::RenderShader(int indexCount)
 	ApplicationSettings::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
 
 	// Render the triangle.
-	ApplicationSettings::g_DeviceContext->DrawIndexed(indexCount, 0, 0);
+	ApplicationSettings::g_DeviceContext->DrawIndexed(indexCount, offset * 6, 0);
 }
 
-bool DiffuseShader::LoadTexture(const wchar_t* textureFilename)
+bool DiffuseShader::LoadTexture(string textureFilename)
 {
-	m_texture = new Texture;
-	if(!m_texture)
-		return false;
+	m_texture = TextureManager::GetInstance()->GetTexture(textureFilename);
 
-	if(!m_texture->Initialize(textureFilename))
-		return false;
+	if(!m_texture)
+		return false;	
 
 	return true;
 }
 
 void DiffuseShader::ReleaseTexture()
-{
-	if(m_texture)
-	{
-		m_texture->Shutdown();
-		delete m_texture;
-		m_texture = nullptr;
-	}
+{	
 }
 
 ////////////////////////////////////////

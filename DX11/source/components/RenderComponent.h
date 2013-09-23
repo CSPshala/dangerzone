@@ -1,66 +1,57 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"TestModelContext.h"
+//	File Name	:	"RenderComponent.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Render context for hardcoded test model
+//	Purpose		:	Component to handle an entity's rendering
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _TESTMODELCONTEXT_H
-#define _TESTMODELCONTEXT_H
+#ifndef _RENDERCOMPONENT_H
+#define _RENDERCOMPONENT_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "IRenderContext.h"
-#include "../shaders/FlatShader.h"
-
+#include "IComponent.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-
+class Texture;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
 
 
-class TestModelContext : public IRenderContext
+class RenderComponent : public IComponent
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	TestModelContext();
-	~TestModelContext();
-
+	/** Component typbe MUST be set at construction 
+	    based on data driven component type ID from LevelLoader */
+	RenderComponent(int componentType, int componentID = -1);
+	~RenderComponent();
 	/********** Public Utility Functions ************/
-	bool Initialize(wchar_t* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);	
-	void Shutdown();	
-	void RenderBuffers();	
-
+	virtual void Update(float deltaTime);
+	virtual void ReceiveMessage(IMessage* message);	
+	virtual bool LoadComponentAttributes(xml_node& component);
 	/********** Public Accessors ************/
-	int GetIndexCount();
-
-	/********** Public Mutators  ************/	
+	virtual string getComponentName();
+	Texture* getTexture();
+	int getLayer();
+	int getLayer() const;
+	/********** Public Mutators  ************/
+	void setLayer(int layer);
 
 private:
 	/********** Private Members ************/
-	struct VertexType
-	{
-		D3DXVECTOR3 position;
-		D3DXVECTOR4 color;
-	};
-
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
-	int m_vertexCount, m_indexCount;
-
-	// Shaders
-	FlatShader* m_FlatShade;
+	static const string RENDERING_COMPONENT_NAME;
+	Texture* m_texture;
+	int m_layer;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-	bool InitializeBuffers();
-	void ShutdownBuffers();
-	
+
 };
 #endif

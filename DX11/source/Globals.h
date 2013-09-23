@@ -6,6 +6,7 @@
 
 #include <tchar.h>
 #include <iostream>
+#include <sstream>
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
@@ -13,7 +14,12 @@
 #pragma comment(lib, "d3dx10.lib")
 
 #ifdef _DEBUG
-#define LOG(x) std::cout << x << std::endl
+class DEBUGLOG
+{
+public:
+static std::stringstream G_DEBUGLOGSTREAM;
+};
+#define LOG(x) DEBUGLOG::G_DEBUGLOGSTREAM << x << "\n"; std::cout << x << "\n"
 #else
 #define LOG(x)
 #endif
@@ -46,6 +52,7 @@ public:
 	static const bool  g_VSync;
 	static const float g_ScreenFar; 
 	static const float g_ScreenNear;
+	static const int   g_MaxRenderComponents;
 	// Crucial rendering globals
 	static ID3D11Device* g_Device;
 	static ID3D11DeviceContext* g_DeviceContext;
@@ -58,7 +65,7 @@ namespace ENUMS
 {
 	// Add enums here for created components
 	namespace COMPONENTS {
-		enum { PLAYER_CONTROLLER = 0, RENDERING, INVALID_COMPONENT };
+		enum {PLAYER_CONTROLLER = 0, RENDERING, INVALID_COMPONENT};
 	};
 };
 

@@ -1,10 +1,12 @@
 // DX11.cpp : Defines the entry point for the application.
 
 // TODO: reference additional headers your program requires here
+#include "source/Globals.h"
+#include <fstream>
 #include "DX11.h"
 #include "source/core/Game.h"
-#include "source/core/RawInputParser.h"
-#include "source/core/XbInputParser.h"
+#include "source/input/RawInputParser.h"
+#include "source/input/XbInputParser.h"
 
 #ifdef _DEBUG
 #pragma comment(linker, "/SUBSYSTEM:Console")
@@ -37,18 +39,30 @@ XbInputParser g_XbInputParser;
 int main(int argc, char* argv[])
 {
 	srand(time_t(0));
-	std::cout << "Running " << GetCommandLine() << " in Debug Mode\n\n";
-	std::cout << "Debug Log:\n------------\n\n";
-	std::cout << "``_```_``````_`_````````__````````__`````````_`````_`\n"
-				<< "`|`|`|`|`___|`|`|`___```\\`\\``````/`/__``_`__|`|`__|`|\n"
-				<< "`|`|_|`|/`_`\\`|`|/`_`\\```\\`\\`/\\`/`/`_`\\|`'__|`|/`_``|\n"
-				<< "`|``_``|``__/`|`|`(_)`|```\\`V``V`/`(_)`|`|``|`|`(_|`|\n"
-				<< "`|_|`|_|\\___|_|_|\\___/`````\\_/\\_/`\\___/|_|``|_|\\__,_|\n"
-				<< "`````````````````````````````````````````````````````\n";
+	std::cout <<  "Running " << GetCommandLine() << " in Debug Mode\n\n";
+	std::cout <<  "Debug Log:\n------------\n\n";
+	std::cout <<  "``_```_``````_`_````````__````````__`````````_`````_`\n"
+			   << "`|`|`|`|`___|`|`|`___```\\`\\``````/`/__``_`__|`|`__|`|\n"
+			   << "`|`|_|`|/`_`\\`|`|/`_`\\```\\`\\`/\\`/`/`_`\\|`'__|`|/`_``|\n"
+			   << "`|``_``|``__/`|`|`(_)`|```\\`V``V`/`(_)`|`|``|`|`(_|`|\n"
+			   << "`|_|`|_|\\___|_|_|\\___/`````\\_/\\_/`\\___/|_|``|_|\\__,_|\n"
+			   << "`````````````````````````````````````````````````````\n";
+
+	LOG("Win Main Start...\n");
 
 	_tWinMain(GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOWDEFAULT);
 
 	LOG("Main finished.\n");
+
+#ifdef _DEBUG
+	// Write debug log with accumulated stringstream
+	std::fstream logFile("DEBUGLOG.LOG", ios::out);
+	if(logFile.is_open())
+	{
+		logFile << DEBUGLOG::G_DEBUGLOGSTREAM.str();
+	}
+	logFile.close();
+#endif
 	return 0;
 }
 
@@ -106,8 +120,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 		g_XbInputParser.ProcessInput();
 
-		theGame.Main();
-
+		if(!theGame.Main())
+			break;
 	}
 
 	// Cleanup game
