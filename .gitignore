@@ -14,3 +14,4 @@ Debug
 /DX11/resource/shaders/colors.vs-error.txt
 
 Release
+/DX11/DEBUGLOG.LOG
