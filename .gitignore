@@ -12,3 +12,5 @@ Debug
 /DX11/resource/shaders/billboard.gs-error.txt
 /DX11/resource/shaders/billboard.vs-error.txt
 /DX11/resource/shaders/colors.vs-error.txt
+
+Release
