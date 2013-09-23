@@ -15,3 +15,4 @@ Debug
 
 Release
 /DX11/DEBUGLOG.LOG
+/DX11/vld.log
