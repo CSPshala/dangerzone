@@ -48,7 +48,7 @@ bool RenderComponent::LoadComponentAttributes(xml_node& component)
 	m_texture = TextureManager::GetInstance()->GetTexture(component.attribute("texture").as_string());
 	m_layer = component.attribute("layer").as_int();
 
-	getParentEntity()->SetWidth(m_texture->GetHeight());
+	getParentEntity()->SetWidth(m_texture->GetWidth());
 	getParentEntity()->SetHeight(m_texture->GetHeight());
 	
 	return true;
@@ -63,6 +63,11 @@ bool RenderComponent::LoadComponentAttributes(xml_node& component)
 string RenderComponent::getComponentName()
 {
 	return RENDERING_COMPONENT_NAME;
+}
+
+Texture* RenderComponent::getTexture() const
+{
+	return m_texture;
 }
 
 Texture* RenderComponent::getTexture()

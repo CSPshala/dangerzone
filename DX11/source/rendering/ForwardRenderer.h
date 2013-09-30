@@ -62,6 +62,16 @@ private:
 	public:
 		bool operator() (const RenderComponent* e1, const RenderComponent* e2) const
 		{
+			// If layers are same and pointer to texture address is lower (cause reasons)
+			// trying to order same texture components together
+			if(e1->getLayer() == e2->getLayer())
+			{
+				if(e1->getTexture() < e2->getTexture())
+					return true;
+				else
+					return false;
+			}		
+			// If not, compare layers
 			return e1->getLayer() < e2->getLayer();
 		}
 	};
@@ -78,6 +88,7 @@ private:
 
 	// Contexts
 	DiffuseContext* m_diffuseContext;
+	// Vector of textures for diffuse context
 	// Staging priority queue for render components
 	priority_queue<RenderComponent*,vector<RenderComponent*>,layerCompare> m_renderQueue;
 

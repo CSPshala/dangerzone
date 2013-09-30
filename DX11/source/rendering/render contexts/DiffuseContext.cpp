@@ -21,8 +21,7 @@ const int DiffuseContext::QUAD_VERT_COUNT(6);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-DiffuseContext::DiffuseContext() : m_vertexInfo(nullptr), m_nextVertexInfoIndex(0), m_bitmapWidth(-1), 
-	m_bitmapHeight(-1), m_prevPosX(0), m_prevPosY(0), m_diffuseShade(nullptr)
+DiffuseContext::DiffuseContext() : m_vertexInfo(nullptr), m_diffuseShade(nullptr)
 {
 	m_vertexInfo = new bitmapVertex[QUAD_VERT_COUNT * ApplicationSettings::g_MaxRenderComponents];	
 }
@@ -39,12 +38,9 @@ DiffuseContext::~DiffuseContext()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool DiffuseContext::Initialize(char* textureFilename, int bitmapWidth, int bitmapHeight)
+bool DiffuseContext::Initialize()
 {
 	bool result;
-
-	m_bitmapWidth = bitmapWidth;
-	m_bitmapHeight = bitmapHeight;
 
 	result = InitializeBuffers();
 	if(!result)
@@ -54,7 +50,7 @@ bool DiffuseContext::Initialize(char* textureFilename, int bitmapWidth, int bitm
 	}
 
 	// Create the color shader object.
-	m_diffuseShade = new DiffuseShader("diffuse","diffuse",textureFilename);
+	m_diffuseShade = new DiffuseShader("diffuse","diffuse");
 	if(!m_diffuseShade)
 	{
 		return false;
@@ -153,9 +149,6 @@ bool DiffuseContext::InitializeBuffers()
 
 bool DiffuseContext::UpdateBuffers()
 {
-	// If we've not really moved much, don't update
-	//if(G_FLOAT_EPSILON(posX,m_prevPosX) && G_FLOAT_EPSILON(posY,m_prevPosY))
-		//return true;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	bitmapVertex* verticesPtr;	
 
@@ -172,10 +165,10 @@ bool DiffuseContext::UpdateBuffers()
 	return true;
 }
 
-void DiffuseContext::RenderBuffers(unsigned int bufferIndex, unsigned int numberToRender)
+void DiffuseContext::RenderBuffers()
 {
 	unsigned int stride = sizeof(bitmapVertex);
-	unsigned int offset = sizeof(bitmapVertex) * bufferIndex;
+	unsigned int offset = 0;
 
 	// Matrices for rendering
 	D3DXMATRIX viewMatrix, orthoMatrix, worldMatrix;
@@ -193,7 +186,7 @@ void DiffuseContext::RenderBuffers(unsigned int bufferIndex, unsigned int number
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	ApplicationSettings::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_diffuseShade->Render(numberToRender * QUAD_VERT_COUNT, bufferIndex);
+	m_diffuseShade->Render();
 
 	m_entityCount = 0;
 }
@@ -201,6 +194,11 @@ void DiffuseContext::RenderBuffers(unsigned int bufferIndex, unsigned int number
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
+DiffuseShader* DiffuseContext::GetShader()
+{
+	return m_diffuseShade;
+}
+
 void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponent* component)
 {
 	float left,right,top,bottom;

@@ -36,6 +36,7 @@ public:
 	/********** Public Accessors ************/
 	virtual string getComponentName();
 	Texture* getTexture();
+	Texture* getTexture() const;
 	int getLayer();
 	int getLayer() const;
 	/********** Public Mutators  ************/

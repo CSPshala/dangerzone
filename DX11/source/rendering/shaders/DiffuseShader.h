@@ -14,6 +14,7 @@
 #include "IShader.h"
 #include "../Texture.h"
 #include <string>
+#include <vector>
 using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -28,24 +29,21 @@ class DiffuseShader : public IShader
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-
-	DiffuseShader(char* vertexShaderName,char* pixelShaderName,char* textureFilename);
+	DiffuseShader(char* vertexShaderName,char* pixelShaderName);
 	~DiffuseShader();
 
 	/********** Public Utility Functions ************/
+	void AddTextureAndCountPair(pair<Texture*,int> add);
 
-	/********** Public Accessors ************/
-	ID3D11ShaderResourceView* GetTexture();
+	/********** Public Accessors ************/	
 
 	/********** Public Mutators  ************/	
 
 private:
-
-
 	/********** Private Members ************/
 	ID3D11SamplerState* m_sampleState;
-	Texture* m_texture;
-	string  m_textureFileName;
+	// Textures and # of entities
+	vector<pair<Texture*,int> > m_TextureAndCountPairs;
 
 	/********** Private Accessors ************/
 
@@ -56,8 +54,6 @@ private:
 	virtual void ShutdownShader();	
 	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
-	virtual void RenderShader(int indexCount,int offset);
-	bool LoadTexture(string textureFilename);
-	void ReleaseTexture();
+	virtual void RenderShader();
 };
 #endif

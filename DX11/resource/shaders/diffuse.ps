@@ -22,6 +22,8 @@ float4 DiffusePixelShader(PixelInputType input) : SV_TARGET
 
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColor = shaderTexture.Sample(SampleType, input.tex);
+	clip(textureColor.a < 0.1f ? -1:1);
+	
 	//textureColor = float4(1.0f,1.0f,1.0f,1.0f);
 
     return textureColor;

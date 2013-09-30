@@ -24,7 +24,7 @@ ContextManager* ContextManager::m_instance(nullptr);
 ContextManager::ContextManager()
 {
 	IRenderContext* toAdd = new DiffuseContext;
-	toAdd->Initialize("paperbowser.png",64,64);
+	toAdd->Initialize();
 	m_contextMap["diffuse"] = toAdd;
 }
 

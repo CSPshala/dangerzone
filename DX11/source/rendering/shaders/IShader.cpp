@@ -69,7 +69,7 @@ void IShader::Shutdown()
 	return;
 }
 
-bool IShader::Render(int indexCount,int offset)
+bool IShader::Render()
 {
 	// Set the shader parameters that it will use for rendering.
 	// TODO: Implement
@@ -81,7 +81,7 @@ bool IShader::Render(int indexCount,int offset)
 	}*/
 
 	// Now render the prepared buffers with the shader.
-	RenderShader(indexCount,offset);
+	RenderShader();
 
 	return true;
 }

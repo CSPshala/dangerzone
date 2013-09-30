@@ -124,19 +124,36 @@ void FRenderer::RenderQueue()
 {
 	// Add components to buffer in order based on layer
 	unsigned int size = m_renderQueue.size();
-
+	pair<Texture*,int> pairToAdd(nullptr,0);
 	for(unsigned int i = 0; i < size; ++i)
 	{
+		if(pairToAdd.first == nullptr)
+		{
+			pairToAdd.first = m_renderQueue.top()->getTexture();
+			pairToAdd.second = 1;
+		}
+		else if(pairToAdd.first == m_renderQueue.top()->getTexture())
+		{			
+			pairToAdd.second++;
+		}
+		else
+		{
+			m_diffuseContext->GetShader()->AddTextureAndCountPair(pairToAdd);
+			pairToAdd.first = m_renderQueue.top()->getTexture();
+			pairToAdd.second = 1;
+		}
 		m_diffuseContext->AddRenderCompToCurrentRenderBuffer(m_renderQueue.top());
 		m_renderQueue.pop();
 	}
+	// Add remaining pair
+	m_diffuseContext->GetShader()->AddTextureAndCountPair(pairToAdd);
 
 	m_diffuseContext->UpdateBuffers();
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.2f, 0.2f, 0.0f, 1.0f);
 
-	m_diffuseContext->RenderBuffers(0,size);
+	m_diffuseContext->RenderBuffers();
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();

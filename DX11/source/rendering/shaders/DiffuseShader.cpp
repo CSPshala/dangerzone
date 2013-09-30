@@ -19,8 +19,8 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-DiffuseShader::DiffuseShader(char* vertexShaderName, char* pixelShaderName, char* textureFilename) : IShader(vertexShaderName,pixelShaderName),
-	m_sampleState(nullptr), m_textureFileName(textureFilename)
+DiffuseShader::DiffuseShader(char* vertexShaderName, char* pixelShaderName) : IShader(vertexShaderName,pixelShaderName),
+	m_sampleState(nullptr)
 {
 }
 
@@ -31,6 +31,10 @@ DiffuseShader::~DiffuseShader()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
+void DiffuseShader::AddTextureAndCountPair(pair<Texture*,int> add)
+{
+	m_TextureAndCountPairs.push_back(add);
+}
 
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
@@ -153,10 +157,6 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char
 		return false;
 	}
 
-	// Load texture
-	if(!LoadTexture(m_textureFileName))
-		return false;
-
 	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
 	vertexShaderBuffer->Release();
 	vertexShaderBuffer = 0;
@@ -172,8 +172,6 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char
 
 void DiffuseShader::ShutdownShader()
 {
-	ReleaseTexture();
-
 	if(m_sampleState)
 	{
 		m_sampleState->Release();
@@ -189,7 +187,7 @@ bool DiffuseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DX
 	return true;		
 }
 
-void DiffuseShader::RenderShader(int indexCount,int offset)
+void DiffuseShader::RenderShader()
 {
 	// Set the vertex input layout.
 	ApplicationSettings::g_DeviceContext->IASetInputLayout(m_layout);
@@ -197,38 +195,30 @@ void DiffuseShader::RenderShader(int indexCount,int offset)
 	// Set the vertex and pixel shaders that will be used to render this triangle.
 	ApplicationSettings::g_DeviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	ApplicationSettings::g_DeviceContext->PSSetShader(m_pixelShader, NULL, 0);
-	ApplicationSettings::g_DeviceContext->PSSetSamplers(0,1,&m_sampleState);
+	ApplicationSettings::g_DeviceContext->PSSetSamplers(0,1,&m_sampleState);	
 
-	ID3D11ShaderResourceView* theTex = m_texture->GetTexture();
+	int renderCount = 0;
+	int lastIndex = 0;
+	unsigned int count = m_TextureAndCountPairs.size();
+	pair<Texture*,int>* ptr = (count > 0) ? &m_TextureAndCountPairs.front() : nullptr;
+	for(unsigned int i = 0; i < count; ++i)
+	{
+		ID3D11ShaderResourceView* theTex = ptr[i].first->GetTexture();
+		renderCount = ptr[i].second * 6;
+		// Set texture to sample
+		ApplicationSettings::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
 
-	// Set texture to sample
-	ApplicationSettings::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
+		// Render the sprite
+		ApplicationSettings::g_DeviceContext->DrawIndexed( renderCount, lastIndex, 0);
 
-	// Render the triangle.
-	ApplicationSettings::g_DeviceContext->DrawIndexed(indexCount, offset * 6, 0);
-}
-
-bool DiffuseShader::LoadTexture(string textureFilename)
-{
-	m_texture = TextureManager::GetInstance()->GetTexture(textureFilename);
-
-	if(!m_texture)
-		return false;	
-
-	return true;
-}
-
-void DiffuseShader::ReleaseTexture()
-{	
+		lastIndex += renderCount;
+	}
+	m_TextureAndCountPairs.clear();
 }
 
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
-ID3D11ShaderResourceView* DiffuseShader::GetTexture()
-{
-	return m_texture->GetTexture();
-}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

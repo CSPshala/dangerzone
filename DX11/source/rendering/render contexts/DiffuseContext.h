@@ -14,6 +14,8 @@
 #include "IRenderContext.h"
 #include "../shaders/DiffuseShader.h"
 #include "../Texture.h"
+#include <vector>
+using namespace std;
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -32,31 +34,28 @@ public:
 	~DiffuseContext();
 
 	/********** Public Utility Functions ************/
-	bool Initialize(char* textureFilename = '\0', int bitmapWidth = -1, int bitmapHeight = -1);
+	bool Initialize();
 	bool UpdateBuffers();
-	void RenderBuffers(unsigned int bufferIndex = 0,unsigned int numberToRender = 1);
+	void RenderBuffers();
 	void Shutdown();
 
 	/********** Public Accessors ************/	
+	DiffuseShader* GetShader();
 
 	/********** Public Mutators  ************/
 	void AddRenderCompToCurrentRenderBuffer(RenderComponent* component);
 
 private:
+	static const int QUAD_VERT_COUNT;
 	/********** Private Members ************/
 	struct bitmapVertex
 	{
 		D3DXVECTOR3 position;
 		D3DXVECTOR2 texture;
 	};
-
-	static const int QUAD_VERT_COUNT;
-
-	bitmapVertex* m_vertexInfo;
-
-	int m_nextVertexInfoIndex;
-	int m_bitmapWidth, m_bitmapHeight;
-	float m_prevPosX, m_prevPosY;
+	
+	// Buffer for verticies
+	bitmapVertex* m_vertexInfo;	
 
 	// Shaders
 	DiffuseShader* m_diffuseShade;
