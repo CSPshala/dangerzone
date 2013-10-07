@@ -32,7 +32,9 @@ public:
 	~PlayerControllerComponent();
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
-	virtual void ReceiveMessage(IMessage* message);	
+	virtual void RegisterForMessages();
+	virtual void ReceiveMessage(IMessage* message);
+	virtual void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
 	virtual void ReceiveAndHandleEvent(int event);
 	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo event);

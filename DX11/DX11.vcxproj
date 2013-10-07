@@ -90,9 +90,10 @@
   <ItemGroup>
     <ClInclude Include="DX11.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="source\collision\CollisionQuadTree.h" />
+    <ClInclude Include="source\components\CollisionComponent.h" />
     <ClInclude Include="source\components\Entity.h" />
     <ClInclude Include="source\components\IComponent.h" />
-    <ClInclude Include="source\components\CMessages.h" />
     <ClInclude Include="source\components\PlayerControllerComponent.h" />
     <ClInclude Include="source\components\RenderComponent.h" />
     <ClInclude Include="source\core\CTimer.h" />
@@ -107,6 +108,9 @@
     <ClInclude Include="source\input\RawInputParser.h" />
     <ClInclude Include="source\input\XbInputParser.h" />
     <ClInclude Include="source\input\XboxController.h" />
+    <ClInclude Include="source\messaging\CMessages.h" />
+    <ClInclude Include="source\messaging\IMessageListener.h" />
+    <ClInclude Include="source\messaging\MessageManager.h" />
     <ClInclude Include="source\rendering\Camera.h" />
     <ClInclude Include="source\rendering\D3D.h" />
     <ClInclude Include="source\rendering\ForwardRenderer.h" />
@@ -123,7 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp" />
-    <ClCompile Include="source\components\CMessages.cpp" />
+    <ClCompile Include="source\collision\CollisionQuadTree.cpp" />
+    <ClCompile Include="source\components\CollisionComponent.cpp" />
     <ClCompile Include="source\components\Entity.cpp" />
     <ClCompile Include="source\components\IComponent.cpp" />
     <ClCompile Include="source\components\PlayerControllerComponent.cpp" />
@@ -140,6 +145,9 @@
     <ClCompile Include="source\input\RawInputParser.cpp" />
     <ClCompile Include="source\input\XbInputParser.cpp" />
     <ClCompile Include="source\input\XboxController.cpp" />
+    <ClCompile Include="source\messaging\CMessages.cpp" />
+    <ClCompile Include="source\messaging\IMessageListener.cpp" />
+    <ClCompile Include="source\messaging\MessageManager.cpp" />
     <ClCompile Include="source\rendering\Camera.cpp" />
     <ClCompile Include="source\rendering\D3D.cpp" />
     <ClCompile Include="source\rendering\ForwardRenderer.cpp" />

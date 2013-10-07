@@ -12,6 +12,7 @@
 #include "../Globals.h"
 #include "PlayerControllerComponent.h"
 #include "Entity.h"
+#include "../messaging/MessageManager.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -63,9 +64,18 @@ void PlayerControllerComponent::Update(float deltaTime)
 	getParentEntity()->SetPositionY(posY + velY * deltaTime);
 }
 
+void PlayerControllerComponent::RegisterForMessages()
+{	
+}
+
 void PlayerControllerComponent::ReceiveMessage(IMessage* message)
 {
 }
+
+void PlayerControllerComponent::UnRegisterForMessages()
+{
+}
+
 
 bool PlayerControllerComponent::LoadComponentAttributes(xml_node& component)
 {

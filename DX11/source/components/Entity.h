@@ -36,7 +36,7 @@ public:
 	void AttachComponent(IComponent* component);
 	void RemoveComponent(IComponent* component);
 	void Update(float deltaTime);
-	void ReceiveAndDeliverMessage(IMessage* msg);
+	void SendLocalMessage(IMessage* msg);
 
 	void Shutdown();
 	/********** Public Accessors ************/

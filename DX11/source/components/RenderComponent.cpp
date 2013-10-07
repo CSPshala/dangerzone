@@ -39,7 +39,15 @@ void RenderComponent::Update(float deltaTime)
 	FRenderer::GetInstance()->AddRenderComponentToFrame(this);
 }
 
+void RenderComponent::RegisterForMessages()
+{
+}
+
 void RenderComponent::ReceiveMessage(IMessage* message)
+{
+}
+
+void RenderComponent::UnRegisterForMessages()
 {
 }
 

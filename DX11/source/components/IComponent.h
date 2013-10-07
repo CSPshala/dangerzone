@@ -16,17 +16,18 @@
 using namespace std;
 using namespace pugi;
 
+#include "../messaging/IMessageListener.h"
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class IMessage;
 class Entity;
 
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
 
-class IComponent
+class IComponent : public IMessageListener
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
@@ -34,8 +35,10 @@ public:
 	~IComponent();
 
 	/********** Public Utility Functions ************/
-	virtual void Update(float deltaTime) = 0;
+	virtual void Update(float deltaTime) = 0;	
+	virtual void RegisterForMessages() = 0;
 	virtual void ReceiveMessage(IMessage* message) = 0;
+	virtual void UnRegisterForMessages() = 0;
 	virtual bool LoadComponentAttributes(xml_node& component) = 0;
 
 	/********** Public Accessors ************/	

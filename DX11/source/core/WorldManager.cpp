@@ -11,7 +11,7 @@
 ////////////////////////////////////////
 #include "../Globals.h"
 #include "WorldManager.h"
-#include "../components/CMessages.h"
+#include "../messaging/CMessages.h"
 #include "../components/Entity.h"
 #include "../components/IComponent.h"
 #include "LevelLoader.h"

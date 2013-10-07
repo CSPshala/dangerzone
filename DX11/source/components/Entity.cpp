@@ -12,7 +12,7 @@
 #include "../Globals.h"
 #include "Entity.h"
 #include "IComponent.h"
-#include "CMessages.h"
+#include "../messaging/CMessages.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -57,7 +57,7 @@ void Entity::Update(float deltaTime)
 		(*iter)->Update(deltaTime);	
 }
 
-void Entity::ReceiveAndDeliverMessage(IMessage* msg)
+void Entity::SendLocalMessage(IMessage* msg)
 {
 	for(deque<IComponent*>::iterator iter = m_components.begin(); iter != m_components.end(); ++iter)		
 		(*iter)->ReceiveMessage(msg);
