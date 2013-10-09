@@ -12,6 +12,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include "../Globals.h"
 #include <queue>
 using namespace std;
 
@@ -23,17 +24,6 @@ class CollisionComponent;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-struct rectangle 
-{
-	rectangle();
-	float left;
-	float top;
-	float right;
-	float bottom;
-	float Width();
-	float Height();
-};
-
 
 class CollisionQuadTree : public IMessageListener
 {

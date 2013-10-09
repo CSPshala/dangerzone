@@ -99,25 +99,21 @@ void PlayerControllerComponent::ReceiveAndHandleEvent(int event)
 	{
 	case InputEventSystem::UP:
 		{
-			LOG("Player#: " << m_playerNumber << " UP ");
 			m_inputFlags ^= UP;
 		}
 		break;
 	case InputEventSystem::DOWN:
 		{
-			LOG("Player#: " << m_playerNumber << " DOWN ");
 			m_inputFlags ^= DOWN;
 		}
 		break;
 	case InputEventSystem::LEFT:
 		{
-			LOG("Player#: " << m_playerNumber << " LEFT ");
 			m_inputFlags ^= LEFT;
 		}
 		break;
 	case InputEventSystem::RIGHT:
 		{
-			LOG("Player#: " << m_playerNumber << " RIGHT ");
 			m_inputFlags ^= RIGHT;
 		}
 		break;

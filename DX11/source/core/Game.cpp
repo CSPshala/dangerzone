@@ -33,9 +33,10 @@ bool Game::Initialize()
 {
 	bool result = true;
 
-	// Events
+	// Getting singletons for easy access
 	m_InputEventSystem = InputEventSystem::GetInstance();
 	m_Renderer = FRenderer::GetInstance();
+    m_MessageManager = MessageManager::GetInstance();
 	
 	// Timer operations
 	theTimer.Reset();
@@ -46,6 +47,8 @@ bool Game::Initialize()
 	m_frameDeltaTime = 0.0f;
 	// Rendering
 	m_Renderer->Initialize();
+    // Messaging
+    m_MessageManager->Initialize();
 	
 	// States
 	m_CurrentState = nullptr;
@@ -72,6 +75,8 @@ bool Game::Shutdown()
 	delete m_MainGame;
 
 	// Shut down all game level singletons
+    m_MessageManager->Shutdown();
+    m_MessageManager->DeleteInstance();
 	m_Renderer->Shutdown();
 	m_Renderer->DeleteInstance();
 	m_InputEventSystem->DeleteInstance();
@@ -98,6 +103,9 @@ void Game::Update()
 	// that WAS trying to utilize this, but it was too early and dumb rite now
 	// REF: http://gafferongames.com/game-physics/fix-your-timestep/
 	m_frameDeltaTime = theTimer.GetElapsedTime();
+
+    // Messages from last frame are processessed
+    m_MessageManager->Update(m_frameDeltaTime);
 
 	// Current state update
 	m_CurrentState->Update(m_frameDeltaTime);

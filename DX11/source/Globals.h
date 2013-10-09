@@ -61,11 +61,22 @@ public:
 	static D3D*		   g_D3D;
 };
 
+struct rectangle 
+{
+	rectangle();
+	float left;
+	float top;
+	float right;
+	float bottom;
+	float Width();
+	float Height();
+};
+
 namespace ENUMS
 {
 	// Add enums here for created components
 	namespace COMPONENTS {
-		enum {PLAYER_CONTROLLER = 0, RENDERING, INVALID_COMPONENT};
+		enum {PLAYER_CONTROLLER = 0, RENDERING, COLLISION, INVALID_COMPONENT};
 	};
 };
 

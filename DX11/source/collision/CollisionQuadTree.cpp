@@ -39,10 +39,6 @@ CollisionQuadTree::~CollisionQuadTree()
 	clearAndCleanupNodes(m_RootNode);
 }
 
-rectangle::rectangle() : left(-1.0f), top(-1.0f), right(-1.0f), bottom(-1.0f)
-{
-}
-
 CollisionQuadTree::Node::Node() : childOne(nullptr), childTwo(nullptr), childThree(nullptr), childFour(nullptr)
 {
 }
@@ -62,16 +58,6 @@ void CollisionQuadTree::ReceiveMessage(IMessage* message)
 
 void CollisionQuadTree::UnRegisterForMessages()
 {
-}
-
-float rectangle::Width()
-{
-	return right - left;
-}
-
-float rectangle::Height()
-{
-	return bottom - top;
 }
 
 ////////////////////////////////////////

@@ -1,0 +1,68 @@
+///////////////////////////////////////////////////////////////////////////
+//	File Name	:	"CollisionComponent.cpp"
+//	
+//	Author Name	:	JC Ricks
+//	
+//	Purpose		:	Handle an entity's collision
+///////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////
+//				INCLUDES
+////////////////////////////////////////
+#include "../Globals.h"
+#include "CollisionComponent.h"
+#include "../messaging/MessageManager.h"
+////////////////////////////////////////
+//				MISC
+////////////////////////////////////////
+const string CollisionComponent::COLLISION_COMPONENT_NAME("collision");
+
+///////////////////////////////////////////////
+//  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
+///////////////////////////////////////////////
+CollisionComponent::CollisionComponent(int componentType, int componentID) : IComponent(componentType, componentID)
+{
+}
+
+CollisionComponent::~CollisionComponent()
+{
+}
+
+////////////////////////////////////////
+//		PUBLIC UTILITY FUNCTIONS
+////////////////////////////////////////
+void CollisionComponent::Update(float deltaTime)
+{
+}
+
+void CollisionComponent::RegisterForMessages()
+{    
+}
+
+void CollisionComponent::ReceiveMessage(IMessage* message)
+{
+}
+
+void CollisionComponent::UnRegisterForMessages()
+{
+}
+
+bool CollisionComponent::LoadComponentAttributes(xml_node& component)
+{
+    return true;
+}
+
+////////////////////////////////////////
+//		PRIVATE UTILITY FUNCTIONS
+////////////////////////////////////////
+
+////////////////////////////////////////
+//	    PUBLIC ACCESSORS / MUTATORS
+////////////////////////////////////////
+string CollisionComponent::getComponentName()
+{
+    return string("blerp");
+}
+////////////////////////////////////////
+//	    PRIVATE ACCESSORS / MUTATORS
+////////////////////////////////////////

@@ -17,6 +17,7 @@
 #include "../gamestates/StateMainGame.h"
 #include "../events/InputEventSystem.h"
 #include "../input/RawInputParser.h"
+#include "../messaging/MessageManager.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -45,21 +46,24 @@ public:
 private:
 	/********** Private Members ************/
 	
-		// Semi-Fixed timestep stuff
-		CTimer theTimer;	
-		float m_t;
-		float m_dt;
-		float m_frameDeltaTime;
+	// Semi-Fixed timestep stuff
+	CTimer theTimer;	
+	float m_t;
+	float m_dt;
+	float m_frameDeltaTime;
 
-		// Rendering
-		FRenderer* m_Renderer;
+	// Rendering
+	FRenderer* m_Renderer;
 
-		// States
-		IGamestate*	   m_CurrentState;
-		StateMainGame* m_MainGame;
+	// States
+	IGamestate*	   m_CurrentState;
+	StateMainGame* m_MainGame;
 
-		// Events
-		InputEventSystem*	m_InputEventSystem;
+	// Events
+	InputEventSystem*	m_InputEventSystem;
+
+    // Messaging
+    MessageManager*     m_MessageManager;
 
 	/********** Private Accessors ************/
 
