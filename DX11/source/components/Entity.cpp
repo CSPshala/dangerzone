@@ -57,10 +57,10 @@ void Entity::Update(float deltaTime)
 		(*iter)->Update(deltaTime);	
 }
 
-void Entity::SendLocalMessage(IMessage* msg)
+void Entity::SendLocalMessage(CompMessage* msg)
 {
 	for(deque<IComponent*>::iterator iter = m_components.begin(); iter != m_components.end(); ++iter)		
-		(*iter)->ReceiveMessage(msg);
+		(*iter)->RecieveComponentMessage(msg);
 }
 
 void Entity::Shutdown()

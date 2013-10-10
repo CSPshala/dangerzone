@@ -11,6 +11,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include "../Globals.h"
 #include "IComponent.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -33,22 +34,35 @@ public:
 	virtual void Update(float deltaTime);
 	void RegisterForMessages();
 	void ReceiveMessage(IMessage* message);
+    void RecieveComponentMessage(CompMessage* message);
 	void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
 	/********** Public Accessors ************/
 	virtual string getComponentName();
+    virtual rectangle getAABB() {return m_AABB;}
+    /** Returns if this entity is dirty this frame (has moved) **/
+    bool isDirty() {return m_dirty;}
 
 	/********** Public Mutators  ************/
+    /** Overload to set if entity is dirty **/
+    void isDirty(bool dirty) {m_dirty = dirty;}
 
 private:
 	/********** Private Members ************/
 	static const string COLLISION_COMPONENT_NAME;
+
+    // Rectangle for this entity's hit box (until multibox is implemented)
+    rectangle m_AABB;
+    // dirty flag to let our quadtree know this entity needs updating
+    bool m_dirty;
+    // Layer we're on (might split c
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
+    void CalculateAABB();
 
 };
 #endif

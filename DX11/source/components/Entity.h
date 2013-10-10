@@ -13,7 +13,7 @@
 ////////////////////////////////////////
 #include <queue>
 using namespace std;
-
+#include "../messaging/CMessages.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -36,7 +36,7 @@ public:
 	void AttachComponent(IComponent* component);
 	void RemoveComponent(IComponent* component);
 	void Update(float deltaTime);
-	void SendLocalMessage(IMessage* msg);
+	void SendLocalMessage(CompMessage* msg);
 
 	void Shutdown();
 	/********** Public Accessors ************/

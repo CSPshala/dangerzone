@@ -3,7 +3,7 @@
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Defines component messages
+//	Purpose		:	Defines IMessages (system messages) and CompMessages (internal component msgs)
 ///////////////////////////////////////////////////////////////////////////
 
 #include "CMessages.h"
@@ -11,12 +11,3 @@
 ///////////////////////////////////////////////////////////////////////////
 //  MESSAGES
 ///////////////////////////////////////////////////////////////////////////
-int RegisterForCollisionMsg::GetType()
-{
-	return REGISTER_FOR_COLLISION;
-}
-
-int UnregisterForCollisionMsg::GetType()
-{
-	return UNREGISTER_FOR_COLLISION;
-}

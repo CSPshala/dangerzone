@@ -31,9 +31,10 @@ public:
 	~RenderComponent();
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
-	void RegisterForMessages();
-	void ReceiveMessage(IMessage* message);
-	void UnRegisterForMessages();
+	virtual void RegisterForMessages();
+	virtual void ReceiveMessage(IMessage* message);
+    virtual void RecieveComponentMessage(CompMessage* message);
+	virtual void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
 	/********** Public Accessors ************/
 	virtual string getComponentName();

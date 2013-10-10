@@ -11,6 +11,7 @@
 ////////////////////////////////////////
 #include "../Globals.h"
 #include "RenderComponent.h"
+#include "../messaging/CMessages.h"
 #include "../rendering/ForwardRenderer.h"
 #include "../rendering/TextureManager.h"
 #include "../rendering/Texture.h"
@@ -44,6 +45,10 @@ void RenderComponent::RegisterForMessages()
 }
 
 void RenderComponent::ReceiveMessage(IMessage* message)
+{
+}
+
+void RenderComponent::RecieveComponentMessage(CompMessage* message)
 {
 }
 

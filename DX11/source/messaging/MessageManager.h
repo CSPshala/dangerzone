@@ -38,8 +38,11 @@ public:
 	bool Initialize();
 	bool Update(float deltaTime);
 	void Shutdown();
+
+    // TODO: Create message factory to handle creation/deletion of msgs
+    void Send(IMessage* msg);
 	/********** Public Accessors ************/
-	void SendMessage(IMessage* msg);
+	
 
 	/********** Public Mutators  ************/	
 

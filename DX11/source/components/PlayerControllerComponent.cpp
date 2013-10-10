@@ -72,6 +72,10 @@ void PlayerControllerComponent::ReceiveMessage(IMessage* message)
 {
 }
 
+void PlayerControllerComponent::RecieveComponentMessage(CompMessage* message)
+{
+}
+
 void PlayerControllerComponent::UnRegisterForMessages()
 {
 }

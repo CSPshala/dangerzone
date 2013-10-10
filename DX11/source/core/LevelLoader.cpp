@@ -41,6 +41,7 @@
 #include "../components/Entity.h"
 #include "../components/PlayerControllerComponent.h"
 #include "../components/RenderComponent.h"
+#include "../components/CollisionComponent.h"
 #include "LevelLoader.h"
 #include "WorldManager.h"
 
@@ -292,6 +293,22 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 		}
 		break;
+    case ENUMS::COMPONENTS::COLLISION:
+        {
+            try
+			{
+                component = new CollisionComponent(ENUMS::COMPONENTS::COLLISION,m_nextComponentID++);
+			}
+			catch(std::invalid_argument& ia)
+			{				
+				LOG("A new entity could not be allocated. invalid_argument caught: " << ia.what());		
+			}
+			catch(std::bad_alloc& ba)
+			{				
+				LOG("A new entity could not be allocated. bad_alloc caught: " << ba.what());		
+			}
+        }
+        break;
 	}
 
 	return component;

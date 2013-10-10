@@ -81,6 +81,12 @@ bool MessageManager::Update(float deltaTime)
 	return true;
 }
 
+void MessageManager::Send(IMessage* msg)
+{
+    m_messagesToSend.push_back(msg);
+}
+
+
 void MessageManager::Shutdown()
 {	
 	while(m_messagesToSend.size() > 0)
