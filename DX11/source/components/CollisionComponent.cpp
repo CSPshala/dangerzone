@@ -65,10 +65,8 @@ void CollisionComponent::UnRegisterForMessages()
 }
 
 bool CollisionComponent::LoadComponentAttributes(xml_node& component)
-{
-    m_texture = TextureManager::GetInstance()->GetTexture(component.attribute("texture").as_string());
+{    
 	m_layer = component.attribute("layer").as_int();
-
     return true;
 }
 

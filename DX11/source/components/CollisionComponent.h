@@ -55,7 +55,8 @@ private:
     rectangle m_AABB;
     // dirty flag to let our quadtree know this entity needs updating
     bool m_dirty;
-    // Layer we're on (might split c
+    // Layer we're on (might split collisions based on this)
+	int m_layer;
 
 	/********** Private Accessors ************/
 
