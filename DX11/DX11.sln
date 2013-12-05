@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DX11", "DX11.vcxproj", "{E6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCEdit", "..\Editor\JCEdit\JCEdit.csproj", "{998C4E6C-5739-4B5E-82B0-C19B57FF2BCF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dx11rend", "dx11rend\dx11rend.vcxproj", "{3A4E1159-B5CA-492E-A9C3-416F6F24E201}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{998C4E6C-5739-4B5E-82B0-C19B57FF2BCF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{998C4E6C-5739-4B5E-82B0-C19B57FF2BCF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{998C4E6C-5739-4B5E-82B0-C19B57FF2BCF}.Release|Win32.ActiveCfg = Release|Any CPU
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Debug|Win32.Build.0 = Debug|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Release|Any CPU.ActiveCfg = Release|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Release|Win32.ActiveCfg = Release|Win32
+		{3A4E1159-B5CA-492E-A9C3-416F6F24E201}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
