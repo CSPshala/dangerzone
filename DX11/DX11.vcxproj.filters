@@ -72,14 +72,8 @@
     <ClInclude Include="source\core\Game.h">
       <Filter>Source Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\ForwardRenderer.h">
-      <Filter>Source Files\rendering</Filter>
-    </ClInclude>
     <ClInclude Include="source\Globals.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\D3D.h">
-      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="source\rendering\Camera.h">
       <Filter>Source Files\rendering</Filter>
@@ -176,14 +170,8 @@
     <ClCompile Include="source\core\Game.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\ForwardRenderer.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
     <ClCompile Include="source\Globals.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\D3D.cpp">
-      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="source\rendering\Camera.cpp">
       <Filter>Source Files\rendering</Filter>

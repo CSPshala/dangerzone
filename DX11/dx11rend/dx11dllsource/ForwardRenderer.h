@@ -11,8 +11,9 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../Globals.h"
-#include "../components/RenderComponent.h"
+#include "Globals.h"
+#include "defines.h"
+#include "components/RenderComponent.h"
 #include <queue>
 using namespace std;
 
@@ -27,7 +28,7 @@ class DiffuseContext;
 ////////////////////////////////////////
 
 
-class FRenderer
+class DX11_API FRenderer
 {
 public:
 	/********** Public Utility Functions ************/

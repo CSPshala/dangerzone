@@ -29,7 +29,12 @@ static std::stringstream G_DEBUGLOGSTREAM;
 #include <d3d11.h>
 #include <d3dx10math.h>
 
-#include "rendering/D3D.h"
+#ifdef DX11_EXPORT
+#include "D3D.h"
+#else
+#include "dx11dllsource/D3D.h"
+#endif
+
 #include "rendering/Camera.h"
 
 class WindowGlobals

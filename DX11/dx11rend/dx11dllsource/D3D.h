@@ -23,6 +23,8 @@
 #include <d3d11.h>
 #include <d3dx10math.h>
 
+#include "defines.h"
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -32,7 +34,7 @@
 ////////////////////////////////////////
 
 
-class D3D
+class DX11_API D3D
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/

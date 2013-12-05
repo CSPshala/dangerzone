@@ -58,6 +58,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>C:\Users\jricks\Documents\GitHub\dangerzone\DX11\dx11rend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,8 +113,6 @@
     <ClInclude Include="source\messaging\IMessageListener.h" />
     <ClInclude Include="source\messaging\MessageManager.h" />
     <ClInclude Include="source\rendering\Camera.h" />
-    <ClInclude Include="source\rendering\D3D.h" />
-    <ClInclude Include="source\rendering\ForwardRenderer.h" />
     <ClInclude Include="source\rendering\render contexts\ContextManager.h" />
     <ClInclude Include="source\rendering\render contexts\DiffuseContext.h" />
     <ClInclude Include="source\rendering\render contexts\IRenderContext.h" />
@@ -149,8 +148,6 @@
     <ClCompile Include="source\messaging\IMessageListener.cpp" />
     <ClCompile Include="source\messaging\MessageManager.cpp" />
     <ClCompile Include="source\rendering\Camera.cpp" />
-    <ClCompile Include="source\rendering\D3D.cpp" />
-    <ClCompile Include="source\rendering\ForwardRenderer.cpp" />
     <ClCompile Include="source\rendering\render contexts\ContextManager.cpp" />
     <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp" />
     <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp" />
@@ -166,6 +163,11 @@
   <ItemGroup>
     <Image Include="DX11.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="dx11rend\dx11rend.vcxproj">
+      <Project>{3a4e1159-b5ca-492e-a9c3-416f6f24e201}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

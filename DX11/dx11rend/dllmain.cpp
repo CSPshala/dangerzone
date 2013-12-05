@@ -1,5 +1,13 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
-#include "stdafx.h"
+#include "targetver.h"
+#include "dllmain.h"
+#include "Globals.h"
+#include "dx11dllsource\D3D.h"
+#include "dx11dllsource\ForwardRenderer.h"
+
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files:
+#include <windows.h>
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -15,7 +23,5 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		break;
 	}
 	return TRUE;
-
-    int i = 0;
 }
 
