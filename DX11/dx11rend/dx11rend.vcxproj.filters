@@ -19,7 +19,7 @@
     <Filter Include="Source Files\shaders">
       <UniqueIdentifier>{08aea80a-ee40-48ea-b8de-3d2fda1944df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\shared">
+    <Filter Include="Source Files\dx11shared">
       <UniqueIdentifier>{1eddb826-69d1-4f05-af59-782319f4b345}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -64,8 +64,8 @@
     <ClInclude Include="dx11dllsource\TextureManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="dx11dllsource\shared\RenderComponentData.h">
-      <Filter>Source Files\shared</Filter>
+    <ClInclude Include="dx11dllsource\dx11shared\RenderComponentData.h">
+      <Filter>Source Files\dx11shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,8 +108,8 @@
     <ClCompile Include="dx11dllsource\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dx11dllsource\shared\RenderComponentData.cpp">
-      <Filter>Source Files\shared</Filter>
+    <ClCompile Include="dx11dllsource\dx11shared\RenderComponentData.cpp">
+      <Filter>Source Files\dx11shared</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

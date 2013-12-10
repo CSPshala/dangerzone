@@ -25,6 +25,7 @@ class RenderComponentData
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
+    RenderComponentData();
 
 	/********** Public Utility Functions ************/
 
@@ -37,18 +38,25 @@ public:
     int getWidth() const;
     int getHeight();
     int getHeight() const;
+    float getPosX();
+    float getPosX() const;
+    float getPosY();
+    float getPosY() const;
 
 	/********** Public Mutators  ************/	
     void setTexture(unsigned int texture);
     void setLayer(int layer);
     void setWidth(int width);
     void setHeight(int height);
+    void setPosX(float x);
+    void setPosY(float y);
 
 private:
 	/********** Private Members ************/
     unsigned int m_texture;
-	int m_layer;
+	int   m_layer;
     int   m_width, m_height;
+    float m_posX, m_posY;
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/

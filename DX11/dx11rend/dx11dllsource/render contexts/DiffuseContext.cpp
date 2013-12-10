@@ -200,16 +200,16 @@ DiffuseShader* DiffuseContext::GetShader()
 	return m_diffuseShade;
 }
 
-void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponent* component)
+void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponentData* component)
 {
 	float left,right,top,bottom;
-	float posX = component->getParentEntity()->GetPositionX();
-	float posY = component->getParentEntity()->GetPositionY();
+    float posX = component->getPosX();
+	float posY = component->getPosY();
 	// Create our RECT in screen coords
     left = static_cast<float>((GraphicsGlobals::g_ResolutionW / 2) * -1) + posX;
-	right = left + static_cast<float>(component->getParentEntity()->GetWidth());
+	right = left + static_cast<float>(component->getWidth());
     top = static_cast<float>((GraphicsGlobals::g_ResolutionH / 2)) - posY;
-	bottom = top - static_cast<float>(component->getParentEntity()->GetHeight());
+	bottom = top - static_cast<float>(component->getHeight());
 
 	int index = m_entityCount * QUAD_VERT_COUNT;
 	

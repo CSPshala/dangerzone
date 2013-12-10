@@ -14,7 +14,7 @@
 #include "defines.h"
 #include "Globals.h"
 
-#include "components/RenderComponent.h"
+#include "dx11shared\RenderComponentData.h"
 #include <queue>
 using namespace std;
 
@@ -41,7 +41,7 @@ public:
 
 	/********** Public Accessors ************/
 	Camera* GetCamera() { return m_Camera; }
-	void AddRenderComponentToFrame(RenderComponent* component);
+	void AddRenderComponentToFrame(RenderComponentData* component);
 
 	/********** Public Mutators  ************/	
 
@@ -61,7 +61,7 @@ private:
 	class layerCompare
 	{
 	public:
-		bool operator() (const RenderComponent* e1, const RenderComponent* e2) const
+		bool operator() (const RenderComponentData* e1, const RenderComponentData* e2) const
 		{
 			// If layers are same and pointer to texture address is lower (cause reasons)
 			// trying to order same texture components together
@@ -91,7 +91,7 @@ private:
 	DiffuseContext* m_diffuseContext;
 	// Vector of textures for diffuse context
 	// Staging priority queue for render components
-	priority_queue<RenderComponent*,vector<RenderComponent*>,layerCompare> m_renderQueue;
+	priority_queue<RenderComponentData*,vector<RenderComponentData*>,layerCompare> m_renderQueue;
 
 	/********** Private Accessors ************/
 

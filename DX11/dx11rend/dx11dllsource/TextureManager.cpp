@@ -9,7 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../Globals.h"
+#include "defines.h"
 #include "TextureManager.h"
 #include "Texture.h"
 

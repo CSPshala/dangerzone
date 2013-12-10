@@ -18,7 +18,10 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-
+RenderComponentData::RenderComponentData() : m_texture(0), m_layer(-1), m_width(0), m_height(0),
+    m_posX(0.0f), m_posY(0.0f)
+{
+}
 
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
@@ -69,6 +72,36 @@ int RenderComponentData::getHeight()
 int RenderComponentData::getHeight() const
 {
     return m_height;
+}
+
+float RenderComponentData::getPosX()
+{
+    return m_posX;
+}
+
+float RenderComponentData::getPosX() const
+{
+    return m_posX;
+}
+
+float RenderComponentData::getPosY()
+{
+    return m_posY;
+}
+
+float RenderComponentData::getPosY() const
+{
+    return m_posY;
+}
+
+void RenderComponentData::setPosX(float x)
+{
+    m_posX = x;
+}
+
+void RenderComponentData::setPosY(float y)
+{
+    m_posY = y;
 }
 
 void RenderComponentData::setTexture(unsigned int texture)

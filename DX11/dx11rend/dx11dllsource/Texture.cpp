@@ -9,7 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../Globals.h"
+#include "defines.h"
 #include "Texture.h"
 #include <string>
 using namespace std;
@@ -44,7 +44,7 @@ bool Texture::Initialize(const char* fileName)
 	filePath += fileName;
 
 	// Load the texture in.
-	if(FAILED(D3DX11CreateShaderResourceViewFromFileA(ApplicationSettings::g_Device, filePath.c_str(), NULL, NULL, &m_texture, NULL)))
+    if(FAILED(D3DX11CreateShaderResourceViewFromFileA(GraphicsGlobals::g_Device, filePath.c_str(), NULL, NULL, &m_texture, NULL)))
 		return false;
 
 	D3DX11_IMAGE_INFO texDesc;

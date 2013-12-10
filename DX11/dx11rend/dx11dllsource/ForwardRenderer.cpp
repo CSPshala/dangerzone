@@ -129,17 +129,18 @@ void FRenderer::RenderQueue()
 	{
 		if(pairToAdd.first == nullptr)
 		{
-			pairToAdd.first = m_renderQueue.top()->getTexture();
+            // MAGIC! (Nah seriously doe it's just derpy DLL crap)
+			pairToAdd.first = reinterpret_cast<Texture*>(m_renderQueue.top()->getTexture());
 			pairToAdd.second = 1;
 		}
-		else if(pairToAdd.first == m_renderQueue.top()->getTexture())
+		else if(pairToAdd.first == reinterpret_cast<Texture*>(m_renderQueue.top()->getTexture()))
 		{			
 			pairToAdd.second++;
 		}
 		else
 		{
 			m_diffuseContext->GetShader()->AddTextureAndCountPair(pairToAdd);
-			pairToAdd.first = m_renderQueue.top()->getTexture();
+			pairToAdd.first = reinterpret_cast<Texture*>(m_renderQueue.top()->getTexture());
 			pairToAdd.second = 1;
 		}
 		m_diffuseContext->AddRenderCompToCurrentRenderBuffer(m_renderQueue.top());
@@ -159,7 +160,7 @@ void FRenderer::RenderQueue()
 	m_D3D->EndScene();
 
 	// Get rid of old priority queue
-	m_renderQueue = priority_queue<RenderComponent*,vector<RenderComponent*>,FRenderer::layerCompare>();
+	m_renderQueue = priority_queue<RenderComponentData*,vector<RenderComponentData*>,FRenderer::layerCompare>();
 }
 
 FRenderer* FRenderer::GetInstance()
@@ -263,7 +264,7 @@ bool FRenderer::UpdateConstantShaderBuffer()
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
-void FRenderer::AddRenderComponentToFrame(RenderComponent* component)
+void FRenderer::AddRenderComponentToFrame(RenderComponentData* component)
 {
 	m_renderQueue.push(component);
 }

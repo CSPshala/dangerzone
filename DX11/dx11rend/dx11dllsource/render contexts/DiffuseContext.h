@@ -14,6 +14,7 @@
 #include "IRenderContext.h"
 #include "../shaders/DiffuseShader.h"
 #include "../Texture.h"
+#include "../dx11shared/RenderComponentData.h"
 #include <vector>
 using namespace std;
 
@@ -43,7 +44,7 @@ public:
 	DiffuseShader* GetShader();
 
 	/********** Public Mutators  ************/
-	void AddRenderCompToCurrentRenderBuffer(RenderComponent* component);
+	void AddRenderCompToCurrentRenderBuffer(RenderComponentData* component);
 
 private:
 	static const int QUAD_VERT_COUNT;

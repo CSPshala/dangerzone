@@ -18,7 +18,7 @@
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
 class IComponent;
-class RenderComponent;
+class RenderComponentData;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -38,7 +38,7 @@ public:
 	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/
-	virtual void AddRenderCompToCurrentRenderBuffer(RenderComponent* component) = 0;
+	virtual void AddRenderCompToCurrentRenderBuffer(RenderComponentData* component) = 0;
 
 protected:
 	int m_entityCount;
