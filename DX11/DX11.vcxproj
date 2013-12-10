@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -112,14 +112,6 @@
     <ClInclude Include="source\messaging\CMessages.h" />
     <ClInclude Include="source\messaging\IMessageListener.h" />
     <ClInclude Include="source\messaging\MessageManager.h" />
-    <ClInclude Include="source\rendering\Camera.h" />
-    <ClInclude Include="source\rendering\render contexts\ContextManager.h" />
-    <ClInclude Include="source\rendering\render contexts\DiffuseContext.h" />
-    <ClInclude Include="source\rendering\render contexts\IRenderContext.h" />
-    <ClInclude Include="source\rendering\shaders\DiffuseShader.h" />
-    <ClInclude Include="source\rendering\shaders\IShader.h" />
-    <ClInclude Include="source\rendering\Texture.h" />
-    <ClInclude Include="source\rendering\TextureManager.h" />
     <ClInclude Include="source\xml\pugiconfig.hpp" />
     <ClInclude Include="source\xml\pugixml.hpp" />
     <ClInclude Include="targetver.h" />
@@ -147,14 +139,6 @@
     <ClCompile Include="source\messaging\CMessages.cpp" />
     <ClCompile Include="source\messaging\IMessageListener.cpp" />
     <ClCompile Include="source\messaging\MessageManager.cpp" />
-    <ClCompile Include="source\rendering\Camera.cpp" />
-    <ClCompile Include="source\rendering\render contexts\ContextManager.cpp" />
-    <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp" />
-    <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp" />
-    <ClCompile Include="source\rendering\shaders\DiffuseShader.cpp" />
-    <ClCompile Include="source\rendering\shaders\IShader.cpp" />
-    <ClCompile Include="source\rendering\Texture.cpp" />
-    <ClCompile Include="source\rendering\TextureManager.cpp" />
     <ClCompile Include="source\xml\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>

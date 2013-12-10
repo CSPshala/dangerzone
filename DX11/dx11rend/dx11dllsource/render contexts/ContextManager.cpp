@@ -9,7 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../../Globals.h"
+#include "../defines.h"
 #include "ContextManager.h"
 #include "IRenderContext.h"
 #include "DiffuseContext.h"

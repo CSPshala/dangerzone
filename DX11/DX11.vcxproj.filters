@@ -28,12 +28,6 @@
     <Filter Include="Source Files\rendering">
       <UniqueIdentifier>{098edc62-ef2a-4e50-9836-44d47d6a2600}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\rendering\shaders">
-      <UniqueIdentifier>{449d7e2c-c16f-4364-a7f3-78a8d98f972b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\rendering\contexts">
-      <UniqueIdentifier>{7afe92b3-3a23-4a08-9dd3-63b173b0b61f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\components">
       <UniqueIdentifier>{068b092c-a119-4bbb-848a-4e2088914926}</UniqueIdentifier>
     </Filter>
@@ -75,29 +69,11 @@
     <ClInclude Include="source\Globals.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\Camera.h">
-      <Filter>Source Files\rendering</Filter>
-    </ClInclude>
     <ClInclude Include="source\gamestates\IGamestate.h">
       <Filter>Source Files\gamestates</Filter>
     </ClInclude>
     <ClInclude Include="source\gamestates\StateMainGame.h">
       <Filter>Source Files\gamestates</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\Texture.h">
-      <Filter>Source Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\render contexts\DiffuseContext.h">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\render contexts\IRenderContext.h">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\shaders\DiffuseShader.h">
-      <Filter>Source Files\rendering\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\shaders\IShader.h">
-      <Filter>Source Files\rendering\shaders</Filter>
     </ClInclude>
     <ClInclude Include="source\events\InputEventSystem.h">
       <Filter>Source Files\events</Filter>
@@ -138,12 +114,6 @@
     <ClInclude Include="source\components\PlayerControllerComponent.h">
       <Filter>Source Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="source\rendering\TextureManager.h">
-      <Filter>Source Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="source\rendering\render contexts\ContextManager.h">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClInclude>
     <ClInclude Include="source\collision\CollisionQuadTree.h">
       <Filter>Source Files\collision</Filter>
     </ClInclude>
@@ -173,29 +143,11 @@
     <ClCompile Include="source\Globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\rendering\Camera.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
     <ClCompile Include="source\gamestates\IGamestate.cpp">
       <Filter>Source Files\gamestates</Filter>
     </ClCompile>
     <ClCompile Include="source\gamestates\StateMainGame.cpp">
       <Filter>Source Files\gamestates</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\Texture.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\render contexts\DiffuseContext.cpp">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\render contexts\IRenderContext.cpp">
-      <Filter>Source Files\rendering\contexts</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\shaders\DiffuseShader.cpp">
-      <Filter>Source Files\rendering\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\shaders\IShader.cpp">
-      <Filter>Source Files\rendering\shaders</Filter>
     </ClCompile>
     <ClCompile Include="source\events\InputEventSystem.cpp">
       <Filter>Source Files\events</Filter>
@@ -232,12 +184,6 @@
     </ClCompile>
     <ClCompile Include="source\components\PlayerControllerComponent.cpp">
       <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\TextureManager.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rendering\render contexts\ContextManager.cpp">
-      <Filter>Source Files\rendering\contexts</Filter>
     </ClCompile>
     <ClCompile Include="source\collision\CollisionQuadTree.cpp">
       <Filter>Source Files\collision</Filter>

@@ -11,7 +11,7 @@
 ////////////////////////////////////////
 #include "DiffuseShader.h"
 #include "../TextureManager.h"
-#include "../../Globals.h"
+#include "../defines.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -67,7 +67,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char
 		// If there was nothing in the error message then it simply could not find the shader file itself.
 		else
 		{
-			LOG("Missing shader file: " << vsFilename);
+			//LOG("Missing shader file: " << vsFilename);
 		}
 
 		return false;
@@ -86,7 +86,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char
 		// If there was  nothing in the error message then it simply could not find the file itself.
 		else
 		{
-			LOG("Missing shader file: " << psFilename);
+			//LOG("Missing shader file: " << psFilename);
 		}
 
 		return false;
@@ -190,12 +190,12 @@ bool DiffuseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DX
 void DiffuseShader::RenderShader()
 {
 	// Set the vertex input layout.
-	ApplicationSettings::g_DeviceContext->IASetInputLayout(m_layout);
+	GraphicsGlobals::g_DeviceContext->IASetInputLayout(m_layout);
 
 	// Set the vertex and pixel shaders that will be used to render this triangle.
-	ApplicationSettings::g_DeviceContext->VSSetShader(m_vertexShader, NULL, 0);
-	ApplicationSettings::g_DeviceContext->PSSetShader(m_pixelShader, NULL, 0);
-	ApplicationSettings::g_DeviceContext->PSSetSamplers(0,1,&m_sampleState);	
+	GraphicsGlobals::g_DeviceContext->VSSetShader(m_vertexShader, NULL, 0);
+	GraphicsGlobals::g_DeviceContext->PSSetShader(m_pixelShader, NULL, 0);
+	GraphicsGlobals::g_DeviceContext->PSSetSamplers(0,1,&m_sampleState);	
 
 	int renderCount = 0;
 	int lastIndex = 0;
@@ -206,10 +206,10 @@ void DiffuseShader::RenderShader()
 		ID3D11ShaderResourceView* theTex = ptr[i].first->GetTexture();
 		renderCount = ptr[i].second * 6;
 		// Set texture to sample
-		ApplicationSettings::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
+		GraphicsGlobals::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
 
 		// Render the sprite
-		ApplicationSettings::g_DeviceContext->DrawIndexed( renderCount, lastIndex, 0);
+		GraphicsGlobals::g_DeviceContext->DrawIndexed( renderCount, lastIndex, 0);
 
 		lastIndex += renderCount;
 	}

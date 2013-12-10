@@ -9,7 +9,8 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../../Globals.h"
+#include "../defines.h"
+#include "../../../source/Globals.h"
 #include "DiffuseContext.h"
 #include "../../components/IComponent.h"
 #include "../../components/RenderComponent.h"
@@ -23,7 +24,7 @@ const int DiffuseContext::QUAD_VERT_COUNT(6);
 ///////////////////////////////////////////////
 DiffuseContext::DiffuseContext() : m_vertexInfo(nullptr), m_diffuseShade(nullptr)
 {
-	m_vertexInfo = new bitmapVertex[QUAD_VERT_COUNT * ApplicationSettings::g_MaxRenderComponents];	
+	m_vertexInfo = new bitmapVertex[QUAD_VERT_COUNT * GraphicsGlobals::g_MaxRenderComponents];	
 }
 
 DiffuseContext::~DiffuseContext()
@@ -57,7 +58,7 @@ bool DiffuseContext::Initialize()
 	}
 
 	// Initialize the color shader object.
-	result = m_diffuseShade->Initialize(ApplicationSettings::g_Device, WindowGlobals::g_hWnd);
+	result = m_diffuseShade->Initialize(GraphicsGlobals::g_Device, WindowGlobals::g_hWnd);
 	if(!result)
 	{
 		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize the diffuse shader object.", L"Error", MB_OK);
@@ -95,20 +96,20 @@ bool DiffuseContext::InitializeBuffers()
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 
-	indices = new unsigned long[QUAD_VERT_COUNT * ApplicationSettings::g_MaxRenderComponents];
+	indices = new unsigned long[QUAD_VERT_COUNT * GraphicsGlobals::g_MaxRenderComponents];
 	if(!indices)
 		return false;
 
 	// Set verts to 0
-	memset(m_vertexInfo,0,(sizeof(bitmapVertex) * QUAD_VERT_COUNT)  * ApplicationSettings::g_MaxRenderComponents);
+	memset(m_vertexInfo,0,(sizeof(bitmapVertex) * QUAD_VERT_COUNT)  * GraphicsGlobals::g_MaxRenderComponents);
 
 	// Load index array
-	for(int i = 0; i < QUAD_VERT_COUNT * ApplicationSettings::g_MaxRenderComponents; ++i)
+	for(int i = 0; i < QUAD_VERT_COUNT * GraphicsGlobals::g_MaxRenderComponents; ++i)
 		indices[i] = i;
 
 	// Create vertex desc (buffer needs to be dynamic for overwriting verticies on movement)
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = (sizeof(bitmapVertex) * QUAD_VERT_COUNT) * ApplicationSettings::g_MaxRenderComponents;
+	vertexBufferDesc.ByteWidth = (sizeof(bitmapVertex) * QUAD_VERT_COUNT) * GraphicsGlobals::g_MaxRenderComponents;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;
@@ -120,12 +121,12 @@ bool DiffuseContext::InitializeBuffers()
 	vertexData.SysMemSlicePitch = 0;
 
 	// Create the buffer
-	if(FAILED(ApplicationSettings::g_Device->CreateBuffer(&vertexBufferDesc,&vertexData,&m_vertexBuffer)))
+	if(FAILED(GraphicsGlobals::g_Device->CreateBuffer(&vertexBufferDesc,&vertexData,&m_vertexBuffer)))
 		return false;
 
 	// Create index buffer desc (no need to be dynamic for obvious reasons)
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = (sizeof(unsigned long) * QUAD_VERT_COUNT) * ApplicationSettings::g_MaxRenderComponents;
+	indexBufferDesc.ByteWidth = (sizeof(unsigned long) * QUAD_VERT_COUNT) * GraphicsGlobals::g_MaxRenderComponents;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -137,7 +138,7 @@ bool DiffuseContext::InitializeBuffers()
 	indexData.SysMemSlicePitch = 0;
 
 	// Create the buffer
-	if(FAILED(ApplicationSettings::g_Device->CreateBuffer(&indexBufferDesc,&indexData,&m_indexBuffer)))
+	if(FAILED(GraphicsGlobals::g_Device->CreateBuffer(&indexBufferDesc,&indexData,&m_indexBuffer)))
 		return false;
 
 	// Kill the memory
@@ -153,14 +154,14 @@ bool DiffuseContext::UpdateBuffers()
 	bitmapVertex* verticesPtr;	
 
 	// Lock buffer and write to it
-	if(FAILED(ApplicationSettings::g_DeviceContext->Map(m_vertexBuffer,0, D3D11_MAP_WRITE_DISCARD,0,&mappedResource)))
+	if(FAILED(GraphicsGlobals::g_DeviceContext->Map(m_vertexBuffer,0, D3D11_MAP_WRITE_DISCARD,0,&mappedResource)))
 		return false;
 
 	verticesPtr = static_cast<bitmapVertex*>(mappedResource.pData);
 
 	memcpy(verticesPtr,m_vertexInfo,(sizeof(bitmapVertex) * QUAD_VERT_COUNT) * m_entityCount);
 
-	ApplicationSettings::g_DeviceContext->Unmap(m_vertexBuffer,0);
+	GraphicsGlobals::g_DeviceContext->Unmap(m_vertexBuffer,0);
 
 	return true;
 }
@@ -173,18 +174,18 @@ void DiffuseContext::RenderBuffers()
 	// Matrices for rendering
 	D3DXMATRIX viewMatrix, orthoMatrix, worldMatrix;
 
-	ApplicationSettings::g_Camera->GetViewMatrix(viewMatrix);
-	ApplicationSettings::g_D3D->GetWorldMatrix(worldMatrix);
-	ApplicationSettings::g_D3D->GetOrthoMatrix(orthoMatrix);
+	GraphicsGlobals::g_Camera->GetViewMatrix(viewMatrix);
+	GraphicsGlobals::g_D3D->GetWorldMatrix(worldMatrix);
+	GraphicsGlobals::g_D3D->GetOrthoMatrix(orthoMatrix);
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	ApplicationSettings::g_DeviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	GraphicsGlobals::g_DeviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	ApplicationSettings::g_DeviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	GraphicsGlobals::g_DeviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
-	ApplicationSettings::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	GraphicsGlobals::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	m_diffuseShade->Render();
 

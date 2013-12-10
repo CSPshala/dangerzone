@@ -13,38 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\contexts">
+      <UniqueIdentifier>{40097e08-d3ba-4b92-a80f-87112d74bc39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{08aea80a-ee40-48ea-b8de-3d2fda1944df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="dx11dllsource\Camera.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="dx11dllsource\D3D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dx11dllsource\ForwardRenderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="dx11dllsource\defines.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="dllmain.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="dx11dllsource\ForwardRenderer.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="dx11dllsource\render contexts\ContextManager.h">
+      <Filter>Source Files\contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="dx11dllsource\render contexts\DiffuseContext.h">
+      <Filter>Source Files\contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="dx11dllsource\render contexts\IRenderContext.h">
+      <Filter>Source Files\contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="dx11dllsource\shaders\DiffuseShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="dx11dllsource\shaders\IShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="dllmain.h" />
+    <ClInclude Include="dx11rendexp.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dx11rend.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dx11dllsource\D3D.cpp">
@@ -53,5 +66,29 @@
     <ClCompile Include="dx11dllsource\ForwardRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dx11dllsource\defines.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\render contexts\ContextManager.cpp">
+      <Filter>Source Files\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\render contexts\DiffuseContext.cpp">
+      <Filter>Source Files\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\render contexts\IRenderContext.cpp">
+      <Filter>Source Files\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\shaders\DiffuseShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\shaders\IShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="dx11rendexp.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
 </Project>

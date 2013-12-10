@@ -9,7 +9,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "../../Globals.h"
+#include "../defines.h"
 #include "IShader.h"
 ////////////////////////////////////////
 //				MISC
@@ -156,7 +156,7 @@ void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, cons
 
 	string msgTxt = "Error compiling shader.  Check " + output + " for message.";
 
-	LOG(msgTxt);
+	//LOG(msgTxt);
 	return;
 }
 

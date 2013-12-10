@@ -1,1 +1,0 @@
-#define DX11_EXPORT

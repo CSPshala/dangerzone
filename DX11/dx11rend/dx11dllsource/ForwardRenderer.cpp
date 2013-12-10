@@ -11,7 +11,7 @@
 ////////////////////////////////////////
 #include "ForwardRenderer.h"
 #include "D3D.h"
-#include "rendering/Camera.h"
+#include "Camera.h"
 #include "rendering/render contexts/ContextManager.h"
 #include "rendering/TextureManager.h"
 #include "rendering/render contexts/DiffuseContext.h"
@@ -49,12 +49,12 @@ bool FRenderer::Initialize()
 	}
 
 	// Save D3D
-	ApplicationSettings::g_D3D = m_D3D;
+	GraphicsGlobals::g_D3D = m_D3D;
 
 	// Initialize the Direct3D object.
-	result = m_D3D->Initialize(ApplicationSettings::g_ResolutionW, ApplicationSettings::g_ResolutionH,
-		ApplicationSettings::g_VSync, WindowGlobals::g_hWnd, ApplicationSettings::g_FullScreen, 
-		ApplicationSettings::g_ScreenFar, ApplicationSettings::g_ScreenNear);
+	result = m_D3D->Initialize(GraphicsGlobals::g_ResolutionW, GraphicsGlobals::g_ResolutionH,
+		GraphicsGlobals::g_VSync, WindowGlobals::g_hWnd, GraphicsGlobals::g_FullScreen, 
+		GraphicsGlobals::g_ScreenFar, GraphicsGlobals::g_ScreenNear);
 	if(!result)
 	{
 		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize Direct3D", L"Error", MB_OK);
@@ -69,7 +69,7 @@ bool FRenderer::Initialize()
 	}
 
 	// Save camera
-	ApplicationSettings::g_Camera = m_Camera;
+	GraphicsGlobals::g_Camera = m_Camera;
 
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
@@ -196,14 +196,14 @@ bool FRenderer::CreateConstantShaderBuffer()
 	matrixBufferDesc.StructureByteStride = 0;
 
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = ApplicationSettings::g_Device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
+	result = GraphicsGlobals::g_Device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
 	// Save constant buffer
-	ApplicationSettings::g_constantShaderBuffer = m_matrixBuffer;
+	GraphicsGlobals::g_constantShaderBuffer = m_matrixBuffer;
 
 	return true;
 }
@@ -218,9 +218,9 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	// Matrices for rendering
 	D3DXMATRIX viewMatrix, orthoMatrix, worldMatrix;
 
-	ApplicationSettings::g_Camera->GetViewMatrix(viewMatrix);
-	ApplicationSettings::g_D3D->GetWorldMatrix(worldMatrix);
-	ApplicationSettings::g_D3D->GetOrthoMatrix(orthoMatrix);
+	GraphicsGlobals::g_Camera->GetViewMatrix(viewMatrix);
+	GraphicsGlobals::g_D3D->GetWorldMatrix(worldMatrix);
+	GraphicsGlobals::g_D3D->GetOrthoMatrix(orthoMatrix);
 
 	// Transpose the matrices to prepare them for the shader.
 	D3DXMatrixTranspose(&worldMatrix, &worldMatrix);
@@ -228,7 +228,7 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	D3DXMatrixTranspose(&orthoMatrix, &orthoMatrix);
 
 	// Lock the constant buffer so it can be written to.
-	result = ApplicationSettings::g_DeviceContext->Map(m_matrixBuffer, 0, 
+	result = GraphicsGlobals::g_DeviceContext->Map(m_matrixBuffer, 0, 
 		D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 	if(FAILED(result))
@@ -243,19 +243,19 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
 	dataPtr->ortho = orthoMatrix;
-	dataPtr->camPos = D3DXVECTOR4(ApplicationSettings::g_Camera->GetPosition(),1.0f);
+	dataPtr->camPos = D3DXVECTOR4(GraphicsGlobals::g_Camera->GetPosition(),1.0f);
 
 	// Unlock the constant buffer.
-	ApplicationSettings::g_DeviceContext->Unmap(m_matrixBuffer, 0);
+	GraphicsGlobals::g_DeviceContext->Unmap(m_matrixBuffer, 0);
 
 	// Set the position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
 	// Finanly set the constant buffer in the vertex shader with the updated values.
-	ApplicationSettings::g_DeviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);	
+	GraphicsGlobals::g_DeviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);	
 
 	// Save matrix buffer setting
-	ApplicationSettings::g_constantShaderBuffer = m_matrixBuffer;
+	GraphicsGlobals::g_constantShaderBuffer = m_matrixBuffer;
 
 	return true;
 }

@@ -9,8 +9,8 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "D3D.h"
 #include "Globals.h"
+#include "D3D.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -361,8 +361,8 @@ bool D3D::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, b
 	D3DXMatrixOrthoLH(&m_orthoMatrix, (float)screenWidth, (float)screenHeight, screenNear, screenDepth);
 
 	// Save pointers to our device and context for easy access by rendering
-	ApplicationSettings::g_Device = m_device;
-	ApplicationSettings::g_DeviceContext = m_deviceContext;
+	GraphicsGlobals::g_Device = m_device;
+	GraphicsGlobals::g_DeviceContext = m_deviceContext;
 
 	return true;
 }
