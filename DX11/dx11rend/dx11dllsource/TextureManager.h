@@ -32,8 +32,10 @@ public:
 	static void DeleteInstance();
 	/** Returns a texture corresponding to the passed filename 
 	  NOTE: Will load passed texture by filename if not previously loaded
-	  NOTE: Will return a default texture if loading fails **/
-	Texture* GetTexture(string fileName);
+	  NOTE: Will return a default texture if loading fails
+      NOTE: returns a uint, which is just the reinterpret cast of that texture's pointer 
+    **/
+	unsigned int GetTexture(string fileName);
 
 	/********** Public Accessors ************/
 

@@ -12,9 +12,9 @@
 #include "ForwardRenderer.h"
 #include "D3D.h"
 #include "Camera.h"
-#include "rendering/render contexts/ContextManager.h"
-#include "rendering/TextureManager.h"
-#include "rendering/render contexts/DiffuseContext.h"
+#include "render contexts/ContextManager.h"
+#include "TextureManager.h"
+#include "render contexts/DiffuseContext.h"
 
 ////////////////////////////////////////
 //				MISC

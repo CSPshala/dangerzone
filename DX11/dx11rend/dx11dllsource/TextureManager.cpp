@@ -34,7 +34,7 @@ TextureManager::~TextureManager()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-Texture* TextureManager::GetTexture(string fileName)
+unsigned int TextureManager::GetTexture(string fileName)
 {
 	Texture* texture = nullptr;
 	map<string,Texture*>::iterator iter = m_textureMap.find(fileName);
@@ -47,7 +47,7 @@ Texture* TextureManager::GetTexture(string fileName)
 		}
 		else
 		{
-			LOG("Couldn't load texture: " << fileName);
+			//LOG("Couldn't load texture: " << fileName);
 			texture = m_textureMap[TextureManager::DEFAULT_TEXTURE_FILENAME];
 		}
 	}
@@ -56,7 +56,7 @@ Texture* TextureManager::GetTexture(string fileName)
 		texture = m_textureMap[fileName];
 	}
 
-	return texture;
+	return reinterpret_cast<unsigned int>(texture);
 }
 
 TextureManager* TextureManager::GetInstance()
@@ -103,11 +103,11 @@ bool TextureManager::LoadTexture(string fileName)
 	}	
 	catch(std::invalid_argument& ia)
 	{
-		LOG("A new texture could not be allocated. invalid_argument caught: " << ia.what());	
+		//LOG("A new texture could not be allocated. invalid_argument caught: " << ia.what());	
 	}
 	catch(std::bad_alloc& ba)
 	{
-		LOG("A new texture could not be allocated. bad_alloc caught: " << ba.what());
+		//LOG("A new texture could not be allocated. bad_alloc caught: " << ba.what());
 		result = false;
 	}
 

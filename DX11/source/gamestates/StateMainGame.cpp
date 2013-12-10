@@ -10,7 +10,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "StateMainGame.h"
-#include "../rendering/ForwardRenderer.h"
+//#include "../rendering/ForwardRenderer.h"
 
 ////////////////////////////////////////
 //				MISC

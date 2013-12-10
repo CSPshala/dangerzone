@@ -44,7 +44,7 @@ IRenderContext* ContextManager::GetRenderContext(string contextName)
 
 	if(iter == m_contextMap.end())
 	{
-		LOG("Couldn't load context with name: " << contextName);
+		//LOG("Couldn't load context with name: " << contextName);
 	}
 	else
 	{

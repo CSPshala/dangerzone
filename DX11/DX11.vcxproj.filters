@@ -46,6 +46,9 @@
     <Filter Include="Source Files\collision">
       <UniqueIdentifier>{100bb341-851a-45d2-9cbf-cc0a5dd314b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shared">
+      <UniqueIdentifier>{dabef79f-ecee-4c26-aa51-b2032c0b3e48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -129,6 +132,9 @@
     <ClInclude Include="source\components\CollisionComponent.h">
       <Filter>Source Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="source\shared\RenderComponentData.h">
+      <Filter>Source Files\shared</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="source\components\CollisionComponent.cpp">
       <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\shared\RenderComponentData.cpp">
+      <Filter>Source Files\shared</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,7 @@ const string RenderComponent::RENDERING_COMPONENT_NAME("rendering");
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RenderComponent::RenderComponent(int componentType, int componentID): m_texture(nullptr), m_layer(0),
+RenderComponent::RenderComponent(int componentType, int componentID): m_texture(-1), m_layer(0),
 	IComponent(componentType,componentID)
 {
 }
@@ -58,9 +58,11 @@ void RenderComponent::UnRegisterForMessages()
 
 bool RenderComponent::LoadComponentAttributes(xml_node& component)
 {
+    // TODO: DLL Interface will have gettexture but will return uINT
 	m_texture = TextureManager::GetInstance()->GetTexture(component.attribute("texture").as_string());
 	m_layer = component.attribute("layer").as_int();
 
+    //TODO: Texture manager can return this in DLL
 	getParentEntity()->SetWidth(m_texture->GetWidth());
 	getParentEntity()->SetHeight(m_texture->GetHeight());
 	
@@ -78,12 +80,12 @@ string RenderComponent::getComponentName()
 	return RENDERING_COMPONENT_NAME;
 }
 
-Texture* RenderComponent::getTexture() const
+unsigned int RenderComponent::getTexture() const
 {
 	return m_texture;
 }
 
-Texture* RenderComponent::getTexture()
+unsigned int RenderComponent::getTexture()
 {
 	return m_texture;
 }

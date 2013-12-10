@@ -43,6 +43,9 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
+    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -64,6 +67,20 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -112,6 +129,7 @@
     <ClInclude Include="source\messaging\CMessages.h" />
     <ClInclude Include="source\messaging\IMessageListener.h" />
     <ClInclude Include="source\messaging\MessageManager.h" />
+    <ClInclude Include="source\shared\RenderComponentData.h" />
     <ClInclude Include="source\xml\pugiconfig.hpp" />
     <ClInclude Include="source\xml\pugixml.hpp" />
     <ClInclude Include="targetver.h" />
@@ -139,6 +157,7 @@
     <ClCompile Include="source\messaging\CMessages.cpp" />
     <ClCompile Include="source\messaging\IMessageListener.cpp" />
     <ClCompile Include="source\messaging\MessageManager.cpp" />
+    <ClCompile Include="source\shared\RenderComponentData.cpp" />
     <ClCompile Include="source\xml\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>

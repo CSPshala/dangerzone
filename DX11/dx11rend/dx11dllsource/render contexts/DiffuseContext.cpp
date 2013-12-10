@@ -12,9 +12,9 @@
 #include "../defines.h"
 #include "../../../source/Globals.h"
 #include "DiffuseContext.h"
-#include "../../components/IComponent.h"
-#include "../../components/RenderComponent.h"
-#include "../../components/Entity.h"
+#include "components/RenderComponent.h"
+#include "components/RenderComponent.h"
+#include "components/Entity.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -206,9 +206,9 @@ void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponent* compone
 	float posX = component->getParentEntity()->GetPositionX();
 	float posY = component->getParentEntity()->GetPositionY();
 	// Create our RECT in screen coords
-	left = static_cast<float>((ApplicationSettings::g_ResolutionW / 2) * -1) + posX;
+    left = static_cast<float>((GraphicsGlobals::g_ResolutionW / 2) * -1) + posX;
 	right = left + static_cast<float>(component->getParentEntity()->GetWidth());
-	top = static_cast<float>((ApplicationSettings::g_ResolutionH / 2)) - posY;
+    top = static_cast<float>((GraphicsGlobals::g_ResolutionH / 2)) - posY;
 	bottom = top - static_cast<float>(component->getParentEntity()->GetHeight());
 
 	int index = m_entityCount * QUAD_VERT_COUNT;

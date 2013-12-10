@@ -60,6 +60,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>prebuild.bat</Command>
+      <Message>Copying Shared Components to Proper Directories</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -91,6 +95,9 @@
     <ClInclude Include="dx11dllsource\render contexts\IRenderContext.h" />
     <ClInclude Include="dx11dllsource\shaders\DiffuseShader.h" />
     <ClInclude Include="dx11dllsource\shaders\IShader.h" />
+    <ClInclude Include="dx11dllsource\shared\RenderComponentData.h" />
+    <ClInclude Include="dx11dllsource\Texture.h" />
+    <ClInclude Include="dx11dllsource\TextureManager.h" />
     <ClInclude Include="dx11rendexp.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -113,6 +120,9 @@
     <ClCompile Include="dx11dllsource\render contexts\IRenderContext.cpp" />
     <ClCompile Include="dx11dllsource\shaders\DiffuseShader.cpp" />
     <ClCompile Include="dx11dllsource\shaders\IShader.cpp" />
+    <ClCompile Include="dx11dllsource\shared\RenderComponentData.cpp" />
+    <ClCompile Include="dx11dllsource\Texture.cpp" />
+    <ClCompile Include="dx11dllsource\TextureManager.cpp" />
     <ClCompile Include="dx11rend.cpp" />
     <ClCompile Include="dx11rendexp.cpp" />
     <ClCompile Include="stdafx.cpp">

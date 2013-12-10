@@ -1,56 +1,54 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"RenderComponent.h"
+//	File Name	:	"Rendercomponentdata.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Component to handle an entity's rendering
+//	Purpose		:	Class used to pass data between render DLL and EXE
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _RENDERCOMPONENT_H
-#define _RENDERCOMPONENT_H
+#ifndef _RENDERCOMPONENTDATA_H
+#define _RENDERCOMPONENTDATA_H
 
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "IComponent.h"
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class Texture;
+
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
 
 
-class RenderComponent : public IComponent
+class RenderComponentData
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	/** Component typbe MUST be set at construction 
-	    based on data driven component type ID from LevelLoader */
-	RenderComponent(int componentType, int componentID = -1);
-	~RenderComponent();
+
 	/********** Public Utility Functions ************/
-	virtual void Update(float deltaTime);
-	virtual void RegisterForMessages();
-	virtual void ReceiveMessage(IMessage* message);
-    virtual void RecieveComponentMessage(CompMessage* message);
-	virtual void UnRegisterForMessages();
-	virtual bool LoadComponentAttributes(xml_node& component);
+
 	/********** Public Accessors ************/
-	virtual string getComponentName();
-	unsigned int getTexture();
+    unsigned int getTexture();
 	unsigned int getTexture() const;
 	int getLayer();
 	int getLayer() const;
-	/********** Public Mutators  ************/
-	void setLayer(int layer);
+    int getWidth();
+    int getWidth() const;
+    int getHeight();
+    int getHeight() const;
+
+	/********** Public Mutators  ************/	
+    void setTexture(unsigned int texture);
+    void setLayer(int layer);
+    void setWidth(int width);
+    void setHeight(int height);
 
 private:
 	/********** Private Members ************/
-	static const string RENDERING_COMPONENT_NAME;
-	unsigned int m_texture;
+    unsigned int m_texture;
 	int m_layer;
-
+    int   m_width, m_height;
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
