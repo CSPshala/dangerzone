@@ -19,6 +19,9 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+namespace Renderer
+{
+
 FRenderer* FRenderer::m_instance(nullptr);
 
 ///////////////////////////////////////////////
@@ -36,11 +39,18 @@ FRenderer::~FRenderer()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool FRenderer::Initialize()
+bool FRenderer::Initialize(HWND hWnd, int resW, int resH, bool vsync, bool fullscreen)
 {
 	bool result;
 
-		
+	m_resW = resW;
+	m_resH = resH;
+	m_vsync = vsync;
+	m_fullscreen = fullscreen;
+
+	// Save window handle
+	m_hWnd = hWnd;
+
 	// Create the Direct3D object.
 	m_D3D = new D3D;
 	if(!m_D3D)
@@ -52,12 +62,11 @@ bool FRenderer::Initialize()
 	GraphicsGlobals::g_D3D = m_D3D;
 
 	// Initialize the Direct3D object.
-	result = m_D3D->Initialize(GraphicsGlobals::g_ResolutionW, GraphicsGlobals::g_ResolutionH,
-		GraphicsGlobals::g_VSync, WindowGlobals::g_hWnd, GraphicsGlobals::g_FullScreen, 
+	result = m_D3D->Initialize(m_resW, m_resH, m_vsync, m_hWnd, m_fullscreen,
 		GraphicsGlobals::g_ScreenFar, GraphicsGlobals::g_ScreenNear);
 	if(!result)
 	{
-		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize Direct3D", L"Error", MB_OK);
+		MessageBox(m_hWnd, L"Could not initialize Direct3D", L"Error", MB_OK);
 		return false;
 	}
 
@@ -77,7 +86,7 @@ bool FRenderer::Initialize()
 	// Create constant buffer that all shaders can use
 	if(!CreateConstantShaderBuffer())
 	{
-		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize constant shader buffer.", L"Error", MB_OK);
+		MessageBox(m_hWnd, L"Could not initialize constant shader buffer.", L"Error", MB_OK);
 		return false;
 	}	
 
@@ -116,6 +125,16 @@ void FRenderer::Shutdown()
 		delete m_D3D;
 		m_D3D = 0;
 	}
+
+#ifdef _DEBUG
+	// Write debug log with accumulated stringstream
+	std::fstream logFile("DX11RENDERER.LOG", ios::out);
+	if(logFile.is_open())
+	{
+		logFile << DEBUGLOG::G_DEBUGLOGSTREAM.str();
+	}
+	logFile.close();
+#endif
 
 	return;
 }
@@ -261,6 +280,21 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	return true;
 }
 
+bool FRenderer::layerCompare::operator() (const RenderComponentData* e1, const RenderComponentData* e2) const
+{
+	// If layers are same and pointer to texture address is lower (cause reasons)
+	// trying to order same texture components together
+	if(e1->getLayer() == e2->getLayer())
+	{
+		if(e1->getTexture() < e2->getTexture())
+			return true;
+		else
+			return false;
+	}		
+	// If not, compare layers
+	return e1->getLayer() < e2->getLayer();
+}
+
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
@@ -272,3 +306,4 @@ void FRenderer::AddRenderComponentToFrame(RenderComponentData* component)
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS
 ////////////////////////////////////////
+}

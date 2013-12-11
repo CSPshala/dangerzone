@@ -18,6 +18,9 @@
 #include <string>
 using namespace std;
 
+namespace Renderer
+{
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -72,4 +75,6 @@ protected:
 		virtual void ShutdownShader();
 		void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const char* shaderFilename);
 };
+
+}
 #endif

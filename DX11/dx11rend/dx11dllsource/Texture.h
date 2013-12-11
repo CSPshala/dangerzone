@@ -21,7 +21,8 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-
+namespace Renderer
+{
 
 class Texture
 {
@@ -55,4 +56,6 @@ private:
 	/********** Private Utility Functions ************/
 
 };
+
+}
 #endif

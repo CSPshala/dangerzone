@@ -43,15 +43,9 @@ public:
 
 private:
 	/********** Private Members ************/
-	// Ease of access to camera
-	Camera*		m_Camera;
 
 	// Filename of level file
 	std::string m_levelListFilename;
-
-	// Movement delta
-	D3DXVECTOR3 m_MoveDelta;
-	D3DXVECTOR3 m_MouseDelta;
 
 	// World Manager for this state's current level
 	WorldManager m_worldManager;

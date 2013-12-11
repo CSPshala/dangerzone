@@ -10,14 +10,15 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "../defines.h"
-#include "../../../source/Globals.h"
 #include "DiffuseContext.h"
-#include "components/RenderComponent.h"
-#include "components/RenderComponent.h"
-#include "components/Entity.h"
+#include "../ForwardRenderer.h"
+
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+namespace Renderer
+{
+
 const int DiffuseContext::QUAD_VERT_COUNT(6);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
@@ -39,14 +40,14 @@ DiffuseContext::~DiffuseContext()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-bool DiffuseContext::Initialize()
+bool DiffuseContext::Initialize(HWND hWnd)
 {
 	bool result;
 
 	result = InitializeBuffers();
 	if(!result)
 	{
-		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize a sprite context.", L"Error", MB_OK);
+		MessageBox(hWnd, L"Could not initialize a sprite context.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -58,10 +59,10 @@ bool DiffuseContext::Initialize()
 	}
 
 	// Initialize the color shader object.
-	result = m_diffuseShade->Initialize(GraphicsGlobals::g_Device, WindowGlobals::g_hWnd);
+	result = m_diffuseShade->Initialize(GraphicsGlobals::g_Device, hWnd);
 	if(!result)
 	{
-		MessageBox(WindowGlobals::g_hWnd, L"Could not initialize the diffuse shader object.", L"Error", MB_OK);
+		MessageBox(hWnd, L"Could not initialize the diffuse shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -206,9 +207,9 @@ void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponentData* com
     float posX = component->getPosX();
 	float posY = component->getPosY();
 	// Create our RECT in screen coords
-    left = static_cast<float>((GraphicsGlobals::g_ResolutionW / 2) * -1) + posX;
+	left = static_cast<float>((FRenderer::GetInstance()->getResW() / 2) * -1) + posX;
 	right = left + static_cast<float>(component->getWidth());
-    top = static_cast<float>((GraphicsGlobals::g_ResolutionH / 2)) - posY;
+    top = static_cast<float>((FRenderer::GetInstance()->getResH() / 2)) - posY;
 	bottom = top - static_cast<float>(component->getHeight());
 
 	int index = m_entityCount * QUAD_VERT_COUNT;
@@ -229,6 +230,8 @@ void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponentData* com
 	m_vertexInfo[index + 5].texture = D3DXVECTOR2(1.0f,1.0f);
 
 	m_entityCount++;
+}
+
 }
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

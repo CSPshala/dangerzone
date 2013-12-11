@@ -14,6 +14,10 @@
 #include <string>
 #include <map>
 using namespace std;
+
+namespace Renderer
+{
+
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -65,4 +69,6 @@ private:
 	void CleanupTextures();
 
 };
+
+}
 #endif

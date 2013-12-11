@@ -5,6 +5,10 @@
 std::stringstream DEBUGLOG::G_DEBUGLOGSTREAM = std::stringstream();
 #endif 
 
+const int				ApplicationSettings::g_ResolutionW = 1024;
+const int				ApplicationSettings::g_ResolutionH = 768;
+const bool				ApplicationSettings::g_FullScreen = false;
+const bool				ApplicationSettings::g_VSync = true;
 HINSTANCE	 WindowGlobals::g_hInstance = 0;
 HWND		 WindowGlobals::g_hWnd = 0;
 wchar_t		 WindowGlobals::g_szWINDOW_CLASS[15] = L"none";

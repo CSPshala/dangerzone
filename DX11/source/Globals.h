@@ -34,7 +34,10 @@ class ApplicationSettings
 {
 public:
 	// Crucial rendering globals
-
+	static const int   g_ResolutionW;
+	static const int   g_ResolutionH;
+	static const bool  g_FullScreen;
+	static const bool  g_VSync;
 };
 
 struct rectangle 

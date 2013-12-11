@@ -10,7 +10,6 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "StateMainGame.h"
-//#include "../rendering/ForwardRenderer.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -19,8 +18,7 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-StateMainGame::StateMainGame(std::string levelListFilename) : m_Camera(nullptr),
-	m_levelListFilename(levelListFilename)
+StateMainGame::StateMainGame(std::string levelListFilename) : m_levelListFilename(levelListFilename)
 {
 }
 
@@ -33,11 +31,8 @@ StateMainGame::~StateMainGame()
 ////////////////////////////////////////
 void StateMainGame::Enter()
 {	
-	// Set camera
-	m_Camera = FRenderer::GetInstance()->GetCamera();
-	// Move delta cleared out
-	m_MoveDelta = D3DXVECTOR3(0,0,0);
-	m_MouseDelta = D3DXVECTOR3(0,0,0);
+
+
 	//Start up worldmanager then loader to populate it
 	m_worldManager.Initialize();
 	m_levelLoader.Initialize(m_levelListFilename,&m_worldManager);

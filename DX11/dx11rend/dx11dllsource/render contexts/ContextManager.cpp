@@ -16,16 +16,16 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+namespace Renderer
+{
+
 ContextManager* ContextManager::m_instance(nullptr);
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 ContextManager::ContextManager()
-{
-	IRenderContext* toAdd = new DiffuseContext;
-	toAdd->Initialize();
-	m_contextMap["diffuse"] = toAdd;
+{	
 }
 
 ContextManager::~ContextManager()
@@ -36,6 +36,17 @@ ContextManager::~ContextManager()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
+bool ContextManager::Initialize(HWND hWnd)
+{
+	m_hWnd = hWnd;
+
+	IRenderContext* toAdd = new DiffuseContext;
+	toAdd->Initialize(m_hWnd);
+	m_contextMap["diffuse"] = toAdd;
+
+	return true;
+}
+
 IRenderContext* ContextManager::GetRenderContext(string contextName)
 {
 	IRenderContext* context = nullptr;
@@ -84,6 +95,7 @@ void ContextManager::CleanupContexts()
 	}
 }
 
+}
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////

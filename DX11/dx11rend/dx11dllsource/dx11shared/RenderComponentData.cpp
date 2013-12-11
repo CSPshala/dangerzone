@@ -14,6 +14,8 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+namespace Renderer
+{
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
@@ -113,6 +115,19 @@ void RenderComponentData::setLayer(int layer)
 {
 	m_layer = layer;
 }
+
+void RenderComponentData::setWidth(int width)
+{
+	m_width = width;
+}
+
+void RenderComponentData::setHeight(int height)
+{
+	m_height = height;
+}
+
+
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS
 ////////////////////////////////////////
+}

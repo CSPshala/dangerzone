@@ -12,9 +12,6 @@
 #include "../Globals.h"
 #include "RenderComponent.h"
 #include "../messaging/CMessages.h"
-#include "../rendering/ForwardRenderer.h"
-#include "../rendering/TextureManager.h"
-#include "../rendering/Texture.h"
 #include "../components/Entity.h"
 ////////////////////////////////////////
 //				MISC
@@ -23,7 +20,7 @@ const string RenderComponent::RENDERING_COMPONENT_NAME("rendering");
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RenderComponent::RenderComponent(int componentType, int componentID): m_texture(-1), m_layer(0),
+RenderComponent::RenderComponent(int componentType, int componentID): 
 	IComponent(componentType,componentID)
 {
 }
@@ -37,7 +34,7 @@ RenderComponent::~RenderComponent()
 ////////////////////////////////////////
 void RenderComponent::Update(float deltaTime)
 {	
-	FRenderer::GetInstance()->AddRenderComponentToFrame(this);
+	Rendering::AddRenderComponentToFrame(&m_renderData);
 }
 
 void RenderComponent::RegisterForMessages()
@@ -59,12 +56,14 @@ void RenderComponent::UnRegisterForMessages()
 bool RenderComponent::LoadComponentAttributes(xml_node& component)
 {
     // TODO: DLL Interface will have gettexture but will return uINT
-	m_texture = TextureManager::GetInstance()->GetTexture(component.attribute("texture").as_string());
-	m_layer = component.attribute("layer").as_int();
+	m_renderData.setTexture(Rendering::GetTexture((char*)(component.attribute("texture").as_string())));
+	m_renderData.setLayer(component.attribute("layer").as_int());
 
     //TODO: Texture manager can return this in DLL
-	getParentEntity()->SetWidth(m_texture->GetWidth());
-	getParentEntity()->SetHeight(m_texture->GetHeight());
+	m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
+	m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
+	getParentEntity()->SetWidth(m_renderData.getWidth());
+	getParentEntity()->SetHeight(m_renderData.getHeight());
 	
 	return true;
 }
@@ -82,27 +81,27 @@ string RenderComponent::getComponentName()
 
 unsigned int RenderComponent::getTexture() const
 {
-	return m_texture;
+	return m_renderData.getTexture();
 }
 
 unsigned int RenderComponent::getTexture()
 {
-	return m_texture;
+	return m_renderData.getTexture();
 }
 
 int RenderComponent::getLayer()
 {
-	return m_layer;
+	return m_renderData.getLayer();
 }
 
 int RenderComponent::getLayer() const
 {
-	return m_layer;
+	return m_renderData.getLayer();
 }
 
 void RenderComponent::setLayer(int layer)
 {
-	m_layer = layer;
+	m_renderData.setLayer(layer);
 }
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

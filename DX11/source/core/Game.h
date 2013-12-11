@@ -13,7 +13,6 @@
 ////////////////////////////////////////
 #include "CTimer.h"
 #include "../Globals.h"
-#include "../rendering/ForwardRenderer.h"
 #include "../gamestates/StateMainGame.h"
 #include "../events/InputEventSystem.h"
 #include "../input/RawInputParser.h"
@@ -25,7 +24,7 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-
+#include "../../dx11rend/dx11rendexp.h"
 
 class Game
 {
@@ -51,9 +50,6 @@ private:
 	float m_t;
 	float m_dt;
 	float m_frameDeltaTime;
-
-	// Rendering
-	FRenderer* m_Renderer;
 
 	// States
 	IGamestate*	   m_CurrentState;

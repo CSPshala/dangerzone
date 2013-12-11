@@ -23,7 +23,8 @@ using namespace std;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-
+namespace Renderer
+{
 
 class DiffuseShader : public IShader
 {
@@ -56,4 +57,6 @@ private:
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
 	virtual void RenderShader();
 };
+
+}
 #endif

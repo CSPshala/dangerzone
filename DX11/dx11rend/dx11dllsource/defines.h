@@ -21,6 +21,33 @@
 #include "Camera.h"
 #include "D3D.h"
 
+#include <tchar.h>
+#include <iostream>
+#include <sstream>
+
+#ifdef DX11REND_EXPORTS
+#define RENDER_API __declspec(dllexport)
+#define RENDER_API_EXTERN extern "C" __declspec(dllexport)
+#else
+#define RENDER_API __declspec(dllimport)
+#define RENDER_API_EXTERN extern "C" __declspec(dllimport)
+#endif
+
+namespace Renderer
+{
+
+#ifdef _DEBUG
+class DEBUGLOG
+{
+public:
+static std::stringstream G_DEBUGLOGSTREAM;
+};
+#define LOG(x) DEBUGLOG::G_DEBUGLOGSTREAM << x << "\n"; std::cout << x << "\n"
+#else
+#define LOG(x)
+#endif
+
+
 class D3D;
 
 class GraphicsGlobals
@@ -32,14 +59,12 @@ public:
 	static ID3D11Buffer* g_constantShaderBuffer;
 	static D3D*		   g_D3D;
 	// Stuff here for resolution and such
-	static const int   g_ResolutionW;
-	static const int   g_ResolutionH;
-	static const bool  g_FullScreen;
-	static const bool  g_VSync;
 	static const float g_ScreenFar; 
 	static const float g_ScreenNear;
 	static const int   g_MaxRenderComponents;
 	static Camera*	   g_Camera;
 };
+
+}
 
 #endif

@@ -14,6 +14,9 @@
 #include <string>
 #include <map>
 using namespace std;
+
+namespace Renderer
+{
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -21,6 +24,7 @@ class IRenderContext;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+
 
 
 class ContextManager
@@ -32,6 +36,9 @@ public:
 	/** Returns a render context corresponding to passed in context name
 	  NOTE: Will return nullptr if context not found **/
 	IRenderContext* GetRenderContext(string contextName);
+
+	/** Inits the context manager */
+	bool Initialize(HWND hWnd);
 
 	/********** Public Accessors ************/
 
@@ -49,6 +56,8 @@ private:
 	static ContextManager* m_instance;
 	// map of contexts
 	map<string,IRenderContext*> m_contextMap;
+	// window handle
+	HWND m_hWnd;
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
@@ -56,4 +65,6 @@ private:
 	/********** Private Utility Functions ************/
 	void CleanupContexts();
 };
+
+}
 #endif

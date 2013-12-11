@@ -11,18 +11,22 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-#include "defines.h"
-#include "Globals.h"
 
 #include "dx11shared\RenderComponentData.h"
+#include "defines.h"
+#include "D3D.h"
 #include <queue>
 using namespace std;
+
+namespace Renderer
+{
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
 class Camera;
 class DiffuseContext;
+class D3D;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -35,13 +39,18 @@ public:
 	static FRenderer* GetInstance();
 	static void DeleteInstance();
 
-	bool Initialize();
+	bool Initialize(HWND hWnd, int resW, int resH, bool vsync, bool fullscreen);
 	void Shutdown();
 	void RenderQueue();	
 
 	/********** Public Accessors ************/
 	Camera* GetCamera() { return m_Camera; }
 	void AddRenderComponentToFrame(RenderComponentData* component);
+
+	int getResW() { return m_resW; }
+	int getResH() { return m_resH; }
+	bool getVsync() { return m_vsync; }
+	bool getFullscreen() { return m_fullscreen; }
 
 	/********** Public Mutators  ************/	
 
@@ -61,20 +70,7 @@ private:
 	class layerCompare
 	{
 	public:
-		bool operator() (const RenderComponentData* e1, const RenderComponentData* e2) const
-		{
-			// If layers are same and pointer to texture address is lower (cause reasons)
-			// trying to order same texture components together
-			if(e1->getLayer() == e2->getLayer())
-			{
-				if(e1->getTexture() < e2->getTexture())
-					return true;
-				else
-					return false;
-			}		
-			// If not, compare layers
-			return e1->getLayer() < e2->getLayer();
-		}
+		bool operator() (const RenderComponentData* e1, const RenderComponentData* e2) const;
 	};
 
 	struct MatrixBufferType
@@ -86,6 +82,14 @@ private:
 	};
 
 	ID3D11Buffer* m_matrixBuffer;
+
+	// HWND to our window
+	HWND	  m_hWnd;
+	// Saved window settings
+	int m_resW;
+	int m_resH;
+	bool m_vsync;
+	bool m_fullscreen;
 
 	// Contexts
 	DiffuseContext* m_diffuseContext;
@@ -101,4 +105,6 @@ private:
 	bool CreateConstantShaderBuffer();
 	bool UpdateConstantShaderBuffer();
 };
+
+}
 #endif

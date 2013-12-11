@@ -35,7 +35,6 @@ bool Game::Initialize()
 
 	// Getting singletons for easy access
 	m_InputEventSystem = InputEventSystem::GetInstance();
-	m_Renderer = FRenderer::GetInstance();
     m_MessageManager = MessageManager::GetInstance();
 	
 	// Timer operations
@@ -46,7 +45,8 @@ bool Game::Initialize()
 	m_dt *= 1000;
 	m_frameDeltaTime = 0.0f;
 	// Rendering
-	m_Renderer->Initialize();
+	Rendering::Initialize(WindowGlobals::g_hWnd, ApplicationSettings::g_ResolutionW, 
+		ApplicationSettings::g_ResolutionH, ApplicationSettings::g_VSync, ApplicationSettings::g_FullScreen);
     // Messaging
     m_MessageManager->Initialize();
 	
@@ -77,8 +77,7 @@ bool Game::Shutdown()
 	// Shut down all game level singletons
     m_MessageManager->Shutdown();
     m_MessageManager->DeleteInstance();
-	m_Renderer->Shutdown();
-	m_Renderer->DeleteInstance();
+	Rendering::Shutdown();
 	m_InputEventSystem->DeleteInstance();
 
 	return true;
@@ -113,7 +112,7 @@ void Game::Update()
 
 void Game::Render()
 {
-	m_Renderer->RenderQueue();
+	Rendering::RenderQueue();
 }
 
 void Game::ChangeState(IGamestate* in)

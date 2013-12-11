@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IComponent.h"
+#include "../../dx11rend/dx11rendexp.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -48,8 +49,8 @@ public:
 private:
 	/********** Private Members ************/
 	static const string RENDERING_COMPONENT_NAME;
-	unsigned int m_texture;
-	int m_layer;
+	/** Shared DLL class from renderer, holding relevant info */
+	Renderer::RenderComponentData m_renderData;
 
 	/********** Private Accessors ************/
 

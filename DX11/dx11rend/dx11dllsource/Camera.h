@@ -20,7 +20,8 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-
+namespace Renderer
+{
 
 class Camera
 {
@@ -57,4 +58,6 @@ private:
 	/********** Private Utility Functions ************/
 
 };
+
+}
 #endif

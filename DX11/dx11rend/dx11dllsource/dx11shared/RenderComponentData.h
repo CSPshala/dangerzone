@@ -11,7 +11,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
-
+#include "../defines.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -19,9 +19,10 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
+namespace Renderer
+{
 
-
-class RenderComponentData
+class RENDER_API RenderComponentData
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
@@ -64,4 +65,6 @@ private:
 	/********** Private Utility Functions ************/
 
 };
+
+}
 #endif

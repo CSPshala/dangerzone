@@ -21,11 +21,12 @@ using namespace std;
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class RenderComponent;
+
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-
+namespace Renderer
+{
 
 class DiffuseContext : public IRenderContext
 {
@@ -35,7 +36,7 @@ public:
 	~DiffuseContext();
 
 	/********** Public Utility Functions ************/
-	bool Initialize();
+	bool Initialize(HWND hWnd);
 	bool UpdateBuffers();
 	void RenderBuffers();
 	void Shutdown();
@@ -68,4 +69,6 @@ private:
 	/********** Private Utility Functions ************/
 	bool InitializeBuffers();
 };
+
+}
 #endif

@@ -17,7 +17,9 @@
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-class IComponent;
+namespace Renderer
+{
+
 class RenderComponentData;
 ////////////////////////////////////////
 //				MISC
@@ -31,7 +33,7 @@ public:
 	IRenderContext();
 	~IRenderContext();
 	/********** Public Utility Functions ************/
-	virtual bool Initialize() = 0;	
+	virtual bool Initialize(HWND hWnd) = 0;	
 	virtual bool UpdateBuffers() = 0;
 	virtual void Shutdown();		
 	virtual void RenderBuffers() = 0;
@@ -55,4 +57,6 @@ private:
 	virtual bool InitializeBuffers() = 0;	
 	void ShutdownBuffers();
 };
+
+}
 #endif  

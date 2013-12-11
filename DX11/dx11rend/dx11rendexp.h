@@ -11,16 +11,11 @@
 ////////////////////////////////////////
 //		 DLL INTERFACE DEFINES
 ////////////////////////////////////////
-#ifdef DX11REND_EXPORTS
-#define RENDER_API __declspec(dllexport)
-#define RENDER_API_EXTERN extern "C" __declspec(dllexport)
-#else
-#define RENDER_API __declspec(dllimport)
-#define RENDER_API_EXTERN extern "C" __declspec(dllimport)
-#endif
+
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include "dx11dllsource\ForwardRenderer.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -30,21 +25,27 @@
 //				MISC
 ////////////////////////////////////////
 
-
-class RENDER_API Renderer
+class Rendering
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
 
 	/********** Public Utility Functions ************/
+	static RENDER_API bool Initialize(HWND hWnd, int resW, int resH, bool vsync, bool fullscreen);
+	static RENDER_API void Shutdown();
+	static RENDER_API void RenderQueue();
 
 	/********** Public Accessors ************/
-
+	static RENDER_API void AddRenderComponentToFrame(Renderer::RenderComponentData* component);
+	static RENDER_API unsigned int GetTexture(char* textureName);
+	static RENDER_API int GetTextureWidth(unsigned int texture);
+	static RENDER_API int GetTextureHeight(unsigned int texture);
 	/********** Public Mutators  ************/	
 
 private:
 	/********** Private Members ************/
-
+	Rendering();
+	~Rendering();
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
@@ -52,4 +53,5 @@ private:
 	/********** Private Utility Functions ************/
 
 };
+
 #endif
