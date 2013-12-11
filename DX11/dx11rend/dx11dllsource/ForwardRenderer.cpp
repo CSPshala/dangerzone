@@ -94,14 +94,21 @@ bool FRenderer::Initialize(HWND hWnd, int resW, int resH, bool vsync, bool fulls
 	// never need to change ever again
 	m_Camera->Render();
 	UpdateConstantShaderBuffer();
+
+	// Init context manager
+	ContextManager::GetInstance()->Initialize(m_hWnd);
 	
 	m_diffuseContext = static_cast<DiffuseContext*>(ContextManager::GetInstance()->GetRenderContext("diffuse"));
+
+	LOG("Renderer initialization successfully completed.");
 
 	return true;
 }
 
 void FRenderer::Shutdown()
 {	
+	LOG("Renderer shutting down.");
+
 	ContextManager::GetInstance()->DeleteInstance();
 	TextureManager::GetInstance()->DeleteInstance();
 

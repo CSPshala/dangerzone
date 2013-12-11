@@ -34,6 +34,10 @@ RenderComponent::~RenderComponent()
 ////////////////////////////////////////
 void RenderComponent::Update(float deltaTime)
 {	
+	// Update render data
+	m_renderData.setPosX(getParentEntity()->GetPositionX());
+	m_renderData.setPosY(getParentEntity()->GetPositionY());	
+
 	Rendering::AddRenderComponentToFrame(&m_renderData);
 }
 

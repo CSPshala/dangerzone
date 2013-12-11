@@ -69,7 +69,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char
 		// If there was nothing in the error message then it simply could not find the shader file itself.
 		else
 		{
-			//LOG("Missing shader file: " << vsFilename);
+			LOG("Missing shader file: " << vsFilename);
 		}
 
 		return false;
@@ -88,7 +88,7 @@ bool DiffuseShader::InitializeShader(ID3D11Device* device, HWND hwnd, const char
 		// If there was  nothing in the error message then it simply could not find the file itself.
 		else
 		{
-			//LOG("Missing shader file: " << psFilename);
+			LOG("Missing shader file: " << psFilename);
 		}
 
 		return false;

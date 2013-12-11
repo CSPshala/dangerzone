@@ -50,7 +50,7 @@ unsigned int TextureManager::GetTexture(string fileName)
 		}
 		else
 		{
-			//LOG("Couldn't load texture: " << fileName);
+			LOG("Couldn't load texture: " << fileName);
 			texture = m_textureMap[TextureManager::DEFAULT_TEXTURE_FILENAME];
 		}
 	}
@@ -106,11 +106,11 @@ bool TextureManager::LoadTexture(string fileName)
 	}	
 	catch(std::invalid_argument& ia)
 	{
-		//LOG("A new texture could not be allocated. invalid_argument caught: " << ia.what());	
+		LOG("A new texture could not be allocated. invalid_argument caught: " << ia.what());	
 	}
 	catch(std::bad_alloc& ba)
 	{
-		//LOG("A new texture could not be allocated. bad_alloc caught: " << ba.what());
+		LOG("A new texture could not be allocated. bad_alloc caught: " << ba.what());
 		result = false;
 	}
 
