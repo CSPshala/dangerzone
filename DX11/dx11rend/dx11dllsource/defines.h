@@ -6,7 +6,11 @@
 // Windows Header Files:
 #include <windows.h>
 
-#include "../targetver.h"
+// Turn off unref variable warning if on release. (Catch sets it off)
+#ifndef _DEBUG
+#pragma warning(push)
+#pragma warning(disable : 4101)
+#endif
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
@@ -14,9 +18,11 @@
 #pragma comment(lib, "d3dx10.lib")
 
 #include <d3d11.h>
-#include <D3DX10math.h>
 #include <dxgi.h>
 #include <d3dcommon.h>
+#include <D3DX10math.h>
+
+#include "../targetver.h"
 
 #include "Camera.h"
 #include "D3D.h"

@@ -4,6 +4,12 @@
 #include <windows.h>
 #define WIN32_LEAN_AND_MEAN
 
+// Turn off unref variable warning if on release. (Catch sets it off)
+#ifndef _DEBUG
+#pragma warning(push)
+#pragma warning(disable : 4101)
+#endif
+
 #include <tchar.h>
 #include <iostream>
 #include <sstream>
