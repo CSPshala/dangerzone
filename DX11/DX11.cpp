@@ -97,8 +97,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	
 
 	// Init game
-	if(!theGame.Initialize()) {
-		return false; }
+	if(!theGame.Initialize())
+		return false;
+
+	// Init input
+	if(!g_RawInputParser.Initialize())
+		return false;
 
 	// Register for input
 	g_RawInputParser.RegisterForRawInput();

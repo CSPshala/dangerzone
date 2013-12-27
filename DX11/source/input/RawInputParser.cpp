@@ -12,7 +12,6 @@
 #include "../Globals.h"
 #include <fstream>
 #include "RawInputParser.h"
-
 using namespace std;
 
 ////////////////////////////////////////
@@ -30,20 +29,10 @@ const int RawInputParser::NUM_MOUSE_BUTTONS(5);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(nullptr), m_receivedInput(false),
-	mMouseDeltaX(0), mMouseDeltaY(0)
+RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentKeyboardControls(nullptr), 
+	m_currentMouseControls(nullptr), m_receivedInput(false),	mMouseDeltaX(0), mMouseDeltaY(0)
 {
-	// Allocate for keyboard and mouse only for now
-	m_rawDevices = new RAWINPUTDEVICE[NUM_RAW_DEVICES];
-
-	// Add bools for buffering mouse input button status
-	for(unsigned int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
-		m_mouseButtonStatus.push_back(false);
-
-	// Derp
-	LoadControlKeys();
-    // Load our control scheme
-    ReadControlConfig();
+	
 }
 
 RawInputParser::~RawInputParser()
@@ -54,15 +43,40 @@ RawInputParser::~RawInputParser()
 		m_rawDevices = nullptr;
 	}
 
-	if(m_currentControls)
+	if(m_currentKeyboardControls)
 	{
-		delete m_currentControls;
+		delete m_currentKeyboardControls;
 	}
 }
 
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
+bool RawInputParser::Initialize()
+{
+	// Allocate for keyboard and mouse only for now
+	m_rawDevices = new RAWINPUTDEVICE[NUM_RAW_DEVICES];
+
+	// Add bools for buffering mouse input button status
+	for(unsigned int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
+		m_mouseButtonStatus.push_back(false);
+
+	// Derp
+	if(!LoadControlKeys())
+	{
+		LOG("RawInputParser Loading control keys failed.");
+		return false;
+	}
+    // Load our control scheme
+    if(!ReadControlConfig())
+	{
+		LOG("RawInputParser Reading control config failed.");
+		return false;
+	}
+
+	return true;
+}
+
 void RawInputParser::RegisterForRawInput()
 {        
     m_rawDevices[0].usUsagePage = 0x01; 
@@ -146,51 +160,61 @@ void RawInputParser::RestartInput()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-void RawInputParser::LoadControlKeys()
+bool RawInputParser::LoadControlKeys()
 {
-	// Load in control key vector
-	fstream keyFile(L"resource/data/controlstrings.txt",ios::in);
+	xml_document doc;
+	string filePath("resource/data/RawInputCommands.xml");
+	
+	if(!LoadXMLFile(doc,filePath))
+		return false;
 
-	if(!keyFile.is_open())
-		return;
-
-	// Rando number for char, 30 > more than we'll need
-	char keyBuff[30];
-
-	// Line by line
-	while(!keyFile.eof())
+	for(xml_node command = doc.child("command"); command; command = command.next_sibling("command"))
 	{
-		keyFile.getline(keyBuff,30);
-		
-		//Paranoid check
-		if(keyFile.eof())
-			break;
-
-		m_controlKeys.push_back(string(keyBuff));
-
+		string dev = command.attribute("device").as_string();
+		if(dev == "keyboard")
+		{
+			pair<string,int> toAdd;
+			toAdd.first = command.attribute("button").as_string();
+			toAdd.second = command.attribute("value").as_int();
+			m_controlKeys.push_back(toAdd);
+		}
+		else if(dev == "mouse")
+		{
+			pair<string,int> toAdd;
+			toAdd.first = command.attribute("button").as_string();
+			toAdd.second = command.attribute("value").as_int();
+			m_mouseControlKeys.push_back(toAdd);
+		}
+		else
+		{
+			continue;
+		}
 	}
 
-	keyFile.close();
+	return true;
 }
 
-void RawInputParser::ReadControlConfig()
+bool RawInputParser::ReadControlConfig()
 {
-	if(m_currentControls)
+	if(m_currentKeyboardControls)
 	{
-		delete m_currentControls;
-		m_currentControls = nullptr;
+		delete m_currentKeyboardControls;
+		m_currentKeyboardControls = nullptr;
 	}
 
-	if(m_currentControls == nullptr)
+	if(m_currentKeyboardControls == nullptr)
 	{
-		m_currentControls = new deque<pair<int,pair<int,bool> > >;
+		m_currentKeyboardControls = new deque<pair<int,pair<int,bool> > >;
 	}
 
 	// Load in control key vector
 	fstream configFile(L"resource/config/user.cfg",ios::in);
 
 	if(!configFile.is_open())
-		return;
+	{
+		LOG("RawInputParser could not open user.cfg for parsing.");
+		return false;
+	}
 
 	// Rando number for char, 30 > more than we'll need
 	char keyBuff[30];
@@ -210,16 +234,18 @@ void RawInputParser::ReadControlConfig()
 		string command(tokPos);
 		string key(context);		
 
-		m_currentControls->push_back(FindKeyAndEventValue(command,key));		
+		m_currentKeyboardControls->push_back(FindKeyAndEventValue(command,key));		
 	}
 
 	configFile.close();
+
+	return true;
 }
 
 void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
 {
-	deque<pair<int,pair<int,bool> > >::iterator iter = m_currentControls->begin();
-	while(iter != m_currentControls->end())
+	deque<pair<int,pair<int,bool> > >::iterator iter = m_currentKeyboardControls->begin();
+	while(iter != m_currentKeyboardControls->end())
 	{
 		if(input->data.keyboard.VKey == (*iter).second.first)	
 		{
@@ -293,14 +319,36 @@ pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, s
 	// Keycode for command
 	for(unsigned int i = 0; i < m_controlKeys.size(); ++i)
 	{
-		if(key == m_controlKeys[i])
+		if(key == m_controlKeys[i].first)
 		{
-			eventAndKey.second.first = i + 1;
+			eventAndKey.second.first = m_controlKeys[i].second;
 			eventAndKey.second.second = false;
 		}
 	}
 	
 	return eventAndKey;
+}
+
+bool RawInputParser::LoadXMLFile(xml_document& doc,const string& filePath) const
+{
+	xml_parse_result result = doc.load_file(filePath.c_str());
+
+	bool returnResult = false;
+
+	if (result)
+	{
+		LOG("XML [" << filePath << "] parsed without errors\n");
+		returnResult = true;
+	}
+	else
+	{
+		LOG("XML [" << filePath << "] parsed with errors\n");
+		LOG("Error description: " << result.description() << "\n");
+		LOG("Error offset: " << result.offset << "\n");
+		returnResult = false;
+	}
+
+	return returnResult;
 }
 
 ////////////////////////////////////////
