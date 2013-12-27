@@ -89,6 +89,8 @@ private:
 	void HandleMouseInput(PRAWINPUT input);
 	/** Find a control key value */
 	pair<int,pair<int,bool> > FindKeyAndEventValue(string command, string key);
+	/** Find a control key value (for mouse) */
+	pair<int,pair<int,bool> > FindKeyAndEventValueMouse(string command, string key);
 	// Checks if an XML file properly opened
 	bool LoadXMLFile(xml_document& doc,const string& filePath) const;
 };

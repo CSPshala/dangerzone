@@ -202,9 +202,20 @@ bool RawInputParser::ReadControlConfig()
 		m_currentKeyboardControls = nullptr;
 	}
 
+	if(m_currentMouseControls)
+	{
+		delete m_currentMouseControls;
+		m_currentMouseControls = nullptr;
+	}
+
 	if(m_currentKeyboardControls == nullptr)
 	{
 		m_currentKeyboardControls = new deque<pair<int,pair<int,bool> > >;
+	}
+
+	if(m_currentMouseControls == nullptr)
+	{
+		m_currentMouseControls = new deque<pair<int,pair<int,bool> > >;
 	}
 
 	// Load in control key vector
@@ -222,7 +233,14 @@ bool RawInputParser::ReadControlConfig()
 	// Line by line
 	while(!configFile.eof())
 	{
+		bool isMouse = false;
+
 		configFile.get(keyBuff,30,':');
+
+		// check for mouse (fuck off I didn't wanna fix the \n issue)
+		if( strcmp(keyBuff,"mouse") == 0 || strcmp(&keyBuff[1],"mouse") == 0 )
+			isMouse = true;
+
 		configFile.get(keyBuff,30);
 
 		//Paranoid check
@@ -232,9 +250,16 @@ bool RawInputParser::ReadControlConfig()
 		char* context = nullptr;
 		char* tokPos = strtok_s(&keyBuff[1]," ",&context);
 		string command(tokPos);
-		string key(context);		
+		string key(context);
 
-		m_currentKeyboardControls->push_back(FindKeyAndEventValue(command,key));		
+		if(!isMouse)
+		{
+			m_currentKeyboardControls->push_back(FindKeyAndEventValue(command,key));
+		}
+		else
+		{
+			m_currentMouseControls->push_back(FindKeyAndEventValueMouse(command,key));
+		}
 	}
 
 	configFile.close();
@@ -271,23 +296,23 @@ void RawInputParser::HandleMouseInput(PRAWINPUT input)
 	mMouseDeltaX += input->data.mouse.lLastX;
 	mMouseDeltaY += input->data.mouse.lLastY;
 
-	// Do some bitshifting magic to check flags RI_MOUSE_LEFT_BUTTON_DOWN   0x0001 to
-	// RI_MOUSE_BUTTON_5_UP        0x0200 buffer check and send event if need be	
-	const int shifts = NUM_MOUSE_BUTTONS * 2;
-	int count = 0;
-	for(unsigned int i = 0; i < shifts; i += 2, ++count)
+	// Early out if we have no flags raised for mouse buttons
+	if(input->data.mouse.ulButtons == 0)
+		return;
+
+	deque<pair<int,pair<int,bool> > >::iterator iter = m_currentMouseControls->begin();
+	for(;iter != m_currentMouseControls->end(); ++iter)
 	{
-		int bitCheck = (1 << i);
-		if((input->data.mouse.ulButtons & bitCheck) && (m_mouseButtonStatus[count] == true))
+		if((input->data.mouse.ulButtons & (*iter).second.first) && (*iter).second.second == true)
 			continue;
-		if((input->data.mouse.ulButtons & bitCheck) == 0 && (m_mouseButtonStatus[count] == false))
+		if((input->data.mouse.ulButtons & (*iter).second.first) == 0 && (*iter).second.second == false)
 			continue;
 
-		// Toggle down flag
-		m_mouseButtonStatus[count] = !m_mouseButtonStatus[count];
+		// Toggle button flag
+		(*iter).second.second = !(*iter).second.second;
 
-		// Send click event (8 = first click event), last client = mouse
-		InputEventSystem::GetInstance()->SendEvent(8 + count,InputEventSystem::NUM_ALLOWED_PLAYERS - 1);		
+		//HAX: Send our mouse button event (the last player is mouse for now)
+		InputEventSystem::GetInstance()->SendEvent((*iter).first, InputEventSystem::NUM_ALLOWED_PLAYERS - 1);
 	}
 }
 
@@ -322,6 +347,35 @@ pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, s
 		if(key == m_controlKeys[i].first)
 		{
 			eventAndKey.second.first = m_controlKeys[i].second;
+			eventAndKey.second.second = false;
+		}
+	}
+	
+	return eventAndKey;
+}
+
+pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValueMouse(string command, string key)
+{
+	pair<int,pair<int,bool> > eventAndKey;
+
+	// Event code
+	if(command == "click1")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK1);
+	else if(command == "click2")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK2);
+	else if(command == "click3")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK3);
+	else if(command == "click4")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK4);
+	else if(command == "click5")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK5);
+
+	// Keycode for command
+	for(unsigned int i = 0; i < m_mouseControlKeys.size(); ++i)
+	{
+		if(key == m_mouseControlKeys[i].first)
+		{
+			eventAndKey.second.first = m_mouseControlKeys[i].second;
 			eventAndKey.second.second = false;
 		}
 	}
