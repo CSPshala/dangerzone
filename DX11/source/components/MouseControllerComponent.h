@@ -35,7 +35,7 @@ public:
     virtual void RecieveComponentMessage(CompMessage* message);
 	virtual void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
-	virtual void ReceiveAndHandleEvent(int event) {};
+	virtual void ReceiveAndHandleEvent(int event);
 	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo& event) {};
 	virtual void ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event);
 	/********** Public Accessors ************/
@@ -46,13 +46,18 @@ public:
 
 	/********** Public Mutators  ************/	
 
+	/********** Public Enum ****************/
+	enum InputFlags{MB1 = 1, MB2 = 2, MB3 = 4, MB4 = 8, MB5 = 16, MB6 = 32};
+
 private:
 	/********** Private Members ************/
-	static const string MOUSE_CONTROLLER_COMPONENT_NAME;
+	static const string MOUSE_CONTROLLER_COMPONENT_NAME;	
 	
 	float mLastPosX, mLastPosY;
 	int mDeltaX, mDeltaY;
 	float mMouseSens;
+	// Vector for mouse button states
+	int mButtonFlags;
 
 	/********** Private Accessors ************/
 

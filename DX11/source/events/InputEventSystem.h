@@ -67,9 +67,10 @@ public:
 	/********** Public Mutators  ************/	
 
 	/********** Public Event Enum *****************/
-	enum Events {INVALID = 0, UP ,DOWN,LEFT,RIGHT,JUMP,ATTACK,QUIT,LAST_EVENT};
+	enum Events {INVALID = 0, UP ,DOWN,LEFT,RIGHT,JUMP,ATTACK,QUIT,CLICK1,CLICK2,
+		CLICK3,CLICK4,CLICK5,LAST_EVENT};
 	
-	static const int NUM_ALLOWED_PLAYERS;	
+	static const int NUM_ALLOWED_PLAYERS;
 	static const int NUM_ALLOWED_MICE;
 
 private:

@@ -49,12 +49,14 @@ public:
 private:
 	/********** Private Members ************/
 	static const int NUM_RAW_DEVICES;
+	static const int NUM_MOUSE_BUTTONS;
 
 	RAWINPUTDEVICE* m_rawDevices;
 	queue<RAWINPUT> m_inputQueue;
 	//RAWINPUT		m_inputBuffer;
 	bool			m_receivedInput;
 	deque<pair<int,pair<int,bool> > >*		m_currentControls;
+	vector<bool> m_mouseButtonStatus;
 	vector<string>  m_controlKeys;
 	// Keeps track of mouse delta this frame
 	int mMouseDeltaX, mMouseDeltaY;

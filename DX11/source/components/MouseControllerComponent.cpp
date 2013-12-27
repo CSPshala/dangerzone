@@ -22,7 +22,7 @@ const string MouseControllerComponent::MOUSE_CONTROLLER_COMPONENT_NAME("mouse_co
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 MouseControllerComponent::MouseControllerComponent(int componentType, int componentID): 
-	mLastPosX(0.0f), mLastPosY(0.0f), mDeltaX(0), mDeltaY(0), mMouseSens(1.0),
+	mLastPosX(0.0f), mLastPosY(0.0f), mDeltaX(0), mDeltaY(0), mMouseSens(1.0), mButtonFlags(0),
 	IComponent(componentType,componentID), IInputEventProcessor()
 {
 }
@@ -63,6 +63,38 @@ void MouseControllerComponent::UnRegisterForMessages()
 {
 }
 
+void MouseControllerComponent::ReceiveAndHandleEvent(int event)
+{
+	switch(event)
+	{
+	case InputEventSystem::CLICK1:
+		{
+			cout << "Clicked MOUSE1\n";
+		}
+		break;
+	case InputEventSystem::CLICK2:
+		{
+			cout << "Clicked MOUSE2\n";
+		}
+		break;
+	case InputEventSystem::CLICK3:
+		{
+			cout << "Clicked MOUSE3\n";
+		}
+		break;
+	case InputEventSystem::CLICK4:
+		{
+			cout << "Clicked MOUSE4\n";
+		}
+		break;
+	case InputEventSystem::CLICK5:
+		{
+			cout << "Clicked MOUSE5\n";
+		}
+		break;
+	}
+}
+
 void MouseControllerComponent::ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event)
 {
 	mDeltaX = event.mDeltaX;
@@ -80,7 +112,7 @@ bool MouseControllerComponent::LoadComponentAttributes(xml_node& component)
 		return false;
 	}
 
-	// Register for mouse events
+	// Register for mouse move and generic events
 	InputEventSystem::GetInstance()->RegisterMouseProcessor(this);
 
 	return true;

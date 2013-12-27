@@ -25,6 +25,7 @@ using namespace std;
 
 // Two raw devices atm (mouse/keyboard)
 const int RawInputParser::NUM_RAW_DEVICES(2);
+const int RawInputParser::NUM_MOUSE_BUTTONS(5);
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
@@ -34,6 +35,10 @@ RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(null
 {
 	// Allocate for keyboard and mouse only for now
 	m_rawDevices = new RAWINPUTDEVICE[NUM_RAW_DEVICES];
+
+	// Add bools for buffering mouse input button status
+	for(unsigned int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
+		m_mouseButtonStatus.push_back(false);
 
 	// Derp
 	LoadControlKeys();
@@ -239,6 +244,25 @@ void RawInputParser::HandleMouseInput(PRAWINPUT input)
 {
 	mMouseDeltaX += input->data.mouse.lLastX;
 	mMouseDeltaY += input->data.mouse.lLastY;
+
+	// Do some bitshifting magic to check flags RI_MOUSE_LEFT_BUTTON_DOWN   0x0001 to
+	// RI_MOUSE_BUTTON_5_UP        0x0200 buffer check and send event if need be	
+	const int shifts = NUM_MOUSE_BUTTONS * 2;
+	int count = 0;
+	for(unsigned int i = 0; i < shifts; i += 2, ++count)
+	{
+		int bitCheck = (1 << i);
+		if((input->data.mouse.ulButtons & bitCheck) && (m_mouseButtonStatus[count] == true))
+			continue;
+		if((input->data.mouse.ulButtons & bitCheck) == 0 && (m_mouseButtonStatus[count] == false))
+			continue;
+
+		// Toggle down flag
+		m_mouseButtonStatus[count] = !m_mouseButtonStatus[count];
+
+		// Send click event (8 = first click event), last client = mouse
+		InputEventSystem::GetInstance()->SendEvent(8 + count,InputEventSystem::NUM_ALLOWED_PLAYERS - 1);		
+	}
 }
 
 pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, string key)
@@ -260,6 +284,10 @@ pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, s
 		eventAndKey.first = static_cast<int>(InputEventSystem::ATTACK);
 	else if(command == "quit")
 		eventAndKey.first = static_cast<int>(InputEventSystem::QUIT);
+	else if(command == "click1")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK1);
+	else if(command == "click2")
+		eventAndKey.first = static_cast<int>(InputEventSystem::CLICK2);
 
 
 	// Keycode for command

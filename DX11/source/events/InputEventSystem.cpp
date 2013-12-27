@@ -17,7 +17,7 @@
 //				MISC
 ////////////////////////////////////////
 InputEventSystem* InputEventSystem::m_instance = nullptr;
-const int InputEventSystem::NUM_ALLOWED_PLAYERS(4);
+const int InputEventSystem::NUM_ALLOWED_PLAYERS(5); // Change this, it's really how many HIDs are here
 const int InputEventSystem::NUM_ALLOWED_MICE(1);
 
 ///////////////////////////////////////////////
@@ -65,6 +65,16 @@ void InputEventSystem::RegisterMouseProcessor(IInputEventProcessor* toRegister)
 	{
 		LOG("InputEventSystem tried to register an InputEventProcessor (MOUSE) with an existing player# :" << toRegister->getPlayerNumber() );
 	}
+
+	//HAX: Also registers the processor for generic events using mouse (player) number + 3 (for a "5th" player or device)
+	if(m_clients[toRegister->getPlayerNumber() + 3] == nullptr)
+	{
+		m_clients[toRegister->getPlayerNumber() + 3] = toRegister;
+	}
+	else
+	{
+		LOG("InputEventSystem tried to register an InputEventProcessor (MOUSE BUTTONS) with an existing player# :" << toRegister->getPlayerNumber() );
+	}
 }
 
 void InputEventSystem::UnRegisterProcessor(IInputEventProcessor* toUnRegister)
@@ -105,6 +115,23 @@ void InputEventSystem::UnRegisterMouseProcessor(IInputEventProcessor* toUnRegist
 	{
 		LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor (MOUSE) with player# :" << toUnRegister->getPlayerNumber() );
 	}
+
+	// Only 4 are allowed currently, remove based on player number
+	if(m_clients[toUnRegister->getPlayerNumber() + 3] != nullptr)	
+	{
+		if(m_clients[toUnRegister->getPlayerNumber() + 3] == toUnRegister)
+		{
+			m_clients[toUnRegister->getPlayerNumber() + 3] = nullptr;	
+		}
+		else
+		{
+			LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor (MOUSE BUTTONS) with a Registered player# :" << toUnRegister->getPlayerNumber() );
+		}
+	}
+	else
+	{
+		LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor (MOUSE BUTTONS) with player# :" << toUnRegister->getPlayerNumber() );
+	}
 }
 
 void InputEventSystem::SendEvent(int event,int clientNumber)
@@ -124,21 +151,8 @@ void InputEventSystem::SendMouseEvent(MouseInfo& eventData, int clientNumber)
 
 bool InputEventSystem::ProcessEvents()
 {	
-	// Bail if there's no events
-	if(m_events.size() != 0)
-	{	
-		for( deque<pair<int,int>>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
-		{
-			if((*eventIter).first == InputEventSystem::QUIT)
-				return false;
-
-			if(m_clients[(*eventIter).second])
-				m_clients[(*eventIter).second]->ReceiveAndHandleEvent((*eventIter).first);
-		}
-
-		// We've sent all of our events, clear the event queue
-		m_events.clear();
-	}
+	// Joystick and mouse events are done before generic events so they can
+	// utilize generic event sending themselves (eg mice can send "attack" events on mouse 1)
 
 	if(m_joystickEvents.size() != 0)
 	{
@@ -160,6 +174,22 @@ bool InputEventSystem::ProcessEvents()
 		}
 
 		m_mouseEvents.clear();
+	}
+
+	// Bail if there's no events
+	if(m_events.size() != 0)
+	{	
+		for( deque<pair<int,int>>::iterator eventIter = m_events.begin(); eventIter != m_events.end(); ++eventIter)	
+		{
+			if((*eventIter).first == InputEventSystem::QUIT)
+				return false;
+
+			if(m_clients[(*eventIter).second])
+				m_clients[(*eventIter).second]->ReceiveAndHandleEvent((*eventIter).first);
+		}
+
+		// We've sent all of our events, clear the event queue
+		m_events.clear();
 	}
 
 	return true;
