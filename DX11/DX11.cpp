@@ -28,6 +28,7 @@ LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 HWND MakeWindow(HINSTANCE hInstance);
 int  FindOsVersion();
+void ClampMouseToWindow();
 
 // Raw input reader
 RawInputParser g_RawInputParser;
@@ -101,6 +102,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	// Register for input
 	g_RawInputParser.RegisterForRawInput();
+
+	// Clamp mouse
+	ClampMouseToWindow();
 
 	while(WindowGlobals::g_hWnd)
 	{
@@ -287,4 +291,11 @@ int  FindOsVersion()
 	{
 		return -1;
 	}
+}
+
+void ClampMouseToWindow()
+{
+	RECT windRect;
+	GetWindowRect(WindowGlobals::g_hWnd,&windRect);
+	ClipCursor(&windRect);
 }
