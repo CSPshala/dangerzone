@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"PlayerControllerComponent.h"
+//	File Name	:	"MouseControllerComponent.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Component to handle an entity's input from players
+//	Purpose		:	Handles mouse input on an entity
 ///////////////////////////////////////////////////////////////////////////
-#ifndef _PLAYERCONTROLLERCOMPONENT_H
-#define _PLAYERCONTROLLERCOMPONENT_H
+#ifndef _MOUSECONTROLLERCOMPONENT_H
+#define _MOUSECONTROLLERCOMPONENT_H
 
 ////////////////////////////////////////
 //				INCLUDES
@@ -22,14 +22,12 @@
 ////////////////////////////////////////
 
 
-class PlayerControllerComponent : public IComponent, public IInputEventProcessor
+class MouseControllerComponent : public IComponent, public IInputEventProcessor
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	/** Component typbe MUST be set at construction 
-	    based on data driven component type ID from LevelLoader */
-	PlayerControllerComponent(int componentType, int componentID = -1);
-	~PlayerControllerComponent();
+	MouseControllerComponent(int componentType, int componentID = -1);
+	~MouseControllerComponent();
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
 	virtual void RegisterForMessages();
@@ -37,28 +35,24 @@ public:
     virtual void RecieveComponentMessage(CompMessage* message);
 	virtual void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
-	virtual void ReceiveAndHandleEvent(int event);
-	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo& event);
-	virtual void ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event) {};
+	virtual void ReceiveAndHandleEvent(int event) {};
+	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo& event) {};
+	virtual void ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event);
 	/********** Public Accessors ************/
 	virtual string getComponentName();	
+	/********** Public Utility Functions ************/
+
+	/********** Public Accessors ************/
 
 	/********** Public Mutators  ************/	
 
-	/********** Public Enum ****************/
-	enum InputFlags{UP = 1, DOWN = 2, LEFT = 4, RIGHT = 8, JUMP = 16, ATTACK = 32};
-
 private:
 	/********** Private Members ************/
-	static const string PLAYER_CONTROLLER_COMPONENT_NAME;
-	static const float  PLAYER_MOVEMENT_VELOCITY;	
-
-	// Input specific flags and values
-	float m_LSXMod, m_RSXMod;
-	float m_LSYMod, m_RSYMod;
-	bool  m_keyMove; // Toggles joystick movement off if keyboard input is detected
-
-	int  m_inputFlags; // Each bit corresponds to  forwards or backwards velocity
+	static const string MOUSE_CONTROLLER_COMPONENT_NAME;
+	
+	float mLastPosX, mLastPosY;
+	int mDeltaX, mDeltaY;
+	float mMouseSens;
 
 	/********** Private Accessors ************/
 

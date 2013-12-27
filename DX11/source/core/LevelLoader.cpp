@@ -42,6 +42,7 @@
 #include "../components/PlayerControllerComponent.h"
 #include "../components/RenderComponent.h"
 #include "../components/CollisionComponent.h"
+#include "../components/MouseControllerComponent.h"
 #include "LevelLoader.h"
 #include "WorldManager.h"
 
@@ -269,11 +270,11 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 			catch(std::invalid_argument& ia)
 			{				
-				LOG("A new component could not be allocated. invalid_argument caught: " << ia.what());			
+				LOG("A new player controller component could not be allocated. invalid_argument caught: " << ia.what());			
 			}
 			catch(std::bad_alloc& ba)
 			{				
-				LOG("A new component could not be allocated. bad_alloc caught: " << ba.what());				
+				LOG("A new player controller component could not be allocated. bad_alloc caught: " << ba.what());				
 			}
 		}
 		break;
@@ -285,11 +286,11 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 			catch(std::invalid_argument& ia)
 			{				
-				LOG("A new entity could not be allocated. invalid_argument caught: " << ia.what());		
+				LOG("A new render component could not be allocated. invalid_argument caught: " << ia.what());		
 			}
 			catch(std::bad_alloc& ba)
 			{				
-				LOG("A new entity could not be allocated. bad_alloc caught: " << ba.what());		
+				LOG("A new render component be allocated. bad_alloc caught: " << ba.what());		
 			}
 		}
 		break;
@@ -301,14 +302,30 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 			catch(std::invalid_argument& ia)
 			{				
-				LOG("A new entity could not be allocated. invalid_argument caught: " << ia.what());		
+				LOG("A new collision component could not be allocated. invalid_argument caught: " << ia.what());		
 			}
 			catch(std::bad_alloc& ba)
 			{				
-				LOG("A new entity could not be allocated. bad_alloc caught: " << ba.what());		
+				LOG("A new collision component could not be allocated. bad_alloc caught: " << ba.what());		
 			}
         }
         break;
+	case ENUMS::COMPONENTS::MOUSE_CONTROLLER:
+		{
+			try
+			{
+				component = new MouseControllerComponent(ENUMS::COMPONENTS::MOUSE_CONTROLLER,m_nextComponentID++);
+			}
+			catch(std::invalid_argument& ia)
+			{				
+				LOG("A new mouse controller component could not be allocated. invalid_argument caught: " << ia.what());		
+			}
+			catch(std::bad_alloc& ba)
+			{				
+				LOG("A new mouse controller component could not be allocated. bad_alloc caught: " << ba.what());		
+			}
+		}
+		break;
 	}
 
 	return component;

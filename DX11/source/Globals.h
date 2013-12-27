@@ -61,7 +61,7 @@ namespace ENUMS
 {
 	// Add enums here for created components
 	namespace COMPONENTS {
-		enum {PLAYER_CONTROLLER = 0, RENDERING, COLLISION, INVALID_COMPONENT};
+		enum {PLAYER_CONTROLLER = 0, RENDERING, COLLISION, MOUSE_CONTROLLER, INVALID_COMPONENT};
 	};
 };
 

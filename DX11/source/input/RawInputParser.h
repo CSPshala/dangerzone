@@ -51,10 +51,13 @@ private:
 	static const int NUM_RAW_DEVICES;
 
 	RAWINPUTDEVICE* m_rawDevices;
-	LPBYTE		    m_inputBuffer[40];
+	queue<RAWINPUT> m_inputQueue;
+	//RAWINPUT		m_inputBuffer;
 	bool			m_receivedInput;
 	deque<pair<int,pair<int,bool> > >*		m_currentControls;
 	vector<string>  m_controlKeys;
+	// Keeps track of mouse delta this frame
+	int mMouseDeltaX, mMouseDeltaY;
 
 	/********** Private Accessors ************/
 

@@ -23,12 +23,14 @@ using namespace std;
 // Mouse: http://msdn.microsoft.com/en-us/library/windows/desktop/ms645578(v=vs.85).aspx
 // Keyboard: http://msdn.microsoft.com/en-us/library/windows/desktop/ms645575(v=vs.85).aspx
 
-const int RawInputParser::NUM_RAW_DEVICES(1);
+// Two raw devices atm (mouse/keyboard)
+const int RawInputParser::NUM_RAW_DEVICES(2);
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(nullptr), m_receivedInput(false)
+RawInputParser::RawInputParser() : m_rawDevices(nullptr), m_currentControls(nullptr), m_receivedInput(false),
+	mMouseDeltaX(0), mMouseDeltaY(0)
 {
 	// Allocate for keyboard and mouse only for now
 	m_rawDevices = new RAWINPUTDEVICE[NUM_RAW_DEVICES];
@@ -58,15 +60,15 @@ RawInputParser::~RawInputParser()
 ////////////////////////////////////////
 void RawInputParser::RegisterForRawInput()
 {        
- //   m_rawDevices[0].usUsagePage = 0x01; 
- //   m_rawDevices[0].usUsage = 0x02; 
-	//m_rawDevices[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
- //   m_rawDevices[0].hwndTarget = 0;
-
     m_rawDevices[0].usUsagePage = 0x01; 
-    m_rawDevices[0].usUsage = 0x06; 
-    m_rawDevices[0].dwFlags = RIDEV_NOLEGACY | RIDEV_APPKEYS;   // adds HID keyboard and also ignores legacy keyboard messages
+    m_rawDevices[0].usUsage = 0x02; 
+	m_rawDevices[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
     m_rawDevices[0].hwndTarget = 0;
+
+    m_rawDevices[1].usUsagePage = 0x01; 
+    m_rawDevices[1].usUsage = 0x06; 
+    m_rawDevices[1].dwFlags = RIDEV_NOLEGACY | RIDEV_APPKEYS;   // adds HID keyboard and also ignores legacy keyboard messages
+    m_rawDevices[1].hwndTarget = 0;
 
 	if (RegisterRawInputDevices(m_rawDevices, NUM_RAW_DEVICES, sizeof(m_rawDevices[0])) == FALSE) {
         //registration failed. Call GetLastError for the cause of the error
@@ -76,32 +78,58 @@ void RawInputParser::RegisterForRawInput()
 
 void RawInputParser::ReadInput(LPARAM lParam)
 {
-    UINT dwSize = 40;
+    static UINT dwSize = sizeof(RAWINPUT);
+	RAWINPUT input;
 
-	if(GetRawInputData((HRAWINPUT)lParam, RID_INPUT, &m_inputBuffer, &dwSize, sizeof(RAWINPUTHEADER)) > 0)	
-		m_receivedInput = true;	
+	if(GetRawInputData((HRAWINPUT)lParam, RID_INPUT, &input, &dwSize, sizeof(RAWINPUTHEADER)) > 0)	
+	{
+		m_inputQueue.push(input);
+	}
 }
 
 void RawInputParser::ProcessInput()
 {
-	if(!m_receivedInput)
+	if(m_inputQueue.size() == 0)
 		return;
 
-	// Pointer to current data
-	RAWINPUT* current = (RAWINPUT*)m_inputBuffer;
+	bool sendMouseInfo = false;
 
-	if(current->header.dwType == RIM_TYPEKEYBOARD) 
-	{        
-		// DO stuff
-		HandleKeyboardInput(current);
-	}
-	else if(current->header.dwType == RIM_TYPEMOUSE) 
+	while(m_inputQueue.size() > 0)
 	{
-		//DO stuff
-		HandleMouseInput(current);
-	}   	
-	
-	m_receivedInput = false;
+		// Pointer to current data
+		RAWINPUT* current = (RAWINPUT*)&m_inputQueue.front();		
+
+		switch(current->header.dwType)
+		{
+		case RIM_TYPEKEYBOARD:
+			{
+				HandleKeyboardInput(current);
+			}
+			break;
+		case RIM_TYPEMOUSE:
+			{
+				HandleMouseInput(current);
+				sendMouseInfo = true;
+			}
+			break;
+		default:
+			{
+				LOG("RawInputParser received invalid input buffer type.");
+			}
+			break;
+		}
+
+		m_inputQueue.pop();
+	}
+
+	if(sendMouseInfo)
+	{
+		InputEventSystem::MouseInfo info;
+		info.mDeltaX = mMouseDeltaX;
+		info.mDeltaY = mMouseDeltaY;
+		InputEventSystem::GetInstance()->SendMouseEvent(info);
+		mMouseDeltaX = mMouseDeltaY = 0;
+	}
 }
 
 void RawInputParser::RestartInput()
@@ -209,6 +237,8 @@ void RawInputParser::HandleKeyboardInput(PRAWINPUT input)
 
 void RawInputParser::HandleMouseInput(PRAWINPUT input)
 {
+	mMouseDeltaX += input->data.mouse.lLastX;
+	mMouseDeltaY += input->data.mouse.lLastY;
 }
 
 pair<int,pair<int,bool> > RawInputParser::FindKeyAndEventValue(string command, string key)

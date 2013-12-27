@@ -2,4 +2,5 @@
 	<component typeName="player_controller" type="0" />
 	<component typeName="rendering" type="1" />
 	<component typeName="collision" type="2" />
+	<component typeName="mouse_controller" type="3" />
 </validComponents>

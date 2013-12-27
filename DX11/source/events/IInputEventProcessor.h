@@ -36,7 +36,8 @@ public:
 		NOTE: Entities are entirely responsible for unregistering **/
 	void UnRegisterForEvents();
 	virtual void ReceiveAndHandleEvent(int event) = 0;
-	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo event) = 0;
+	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo& event) = 0;
+	virtual void ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event) = 0;
 	/********** Public Accessors ************/
 	int	getPlayerNumber();
 	/********** Public Mutators  ************/	

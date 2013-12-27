@@ -105,7 +105,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	while(WindowGlobals::g_hWnd)
 	{
 		// Main message loop:
-		if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		while(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			if(msg.message == WM_QUIT) break;
 
@@ -114,6 +114,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
 		g_XbInputParser.ReadInput();
 
 		g_RawInputParser.ProcessInput();

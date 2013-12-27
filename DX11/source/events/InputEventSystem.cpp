@@ -18,6 +18,7 @@
 ////////////////////////////////////////
 InputEventSystem* InputEventSystem::m_instance = nullptr;
 const int InputEventSystem::NUM_ALLOWED_PLAYERS(4);
+const int InputEventSystem::NUM_ALLOWED_MICE(1);
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
@@ -26,8 +27,11 @@ InputEventSystem::InputEventSystem()
 {
 	// Add 4 nullptrs to client vector for unconnected controllers
 	for(int i = 0; i < NUM_ALLOWED_PLAYERS; ++i)	
-		m_clients.push_back(nullptr);	
+		m_clients.push_back(nullptr);
 
+	// Add 1 nullptr to mouse client vector for unconnected mice
+	for(int i = 0; i < NUM_ALLOWED_MICE; ++i)
+		m_mouseClients.push_back(nullptr);	
 }
 
 InputEventSystem::~InputEventSystem()
@@ -51,9 +55,21 @@ void InputEventSystem::RegisterProcessor(IInputEventProcessor* toRegister)
 
 }
 
+void InputEventSystem::RegisterMouseProcessor(IInputEventProcessor* toRegister)
+{
+	if(m_mouseClients[toRegister->getPlayerNumber() - 1] == nullptr)
+	{
+		m_mouseClients[toRegister->getPlayerNumber() - 1] = toRegister;
+	}
+	else
+	{
+		LOG("InputEventSystem tried to register an InputEventProcessor (MOUSE) with an existing player# :" << toRegister->getPlayerNumber() );
+	}
+}
+
 void InputEventSystem::UnRegisterProcessor(IInputEventProcessor* toUnRegister)
 {
-	// Only 4 are allowed currently, add based on player number
+	// Only 4 are allowed currently, remove based on player number
 	if(m_clients[toUnRegister->getPlayerNumber() - 1] != nullptr)	
 	{
 		if(m_clients[toUnRegister->getPlayerNumber() - 1] == toUnRegister)
@@ -71,14 +87,39 @@ void InputEventSystem::UnRegisterProcessor(IInputEventProcessor* toUnRegister)
 	}
 }
 
+void InputEventSystem::UnRegisterMouseProcessor(IInputEventProcessor* toUnRegister)
+{
+	// Only 1 is allowed currently, remove based on player number
+	if(m_mouseClients[toUnRegister->getPlayerNumber() - 1] != nullptr)
+	{
+		if(m_mouseClients[toUnRegister->getPlayerNumber() - 1] == toUnRegister)
+		{
+			m_mouseClients[toUnRegister->getPlayerNumber() - 1] = nullptr;	
+		}
+		else
+		{
+			LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor (MOUSE) with a Registered player# :" << toUnRegister->getPlayerNumber() );
+		}
+	}
+	else
+	{
+		LOG("InputEventSystem tried to UnRegister an UnRegistered InputEventProcessor (MOUSE) with player# :" << toUnRegister->getPlayerNumber() );
+	}
+}
+
 void InputEventSystem::SendEvent(int event,int clientNumber)
 {
 	m_events.push_back(pair<int,int>(event,clientNumber));
 }
 
-void InputEventSystem::SendJoystickEvent(JoystickInfo eventData, int clientNumber)
+void InputEventSystem::SendJoystickEvent(JoystickInfo& eventData, int clientNumber)
 {
 	m_joystickEvents.push_back(pair<JoystickInfo,int>(eventData,clientNumber));
+}
+
+void InputEventSystem::SendMouseEvent(MouseInfo& eventData, int clientNumber)
+{
+	m_mouseEvents.push_back(pair<MouseInfo,int>(eventData,clientNumber));
 }
 
 bool InputEventSystem::ProcessEvents()
@@ -106,6 +147,19 @@ bool InputEventSystem::ProcessEvents()
 			if(m_clients[(*joyIter).second])
 				m_clients[(*joyIter).second]->ReceiveAndHandleJoystickEvent((*joyIter).first);
 		}
+
+		m_joystickEvents.clear();
+	}
+
+	if(m_mouseEvents.size() != 0)
+	{
+		for( deque<pair<MouseInfo,int> >::iterator mouseIter = m_mouseEvents.begin(); mouseIter != m_mouseEvents.end(); ++mouseIter)
+		{
+			if(m_mouseClients[(*mouseIter).second])
+				m_mouseClients[(*mouseIter).second]->ReceiveAndHandleMouseEvent((*mouseIter).first);
+		}
+
+		m_mouseEvents.clear();
 	}
 
 	return true;
@@ -139,3 +193,13 @@ void InputEventSystem::DeleteInstance()
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS
 ////////////////////////////////////////
+
+InputEventSystem::JoystickInfo::JoystickInfo() : mLeftStickX(0), mLeftStickY(0),
+	mRightStickX(0), mRightStickY(0)
+{
+}
+
+InputEventSystem::MouseInfo::MouseInfo() : mDeltaX(0), mDeltaY(0), mMouse1(false),
+	mMouse2(false), mMouse3(false)
+{
+}

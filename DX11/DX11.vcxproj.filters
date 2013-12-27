@@ -135,6 +135,9 @@
     <ClInclude Include="source\shared\RenderComponentData.h">
       <Filter>Source Files\shared</Filter>
     </ClInclude>
+    <ClInclude Include="source\components\MouseControllerComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -208,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="source\shared\RenderComponentData.cpp">
       <Filter>Source Files\shared</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\MouseControllerComponent.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

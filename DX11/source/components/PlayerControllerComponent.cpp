@@ -103,21 +103,25 @@ void PlayerControllerComponent::ReceiveAndHandleEvent(int event)
 	{
 	case InputEventSystem::UP:
 		{
+			//7cout << "UP\n";
 			m_inputFlags ^= UP;
 		}
 		break;
 	case InputEventSystem::DOWN:
 		{
+			//cout << "DOWN\n";
 			m_inputFlags ^= DOWN;
 		}
 		break;
 	case InputEventSystem::LEFT:
 		{
+			//cout << "LEFT\n";
 			m_inputFlags ^= LEFT;
 		}
 		break;
 	case InputEventSystem::RIGHT:
 		{
+			//cout << "RIGHT\n";
 			m_inputFlags ^= RIGHT;
 		}
 		break;
@@ -137,7 +141,7 @@ void PlayerControllerComponent::ReceiveAndHandleEvent(int event)
 	m_keyMove = true;
 }
 
-void PlayerControllerComponent::ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo event)
+void PlayerControllerComponent::ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo& event)
 {
 	m_LSXMod = static_cast<float>(event.mLeftStickX) / 32768.0f;
 	m_LSYMod = -static_cast<float>(event.mLeftStickY) / 32768.0f;
