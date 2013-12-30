@@ -26,6 +26,7 @@ namespace Renderer
 ////////////////////////////////////////
 class Camera;
 class DiffuseContext;
+class OutlineBoxContext;
 class D3D;
 ////////////////////////////////////////
 //				MISC
@@ -93,6 +94,7 @@ private:
 
 	// Contexts
 	DiffuseContext* m_diffuseContext;
+	OutlineBoxContext* m_outlineBoxContext;
 	// Vector of textures for diffuse context
 	// Staging priority queue for render components
 	priority_queue<RenderComponentData*,vector<RenderComponentData*>,layerCompare> m_renderQueue;

@@ -67,6 +67,9 @@
     <ClInclude Include="dx11dllsource\dx11shared\RenderComponentData.h">
       <Filter>Source Files\dx11shared</Filter>
     </ClInclude>
+    <ClInclude Include="dx11dllsource\render contexts\OutlineBoxContext.h">
+      <Filter>Source Files\contexts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dx11rend.cpp">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="dx11dllsource\dx11shared\RenderComponentData.cpp">
       <Filter>Source Files\dx11shared</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\render contexts\OutlineBoxContext.cpp">
+      <Filter>Source Files\contexts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

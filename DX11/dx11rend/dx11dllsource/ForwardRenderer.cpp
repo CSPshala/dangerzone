@@ -298,8 +298,8 @@ bool FRenderer::layerCompare::operator() (const RenderComponentData* e1, const R
 		else
 			return false;
 	}		
-	// If not, compare layers
-	return e1->getLayer() < e2->getLayer();
+	// If not, compare layers (we want larger layer # on top, 0 == bottom)
+	return e1->getLayer() > e2->getLayer();
 }
 
 ////////////////////////////////////////
