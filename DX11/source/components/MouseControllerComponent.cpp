@@ -44,6 +44,10 @@ void MouseControllerComponent::Update(float deltaTime)
 	getParentEntity()->SetPositionX(mLastPosX + mDeltaX);
 	getParentEntity()->SetPositionY(mLastPosY + mDeltaY);
 
+	// Uncomment to see values realtime, mainly to tweak dead zones for stuff
+	//std::cout << "DeltaX: " << mDeltaX << '\n';
+	//std::cout << "DeltaY: " << mDeltaY << '\n';
+
 	mDeltaX = mDeltaY = 0;
 }
 
@@ -55,7 +59,11 @@ void MouseControllerComponent::ReceiveMessage(IMessage* message)
 {
 }
 
-void MouseControllerComponent::RecieveComponentMessage(CompMessage* message)
+void MouseControllerComponent::RegisterForLocalMessages()
+{
+}
+
+void MouseControllerComponent::ReceiveLocalMessage(CompMessage* message)
 {
 }
 

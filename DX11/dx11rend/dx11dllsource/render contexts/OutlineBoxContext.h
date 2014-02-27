@@ -1,9 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////
-//	File Name	:	"SpriteContext.h"
+//	File Name	:	"OutlineBoxContext.h"
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handles rendering of a sprite
+//	Purpose		:	Handles rendering of a selection box
 ///////////////////////////////////////////////////////////////////////////
 #ifndef _OUTLINEBOXCONTEXT_H
 #define _OUTLINEBOXCONTEXT_H
@@ -60,7 +60,7 @@ private:
 	bitmapVertex* m_vertexInfo;	
 
 	// Shaders
-	DiffuseShader* m_diffuseShade;
+	DiffuseShader* m_boxShade;
 
 	/********** Private Accessors ************/
 

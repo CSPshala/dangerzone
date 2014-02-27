@@ -34,7 +34,8 @@ public:
 	virtual void Update(float deltaTime);
 	void RegisterForMessages();
 	void ReceiveMessage(IMessage* message);
-    void RecieveComponentMessage(CompMessage* message);
+	void RegisterForLocalMessages();
+    void ReceiveLocalMessage(CompMessage* message);
 	void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
 	/********** Public Accessors ************/

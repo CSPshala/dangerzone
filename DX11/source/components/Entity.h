@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include <queue>
+#include <map>
 using namespace std;
 #include "../messaging/CMessages.h"
 ////////////////////////////////////////
@@ -36,6 +37,10 @@ public:
 	void AttachComponent(IComponent* component);
 	void RemoveComponent(IComponent* component);
 	void Update(float deltaTime);
+	void RegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
+	// Can be expensive, don't use too often
+	void UnRegisterForAllLocalMessages(IComponent* component);
+	void UnRegisterForMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
 	void SendLocalMessage(CompMessage* msg);
 
 	void Shutdown();
@@ -68,6 +73,8 @@ private:
 	/********** Private Members ************/
 		// List of components
 	deque<IComponent*> m_components;
+		// Map of LOCAL message types, and what components are registered to receive them
+	map<COMPONENT_MESSAGE_TYPE, deque<IComponent*> > m_localSubs;
 		// Unique entity ID
 	int m_ID;
 		// Entity name

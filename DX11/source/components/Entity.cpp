@@ -35,7 +35,10 @@ Entity::~Entity()
 ////////////////////////////////////////
 void Entity::AttachComponent(IComponent* component)
 {
+	// Register component's local messages	
 	m_components.push_back(component);
+	// Tell component to register itself.
+	component->ReceiveLocalMessage(&RegisterForLocalMsgs());
 }
 
 void Entity::RemoveComponent(IComponent* component)
@@ -57,11 +60,101 @@ void Entity::Update(float deltaTime)
 		(*iter)->Update(deltaTime);	
 }
 
+void Entity::RegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component)
+{
+	// Try to find the message type first
+	map<COMPONENT_MESSAGE_TYPE, deque<IComponent*> >::iterator findIter = m_localSubs.find(type);
+	if(findIter != m_localSubs.end())
+	{
+		// Check vector to make sure component dosen't exist
+		deque<IComponent*>::iterator subscIter = findIter->second.begin();
+		for(;subscIter != findIter->second.end(); ++subscIter)
+		{
+			if(*subscIter == component)
+			{
+				// Log then return, duplicate sub request
+				LOG("Component tried to register a second time for LOCAL message: " << type);
+				return;
+			}
+		}
+
+		// Add the component to the list of subscribers if we reach here, not a dupe sub
+		findIter->second.push_back(component);
+	}
+	else
+	{
+		// Add the msg type and the subscriber, msg does not exist yet in subs
+		deque<IComponent*> toAdd;
+		toAdd.push_back(component);
+		m_localSubs[type] = toAdd;
+	}
+}
+
+void Entity::UnRegisterForAllLocalMessages(IComponent* component)
+{
+	map<COMPONENT_MESSAGE_TYPE, deque<IComponent*> >::iterator mapIter = m_localSubs.begin();
+	for(;mapIter != m_localSubs.end(); ++mapIter)
+	{
+		deque<IComponent*>::iterator subscIter = mapIter->second.begin();
+		for(;subscIter != mapIter->second.end(); ++subscIter)
+		{
+			if((*subscIter) == component)
+			{
+				// Found it, remove it, continue to next subbed message type
+				mapIter->second.erase(subscIter);
+				break;
+			}
+		}
+	}
+}
+
+void Entity::UnRegisterForMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component)
+{
+	// Try to find the message type first
+	map<COMPONENT_MESSAGE_TYPE, deque<IComponent*> >::iterator findIter = m_localSubs.find(type);
+	if(findIter != m_localSubs.end())
+	{
+		// Remove the subscriber from this msg sub	
+		deque<IComponent*>::iterator subscIter = findIter->second.begin();
+		for(;subscIter != findIter->second.end(); ++subscIter)
+		{
+			if((*subscIter) == component)
+			{
+				// Found it, remove it, beat it
+				findIter->second.erase(subscIter);
+				return;
+			}
+		}
+
+		LOG("Component tried to unregister for a LOCAL message of type: " << type << " w/o subscribing.");
+	}
+	else
+	{
+		LOG("Component tried to unregister for a LOCAL message of type: " << type << " that dosen't exist.");
+	}
+}
+
 void Entity::SendLocalMessage(CompMessage* msg)
 {
-	for(deque<IComponent*>::iterator iter = m_components.begin(); iter != m_components.end(); ++iter)		
-		(*iter)->RecieveComponentMessage(msg);
+	// Get the vector of subscribers
+	map<COMPONENT_MESSAGE_TYPE, deque<IComponent*> >::iterator findIter = m_localSubs.find(msg->GetType());
+	if(findIter != m_localSubs.end())
+	{
+		// Send it to all the subs		
+		deque<IComponent*>::iterator subscIter = findIter->second.begin();
+		for(;subscIter != findIter->second.end(); ++subscIter)
+		{
+			(*subscIter)->ReceiveLocalMessage(msg);
+		}
+	}
+	else
+	{
+		// No component is subbed to this msg type, you're an asshole.
+		LOG("Component tried to send a LOCAL message of type: " << msg->GetType() << " with no subscribers.");
+	}
 }
+
+
 
 void Entity::Shutdown()
 {

@@ -49,7 +49,11 @@ void RenderComponent::ReceiveMessage(IMessage* message)
 {
 }
 
-void RenderComponent::RecieveComponentMessage(CompMessage* message)
+void RenderComponent::RegisterForLocalMessages()
+{
+}
+
+void RenderComponent::ReceiveLocalMessage(CompMessage* message)
 {
 }
 

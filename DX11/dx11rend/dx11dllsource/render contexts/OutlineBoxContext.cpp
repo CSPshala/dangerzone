@@ -3,7 +3,7 @@
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handles rendering of a sprite
+//	Purpose		:	Handles rendering of a selection box
 ///////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////
@@ -23,7 +23,7 @@ const int OutlineBoxContext::QUAD_VERT_COUNT(6);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-OutlineBoxContext::OutlineBoxContext() : m_vertexInfo(nullptr), m_diffuseShade(nullptr)
+OutlineBoxContext::OutlineBoxContext() : m_vertexInfo(nullptr), m_boxShade(nullptr)
 {
 	m_vertexInfo = new bitmapVertex[QUAD_VERT_COUNT * GraphicsGlobals::g_MaxRenderComponents];	
 }
@@ -47,19 +47,19 @@ bool OutlineBoxContext::Initialize(HWND hWnd)
 	result = InitializeBuffers();
 	if(!result)
 	{
-		MessageBox(hWnd, L"Could not initialize a sprite context.", L"Error", MB_OK);
+		MessageBox(hWnd, L"Could not initialize an OutlineBox context.", L"Error", MB_OK);
 		return false;
 	}
 
 	// Create the color shader object.
-	m_diffuseShade = new DiffuseShader("diffuse","diffuse");
-	if(!m_diffuseShade)
+	m_boxShade = new DiffuseShader("diffuse","diffuse");
+	if(!m_boxShade)
 	{
 		return false;
 	}
 
 	// Initialize the color shader object.
-	result = m_diffuseShade->Initialize(GraphicsGlobals::g_Device, hWnd);
+	result = m_boxShade->Initialize(GraphicsGlobals::g_Device, hWnd);
 	if(!result)
 	{
 		MessageBox(hWnd, L"Could not initialize the diffuse shader object.", L"Error", MB_OK);
@@ -78,11 +78,11 @@ void OutlineBoxContext::Shutdown()
 	}
 
 	// Release the color shader object.
-	if(m_diffuseShade)
+	if(m_boxShade)
 	{
-		m_diffuseShade->Shutdown();
-		delete m_diffuseShade;
-		m_diffuseShade = nullptr;
+		m_boxShade->Shutdown();
+		delete m_boxShade;
+		m_boxShade = nullptr;
 	}
 
 	IRenderContext::Shutdown();
@@ -188,7 +188,7 @@ void OutlineBoxContext::RenderBuffers()
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	GraphicsGlobals::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_diffuseShade->Render();
+	m_boxShade->Render();
 
 	m_entityCount = 0;
 }
@@ -198,7 +198,7 @@ void OutlineBoxContext::RenderBuffers()
 ////////////////////////////////////////
 DiffuseShader* OutlineBoxContext::GetShader()
 {
-	return m_diffuseShade;
+	return m_boxShade;
 }
 
 void OutlineBoxContext::AddRenderCompToCurrentRenderBuffer(RenderComponentData* component)

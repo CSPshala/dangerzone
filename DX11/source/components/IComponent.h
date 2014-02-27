@@ -36,9 +36,12 @@ public:
 
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime) = 0;	
+	// Register and all that is set to pure because I want all components
+	// to know and handle every message they need EXPLICITLY. Not by base class at all.
 	virtual void RegisterForMessages() = 0;
 	virtual void ReceiveMessage(IMessage* message) = 0;
-    virtual void RecieveComponentMessage(CompMessage* message) = 0;
+	virtual void RegisterForLocalMessages() = 0;
+    virtual void ReceiveLocalMessage(CompMessage* message) = 0;
 	virtual void UnRegisterForMessages() = 0;
 	virtual bool LoadComponentAttributes(xml_node& component) = 0;
 

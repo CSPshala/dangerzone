@@ -12,7 +12,8 @@
 class CollisionComponent;
 
 enum MESSAGE_TYPE{ REGISTER_FOR_COLLISION = 0, UNREGISTER_FOR_COLLISION, TOTAL_MESSAGE_COUNT};
-enum COMPONENT_MESSAGE_TYPE{ ENTITY_DIRTY = 0, TOTAL_COMPONENT_MESSAGES };
+enum COMPONENT_MESSAGE_TYPE{ ENTITY_REGISTER_LOCAL_MSGS = 0, ENTITY_UNREGISTER_LOCAL_MSGS, 
+	ENTITY_DIRTY, ENTITY_RESIZE, TOTAL_COMPONENT_MESSAGES };
 
 //*******MESSAGE INTERFACE*********/
 class IMessage
@@ -24,7 +25,7 @@ public:
 class CompMessage
 {
 public:
-    virtual int GetType() = 0;
+	virtual COMPONENT_MESSAGE_TYPE GetType() = 0;
 };
 
 // Message used to register a collision component for collisions
@@ -46,7 +47,23 @@ public:
 class EntityDirtyMsg : public CompMessage
 {
 public:
-    int GetType() {return ENTITY_DIRTY;}
+	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_DIRTY;}
+};
+
+class EntityResizeMsg : public CompMessage
+{
+	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_RESIZE;}
+};
+
+// Messages used to tell a component to register / unregister for local msgs
+class RegisterForLocalMsgs : public CompMessage
+{
+	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_REGISTER_LOCAL_MSGS;}
+};
+
+class UnRegisterForLocalMsgs : public CompMessage
+{
+	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_UNREGISTER_LOCAL_MSGS;}
 };
 
 #endif

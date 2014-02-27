@@ -50,7 +50,11 @@ void CollisionComponent::ReceiveMessage(IMessage* message)
 {
 }
 
-void CollisionComponent::RecieveComponentMessage(CompMessage* message)
+void CollisionComponent::RegisterForLocalMessages()
+{
+}
+
+void CollisionComponent::ReceiveLocalMessage(CompMessage* message)
 {
     if(message->GetType() == ENTITY_DIRTY)
         m_dirty = true;

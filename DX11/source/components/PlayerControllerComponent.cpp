@@ -72,7 +72,11 @@ void PlayerControllerComponent::ReceiveMessage(IMessage* message)
 {
 }
 
-void PlayerControllerComponent::RecieveComponentMessage(CompMessage* message)
+void PlayerControllerComponent::RegisterForLocalMessages()
+{
+}
+
+void PlayerControllerComponent::ReceiveLocalMessage(CompMessage* message)
 {
 }
 
