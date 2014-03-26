@@ -33,8 +33,7 @@ public:
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
 	virtual void RegisterForMessages();
-	virtual void ReceiveMessage(IMessage* message);
-	virtual void RegisterForLocalMessages();
+	virtual void ReceiveMessage(IMessage* message);	
     virtual void ReceiveLocalMessage(CompMessage* message);
 	virtual void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
@@ -58,6 +57,6 @@ private:
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-
+	virtual void RegisterForLocalMessages();
 };
 #endif

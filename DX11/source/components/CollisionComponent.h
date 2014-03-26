@@ -34,7 +34,6 @@ public:
 	virtual void Update(float deltaTime);
 	void RegisterForMessages();
 	void ReceiveMessage(IMessage* message);
-	void RegisterForLocalMessages();
     void ReceiveLocalMessage(CompMessage* message);
 	void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
@@ -65,6 +64,6 @@ private:
 
 	/********** Private Utility Functions ************/
     void CalculateAABB();
-
+	void RegisterForLocalMessages();
 };
 #endif
