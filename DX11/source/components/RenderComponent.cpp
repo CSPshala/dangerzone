@@ -53,10 +53,6 @@ void RenderComponent::RegisterForLocalMessages()
 {
 }
 
-void RenderComponent::ReceiveLocalMessage(CompMessage* message)
-{
-}
-
 void RenderComponent::UnRegisterForMessages()
 {
 }
@@ -78,7 +74,9 @@ bool RenderComponent::LoadComponentAttributes(xml_node& component)
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
-
+void RenderComponent::_ReceiveLocalMessage(CompMessage* message)
+{
+}
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////

@@ -1,6 +1,18 @@
+<!-- These message types are hard coded in the engine
+     don't fuck around w/ 'em if you don't know -->
+<messageTypes>
+	<message name="entity_dirty" value="2" />
+	<message name="entity_resize" value="3" />
+</messageTypes>
+
 <validComponents>
-	<component typeName="player_controller" type="0" />
-	<component typeName="rendering" type="1" />
-	<component typeName="collision" type="2" />
-	<component typeName="mouse_controller" type="3" />
+	<component typeName="player_controller" type="0">
+	</component>
+	<component typeName="rendering" type="1" >
+	</component>
+	<component typeName="collision" type="2" >
+		<messages name="entity_dirty"/>
+	</component>
+	<component typeName="mouse_controller" type="3" >
+	</component>
 </validComponents>

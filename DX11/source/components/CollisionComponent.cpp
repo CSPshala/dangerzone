@@ -54,12 +54,6 @@ void CollisionComponent::RegisterForLocalMessages()
 {
 }
 
-void CollisionComponent::ReceiveLocalMessage(CompMessage* message)
-{
-    if(message->GetType() == ENTITY_DIRTY)
-        m_dirty = true;
-}
-
 void CollisionComponent::UnRegisterForMessages()
 {
     // Tell collision system we're unregistered
@@ -86,6 +80,12 @@ void CollisionComponent::CalculateAABB()
     m_AABB.bottom = getParentEntity()->GetPositionY() + halfHeight;
     m_AABB.left = getParentEntity()->GetPositionX() - halfWidth;
     m_AABB.right = getParentEntity()->GetPositionX() + halfWidth;
+}
+
+void CollisionComponent::_ReceiveLocalMessage(CompMessage* message)
+{
+    if(message->GetType() == ENTITY_DIRTY)
+        m_dirty = true;
 }
 
 ////////////////////////////////////////

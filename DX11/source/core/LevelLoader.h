@@ -11,6 +11,7 @@
 ////////////////////////////////////////
 //				INCLUDES
 ////////////////////////////////////////
+#include "../messaging/CMessages.h"
 #include <string>
 #include <vector>
 #include "../xml/pugixml.hpp"
@@ -54,10 +55,24 @@ private:
 	/********** Private Members ************/
 	static const string VALID_COMPONENTS_FILEPATH;
 
+	struct CompPrototype
+	{
+		int		type;
+		string	typeName;
+		vector<COMPONENT_MESSAGE_TYPE> localMsgTypes;
+	};
+
+	struct MessageType
+	{
+		COMPONENT_MESSAGE_TYPE value;
+		string name;
+	};
+
 	// List of levels to load
 	vector<string> m_levelList;
 	vector<string> m_levelNames;
-	vector<pair<string,int> > m_validComponents;
+	vector<MessageType>  m_messages;
+	vector<CompPrototype> m_validComponents;
 	// Currently loaded level
 	int m_currentLevel;
 	// Unique Entity and component IDs for this world and level loader

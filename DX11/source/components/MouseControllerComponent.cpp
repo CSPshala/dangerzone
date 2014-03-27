@@ -63,10 +63,6 @@ void MouseControllerComponent::RegisterForLocalMessages()
 {
 }
 
-void MouseControllerComponent::ReceiveLocalMessage(CompMessage* message)
-{
-}
-
 void MouseControllerComponent::UnRegisterForMessages()
 {
 }
@@ -129,6 +125,9 @@ bool MouseControllerComponent::LoadComponentAttributes(xml_node& component)
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
+void MouseControllerComponent::_ReceiveLocalMessage(CompMessage* message)
+{
+}
 
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS

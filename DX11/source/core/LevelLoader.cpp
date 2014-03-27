@@ -133,8 +133,36 @@ bool LevelLoader::LoadInitialData(string filename)
 	if(!LoadXMLFile(doc,LevelLoader::VALID_COMPONENTS_FILEPATH))
 		return false;
 
-	for(xml_node component = doc.child("validComponents").child("component"); component; component = component.next_sibling("component"))	
-		m_validComponents.push_back(pair<string,int>(component.attribute("typeName").value(),component.attribute("type").as_int()));	
+	for(xml_node messages = doc.child("messageTypes").child("message"); messages; messages = messages.next_sibling("message"))
+	{
+		MessageType toAdd;
+		toAdd.name = messages.attribute("name").value();
+		toAdd.value = static_cast<COMPONENT_MESSAGE_TYPE>(messages.attribute("value").as_int());
+		m_messages.push_back(toAdd);
+	}
+
+	for(xml_node component = doc.child("validComponents").child("component"); component; component = component.next_sibling("component"))
+	{
+		CompPrototype toAdd;
+		toAdd.typeName = component.attribute("typeName").value();
+		toAdd.type = component.attribute("type").as_int();
+
+		// Add whatever messages are needed
+		for(xml_attribute_iterator messages = component.child("messages").attributes_begin(); 
+			messages != component.child("messages").attributes_end(); ++messages)
+		{
+			// Get attribute name and add value
+			for(unsigned int i = 0; i < m_messages.size(); ++i)
+			{
+				if(m_messages[i].name == messages->value())
+				{
+					toAdd.localMsgTypes.push_back(m_messages[i].value);
+				}
+			}
+		}
+
+		m_validComponents.push_back(toAdd);	
+	}
 
 
 	return true;
@@ -212,6 +240,15 @@ bool LevelLoader::LoadLevel(std::string filename)
 
 			component->setParentEntity(entity);
 
+			// Set component's default registered local messages
+			for(unsigned int i = 0; i < m_validComponents.size(); ++i)
+			{
+				if(m_validComponents[i].type == component->getComponentType())
+				{
+					component->setLocalMessagesToReceieve(m_validComponents[i].localMsgTypes);
+				}
+			}
+
 			if(!component->LoadComponentAttributes(componentNode))
 			{
 				LOG("Component couldn't load attributes for Entity: " << entityNode.attribute("name").as_string() <<
@@ -243,12 +280,12 @@ IComponent*	LevelLoader::FindAndCreateComponentType(const string type)
 
 	// Validate component type then allocate
 	const int num = m_validComponents.size();
-	const pair<string,int>* ptr = (num != 0) ? &m_validComponents.front() : NULL;
+	const CompPrototype* ptr = (num != 0) ? &m_validComponents.front() : NULL;
 	for(int i = 0; i < num; i++)
 	{
-		if(m_validComponents[i].first == type)
+		if(m_validComponents[i].typeName == type)
 		{
-			component = CreateComponentType(m_validComponents[i].second);
+			component = CreateComponentType(m_validComponents[i].type);
 			break;
 		}
 	}
@@ -363,12 +400,12 @@ int LevelLoader::GetComponentValue(string componentName)
 	// Fast vector iteration and access
 	int retVal = -1;
 	const int num = m_validComponents.size();
-	const pair<string,int>* ptr = (num != 0) ? &m_validComponents.front() : NULL;
+	const CompPrototype* ptr = (num != 0) ? &m_validComponents.front() : NULL;
 	for(int i = 0; i < num; i++)
 	{
-		if(m_validComponents[i].first == componentName)
+		if(m_validComponents[i].typeName == componentName)
 		{
-			retVal = m_validComponents[i].second;
+			retVal = m_validComponents[i].type;
 			break;
 		}
 	}

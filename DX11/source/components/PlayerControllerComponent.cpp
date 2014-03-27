@@ -76,10 +76,6 @@ void PlayerControllerComponent::RegisterForLocalMessages()
 {
 }
 
-void PlayerControllerComponent::ReceiveLocalMessage(CompMessage* message)
-{
-}
-
 void PlayerControllerComponent::UnRegisterForMessages()
 {
 }
@@ -170,6 +166,9 @@ void PlayerControllerComponent::ReceiveAndHandleJoystickEvent(InputEventSystem::
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
+void PlayerControllerComponent::_ReceiveLocalMessage(CompMessage* message)
+{
+}
 
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS

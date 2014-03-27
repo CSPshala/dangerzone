@@ -42,7 +42,7 @@ public:
 	// to know and handle every message they need EXPLICITLY. Not by base class at all.
 	virtual void RegisterForMessages() = 0;
 	virtual void ReceiveMessage(IMessage* message) = 0;	
-    virtual void ReceiveLocalMessage(CompMessage* message) = 0;
+    virtual void ReceiveLocalMessage(CompMessage* message);
 	virtual void UnRegisterForMessages() = 0;
 	virtual bool LoadComponentAttributes(xml_node& component) = 0;
 
@@ -55,6 +55,7 @@ public:
 	/********** Public Mutators  ************/		
 	void setComponentID(int id);
 	void setParentEntity(Entity* entity);	
+	void setLocalMessagesToReceieve(vector<COMPONENT_MESSAGE_TYPE>& messages);
 
 protected:
 	// Vector of messages to subscribe to upon receipt of ENTITY_REGISTER_LOCAL_MSG
@@ -75,6 +76,6 @@ private:
 
 	/********** Private Utility Functions ************/
 	virtual void RegisterForLocalMessages() = 0;
-
+	virtual void _ReceiveLocalMessage(CompMessage* message) = 0;
 };
 #endif
