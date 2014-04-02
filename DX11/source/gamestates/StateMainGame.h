@@ -14,6 +14,7 @@
 #include "IGamestate.h"
 #include "../core/WorldManager.h"
 #include "../core/LevelLoader.h"
+#include "../collision/CollisionManager.h"
 
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -51,6 +52,8 @@ private:
 	WorldManager m_worldManager;
 	// Level loader that populates world manager's levels
 	LevelLoader m_levelLoader;
+	// Collision manager handles well...collisions
+	CollisionManager m_collisionManager;
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/

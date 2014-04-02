@@ -64,7 +64,7 @@ bool MessageManager::Update(float deltaTime)
 {
 	deque<IMessage*>::iterator msgIter = m_messagesToSend.begin();
 
-	while(msgIter != m_messagesToSend.end())
+	for(;msgIter != m_messagesToSend.end(); ++msgIter)
 	{
 		int index = (*msgIter)->GetType();
 		deque<IMessageListener*>::iterator subIter = m_subscribers[index].begin();
@@ -75,7 +75,10 @@ bool MessageManager::Update(float deltaTime)
 		}
 		// Clean up this message
 		delete (*msgIter);
-		m_messagesToSend.erase(msgIter++);
+		msgIter = m_messagesToSend.erase(msgIter);
+
+		if(msgIter == m_messagesToSend.end())
+			break;
 	};
 
 	return true;

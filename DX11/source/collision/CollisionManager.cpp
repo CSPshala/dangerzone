@@ -60,6 +60,7 @@ void CollisionManager::UnRegisterForMessages()
 
 void CollisionManager::Initialize()
 {
+	RegisterForMessages();
 }
 
 void CollisionManager::Update(float deltaTime)
@@ -73,6 +74,7 @@ void CollisionManager::Update(float deltaTime)
 
 void CollisionManager::Shutdown()
 {
+	UnRegisterForMessages();
 }
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS

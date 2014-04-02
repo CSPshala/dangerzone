@@ -263,6 +263,9 @@ bool LevelLoader::LoadLevel(std::string filename)
 				delete component;
 				continue;
 			}
+
+			// Register the component for it's system messages (if any)
+			component->RegisterForMessages();
 			
 			entity->AttachComponent(component);
 		}

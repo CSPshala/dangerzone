@@ -106,8 +106,47 @@ void CollisionComponent::_ReceiveLocalMessage(CompMessage* message)
 
 void CollisionComponent::handleCollisions(CollidingMsg* message)
 {
+	// TODO: HANDLE MULTIPLE COLLISIONS IN ONE FRAME YOU FUCK
+	
+	// The correction vector
+	vec3<float> correctionVec;
+
+	// For now only handle the first collision
+	vec3<float> objectCenter = (*message->mCollidingWith)[0]->getParentEntity()->GetPosition();
+	rectangle objectRect = (*message->mCollidingWith)[0]->getAABB();
+
 	// Doing 2D AABB stuff, same as 3D w/o the 3, duhhhhhhhh #STEELRESERVE
-	//vec3<float> direction = 
+	vec3<float> direction = getParentEntity()->GetPosition() - objectCenter;
+
+	//Get extents
+	vec3<float> ExtentOne = this->getAABB().Max - getParentEntity()->GetPosition();
+	vec3<float> ExtentTwo = objectRect.Max - objectCenter;
+
+	float minPen = FLT_MAX;
+	int minAxis = 0;
+	float pen = 0.0f;
+
+	for(unsigned int i = 0; i < 2; ++i)
+	{
+		pen = (ExtentOne.v[i] + ExtentTwo.v[i]) - fabs(direction.v[i]);
+
+		// Make sure no correction on non overlapping objects
+		if(pen <= 0)
+			return;
+
+		if(pen < minPen)
+		{
+			minPen = pen;
+			minAxis = i;
+		}
+	}
+
+	if(direction.v[minAxis] < 0)
+		minPen = -minPen;
+
+	correctionVec.v[minAxis] = minPen;
+
+	getParentEntity()->SetPosition(getParentEntity()->GetPosition() + correctionVec);
 }
 
 bool CollisionComponent::isRectCollision(rectangle& rectOne, rectangle& rectTwo)
