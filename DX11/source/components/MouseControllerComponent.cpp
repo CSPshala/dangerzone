@@ -22,8 +22,7 @@ const string MouseControllerComponent::MOUSE_CONTROLLER_COMPONENT_NAME("mouse_co
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 MouseControllerComponent::MouseControllerComponent(int componentType, int componentID): 
-	mLastPosX(0.0f), mLastPosY(0.0f), mDeltaX(0), mDeltaY(0), mMouseSens(1.0), mButtonFlags(0),
-	IComponent(componentType,componentID), IInputEventProcessor()
+	mMouseSens(1.0), mButtonFlags(0), IComponent(componentType,componentID), IInputEventProcessor()
 {
 }
 
@@ -38,17 +37,17 @@ MouseControllerComponent::~MouseControllerComponent()
 ////////////////////////////////////////
 void MouseControllerComponent::Update(float deltaTime)
 {
-	mLastPosX = getParentEntity()->GetPositionX();
-	mLastPosY = getParentEntity()->GetPositionY();
+	mLastPos = getParentEntity()->GetPosition();
 
-	getParentEntity()->SetPositionX(mLastPosX + mDeltaX);
-	getParentEntity()->SetPositionY(mLastPosY + mDeltaY);
+	vec3<float> newPos(mLastPos.x + mDelta.x, mLastPos.y + mDelta.y, 0.0f);
+	
+	getParentEntity()->SetPosition(newPos);
 
 	// Uncomment to see values realtime, mainly to tweak dead zones for stuff
 	//std::cout << "DeltaX: " << mDeltaX << '\n';
 	//std::cout << "DeltaY: " << mDeltaY << '\n';
 
-	mDeltaX = mDeltaY = 0;
+	mDelta.make_zero();
 }
 
 void MouseControllerComponent::RegisterForMessages()
@@ -101,8 +100,8 @@ void MouseControllerComponent::ReceiveAndHandleEvent(int event)
 
 void MouseControllerComponent::ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event)
 {
-	mDeltaX = event.mDeltaX;
-	mDeltaY = event.mDeltaY;
+	mDelta.x = static_cast<float>(event.mDeltaX);
+	mDelta.y = static_cast<float>(event.mDeltaY);
 }
 
 bool MouseControllerComponent::LoadComponentAttributes(xml_node& component)

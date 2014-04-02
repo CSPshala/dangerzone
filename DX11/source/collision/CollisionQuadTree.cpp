@@ -27,10 +27,10 @@ const float CollisionQuadTree::SMALLEST_QUADRANT_SIZE(128);
 CollisionQuadTree::CollisionQuadTree(const float worldWidth, const float worldHeight) : m_RootNode(nullptr), m_OpStamp(0)
 {
 	m_RootNode = new Node;
-	m_RootNode->AABB.left = 0;
-	m_RootNode->AABB.right = worldWidth;
-	m_RootNode->AABB.top = 0;
-	m_RootNode->AABB.bottom = worldHeight;
+	m_RootNode->AABB.Min.x = 0.0f;
+	m_RootNode->AABB.Max.x = worldWidth;
+	m_RootNode->AABB.Min.y = 0.0f;
+	m_RootNode->AABB.Max.y = worldHeight;
 }
 
 CollisionQuadTree::~CollisionQuadTree()
@@ -73,33 +73,33 @@ bool CollisionQuadTree::createChildren(Node* parent)
 	}
 
 	// Get positions of splitting axis
-	float halfWidth = parent->AABB.left + (parent->AABB.Width() * 0.5f);
-	float halfHeight = parent->AABB.top + (parent->AABB.Height() * 0.5f);		
+	float halfWidth = parent->AABB.Min.x + (parent->AABB.Width() * 0.5f);
+	float halfHeight = parent->AABB.Min.y + (parent->AABB.Height() * 0.5f);		
 
 	parent->childOne = new Node;
-	parent->childOne->AABB.left = parent->AABB.left;
-	parent->childOne->AABB.right = halfWidth;
-	parent->childOne->AABB.top = parent->AABB.top;
-	parent->childOne->AABB.bottom = halfHeight;
+	parent->childOne->AABB.Min.x = parent->AABB.Min.x;
+	parent->childOne->AABB.Max.x = halfWidth;
+	parent->childOne->AABB.Min.y = parent->AABB.Min.y;
+	parent->childOne->AABB.Max.y = halfHeight;
 	
 
 	parent->childTwo = new Node;
-	parent->childTwo->AABB.left = halfWidth;
-	parent->childTwo->AABB.right = parent->AABB.right;
-	parent->childTwo->AABB.top = parent->AABB.top;
-	parent->childTwo->AABB.bottom = halfHeight;
+	parent->childTwo->AABB.Min.x = halfWidth;
+	parent->childTwo->AABB.Max.x = parent->AABB.Max.x;
+	parent->childTwo->AABB.Min.y = parent->AABB.Min.y;
+	parent->childTwo->AABB.Max.y = halfHeight;
 	
 	parent->childThree = new Node;
-	parent->childThree->AABB.left = parent->AABB.left;
-	parent->childThree->AABB.right = halfWidth;
-	parent->childThree->AABB.top = halfHeight;
-	parent->childThree->AABB.bottom = parent->AABB.bottom;
+	parent->childThree->AABB.Min.x = parent->AABB.Min.x;
+	parent->childThree->AABB.Max.x = halfWidth;
+	parent->childThree->AABB.Min.y = halfHeight;
+	parent->childThree->AABB.Max.y = parent->AABB.Max.y;
 		
 	parent->childThree = new Node;
-	parent->childThree->AABB.left = halfWidth;
-	parent->childThree->AABB.right = parent->AABB.right;
-	parent->childThree->AABB.top = halfHeight;
-	parent->childThree->AABB.bottom = parent->AABB.bottom;	
+	parent->childThree->AABB.Min.x = halfWidth;
+	parent->childThree->AABB.Max.x = parent->AABB.Max.x;
+	parent->childThree->AABB.Min.y = halfHeight;
+	parent->childThree->AABB.Max.y = parent->AABB.Max.y;	
 
 	return true;
 }
@@ -137,14 +137,14 @@ void CollisionQuadTree::clearAndCleanupNodes(Node* parent)
 
 bool CollisionQuadTree::isRectCollision(rectangle& rectOne, rectangle& rectTwo)
 {
-	return (rectOne.bottom > rectTwo.top) && (rectOne.top < rectTwo.bottom) &&
-		(rectOne.left < rectTwo.right) && (rectOne.right > rectTwo.left);
+	return (rectOne.Max.y > rectTwo.Min.y) && (rectOne.Min.y < rectTwo.Max.y) &&
+		(rectOne.Min.x < rectTwo.Max.x) && (rectOne.Max.x > rectTwo.Min.x);
 }
 
 bool CollisionQuadTree::isPointContained(float posX, float posY, rectangle& rect, float offsetX, float offsetY)
 {
-	return (posX < (rect.right + offsetX) && posX > (rect.left - offsetX) && 
-		posY < (rect.bottom + offsetY) && posY > (rect.top - offsetY));
+	return (posX < (rect.Max.x + offsetX) && posX > (rect.Min.x - offsetX) && 
+		posY < (rect.Max.y + offsetY) && posY > (rect.Min.y - offsetY));
 }
 
 ////////////////////////////////////////

@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClInclude Include="DX11.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="source\collision\CollisionManager.h" />
     <ClInclude Include="source\collision\CollisionQuadTree.h" />
     <ClInclude Include="source\components\CollisionComponent.h" />
     <ClInclude Include="source\components\Entity.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="source\input\RawInputParser.h" />
     <ClInclude Include="source\input\XbInputParser.h" />
     <ClInclude Include="source\input\XboxController.h" />
+    <ClInclude Include="source\math\vec3.h" />
     <ClInclude Include="source\messaging\CMessages.h" />
     <ClInclude Include="source\messaging\IMessageListener.h" />
     <ClInclude Include="source\messaging\MessageManager.h" />
@@ -138,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp" />
+    <ClCompile Include="source\collision\CollisionManager.cpp" />
     <ClCompile Include="source\collision\CollisionQuadTree.cpp" />
     <ClCompile Include="source\components\CollisionComponent.cpp" />
     <ClCompile Include="source\components\Entity.cpp" />
@@ -157,6 +160,7 @@
     <ClCompile Include="source\input\RawInputParser.cpp" />
     <ClCompile Include="source\input\XbInputParser.cpp" />
     <ClCompile Include="source\input\XboxController.cpp" />
+    <ClCompile Include="source\math\vec3.cpp" />
     <ClCompile Include="source\messaging\CMessages.cpp" />
     <ClCompile Include="source\messaging\IMessageListener.cpp" />
     <ClCompile Include="source\messaging\MessageManager.cpp" />

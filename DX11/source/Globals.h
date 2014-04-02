@@ -14,6 +14,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "math/vec3.h"
+
 #ifdef _DEBUG
 class DEBUGLOG
 {
@@ -49,10 +51,10 @@ public:
 struct rectangle 
 {
 	rectangle();
-	float left;
-	float top;
-	float right;
-	float bottom;
+	// Max.x = right, Max.y = bottom
+	// Min.x = left, Min.y = top
+	vec3<float> Min;
+	vec3<float> Max;
 	float Width();
 	float Height();
 };

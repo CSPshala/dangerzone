@@ -36,13 +36,18 @@ public:
 	void ReceiveMessage(IMessage* message);
 	void UnRegisterForMessages();
 	virtual bool LoadComponentAttributes(xml_node& component);
+
+	virtual bool CheckCollision(CollisionComponent* other);
+
 	/********** Public Accessors ************/
 	virtual string getComponentName();
     virtual rectangle getAABB() {return m_AABB;}
+	int getLayer() {return m_layer;}
     /** Returns if this entity is dirty this frame (has moved) **/
     bool isDirty() {return m_dirty;}
 
 	/********** Public Mutators  ************/
+	void setLayer(int layer) {m_layer = layer;}
     /** Overload to set if entity is dirty **/
     void isDirty(bool dirty) {m_dirty = dirty;}
 
@@ -65,5 +70,11 @@ private:
     void CalculateAABB();
 	void RegisterForLocalMessages();
 	void _ReceiveLocalMessage(CompMessage* message);
+
+	void handleCollisions(CollidingMsg* message);
+
+	/** Check two rectangles against each other for collisions */
+	bool isRectCollision(rectangle& rectOne, rectangle& rectTwo);
+
 };
 #endif

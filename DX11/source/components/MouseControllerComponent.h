@@ -12,6 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IComponent.h"
+#include "../math/vec3.h"
 #include "../events/IInputEventProcessor.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
@@ -52,8 +53,8 @@ private:
 	/********** Private Members ************/
 	static const string MOUSE_CONTROLLER_COMPONENT_NAME;	
 	
-	float mLastPosX, mLastPosY;
-	int mDeltaX, mDeltaY;
+	vec3<float> mLastPos;
+	vec3<float> mDelta;
 	float mMouseSens;
 	// Vector for mouse button states
 	int mButtonFlags;

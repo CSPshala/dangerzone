@@ -14,18 +14,18 @@ HWND		 WindowGlobals::g_hWnd = 0;
 wchar_t		 WindowGlobals::g_szWINDOW_CLASS[15] = L"none";
 wchar_t		 WindowGlobals::g_szWINDOW_TITLE[15] = L"none";
 
-rectangle::rectangle() : left(-1.0f), top(-1.0f), right(-1.0f), bottom(-1.0f)
+rectangle::rectangle() : Min(-1.0f,-1.0f,0.0f), Max(-1.0f,-1.0f,0.0f)
 {
 }
 
 float rectangle::Width()
 {
-	return right - left;
+	return Max.x - Min.x;
 }
 
 float rectangle::Height()
 {
-	return bottom - top;
+	return Max.y - Min.y;
 }
 
 bool G_FLOAT_EPSILON(float left, float right)

@@ -22,7 +22,7 @@
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 Entity::Entity(int ID,string entityName) : m_ID(ID), m_entityName(entityName), 
-	m_hp(-1), m_velX(0.0f), m_velY(0.0f), m_posX(0.0f), m_posY(0.0f), m_width(0), m_height(0)
+	m_hp(-1), m_width(0), m_height(0)
 {
 }
 
@@ -188,24 +188,14 @@ int Entity::GetEntityID()
 	return m_ID;
 }
 
-float Entity::GetVelocityX()
+vec3<float> Entity::GetVelocity()
 {
-	return m_velX;
+	return mVel;
 }
 
-float Entity::GetVelocityY()
+vec3<float> Entity::GetPosition()
 {
-	return m_velY;
-}
-
-float Entity::GetPositionX()
-{
-	return m_posX;
-}
-
-float Entity::GetPositionY()
-{
-	return m_posY;
+	return mPos;
 }
 
 int Entity::GetWidth()
@@ -227,24 +217,14 @@ void Entity::SetHP(int in)
 {
 }
 
-void Entity::SetVelocityX(float in)
+void Entity::SetVelocity(vec3<float> vel)
 {
-	m_velX = in;
+	mVel = vel;
 }
 
-void Entity::SetVelocityY(float in)
+void Entity::SetPosition(vec3<float> pos)
 {
-	m_velY = in;
-}
-
-void Entity::SetPositionX(float in)
-{
-	m_posX = in;
-}
-
-void Entity::SetPositionY(float in)
-{
-	m_posY = in;
+	mPos = pos;
 }
 
 void Entity::SetWidth(int width)

@@ -39,8 +39,8 @@ PlayerControllerComponent::~PlayerControllerComponent()
 void PlayerControllerComponent::Update(float deltaTime)
 {	
 	float velX, velY;
-	float posX = getParentEntity()->GetPositionX();
-	float posY = getParentEntity()->GetPositionY();
+	float posX = getParentEntity()->GetPosition().x;
+	float posY = getParentEntity()->GetPosition().y;
 
 	// Update velocities then add to position
 	if(m_keyMove)
@@ -57,11 +57,11 @@ void PlayerControllerComponent::Update(float deltaTime)
 		velX = PlayerControllerComponent::PLAYER_MOVEMENT_VELOCITY  * m_LSXMod;
 	}
 
-	getParentEntity()->SetVelocityX(velX);
-	getParentEntity()->SetVelocityY(velY);	
+	vec3<float> vel(velX,velY,0.0f);
+	vec3<float> pos(posX + velX * deltaTime, posY + velY * deltaTime, 0.0f);
 
-	getParentEntity()->SetPositionX(posX + velX * deltaTime);
-	getParentEntity()->SetPositionY(posY + velY * deltaTime);
+	getParentEntity()->SetVelocity(vel);
+	getParentEntity()->SetPosition(pos);
 }
 
 void PlayerControllerComponent::RegisterForMessages()

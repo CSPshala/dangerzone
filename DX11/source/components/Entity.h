@@ -15,6 +15,7 @@
 #include <map>
 using namespace std;
 #include "../messaging/CMessages.h"
+#include "../math/vec3.h"
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
@@ -50,10 +51,8 @@ public:
 
 	// Vitals
 	int GetHP();
-	float GetVelocityX();
-	float GetVelocityY();
-	float GetPositionX();
-	float GetPositionY();
+	vec3<float> GetVelocity();
+	vec3<float> GetPosition();
 	int   GetWidth();
 	int   GetHeight();
 	bool  IsActive();
@@ -61,10 +60,8 @@ public:
 	/********** Public Mutators  ************/	
 	// Vitals
 	void SetHP(int in);
-	void SetVelocityX(float in);
-	void SetVelocityY(float in);
-	void SetPositionX(float in);
-	void SetPositionY(float in);
+    void SetVelocity(vec3<float> vel);
+    void SetPosition(vec3<float> pos);
 	void SetWidth(int width);
 	void SetHeight(int height);
 	void IsActive(bool active);
@@ -83,8 +80,8 @@ private:
 	bool   m_active;
 		// Entity Vital Stats
 	int m_hp;
-	float m_velX, m_velY;
-	float m_posX, m_posY;
+	vec3<float> mVel;
+	vec3<float> mPos;
 	int   m_width, m_height;
 
 	/********** Private Accessors ************/

@@ -8,12 +8,15 @@
 #ifndef _CMESSAGES_H
 #define _CMESSAGES_H
 
+#include <vector>
+using namespace std;
+
 // FWD DECL
 class CollisionComponent;
 
 enum MESSAGE_TYPE{ REGISTER_FOR_COLLISION = 0, UNREGISTER_FOR_COLLISION, TOTAL_MESSAGE_COUNT};
 enum COMPONENT_MESSAGE_TYPE{ ENTITY_REGISTER_LOCAL_MSGS = 0, ENTITY_UNREGISTER_LOCAL_MSGS, 
-	ENTITY_DIRTY, ENTITY_RESIZE, TOTAL_COMPONENT_MESSAGES };
+	ENTITY_DIRTY, ENTITY_RESIZE, ENTITY_COLLIDING, TOTAL_COMPONENT_MESSAGES };
 
 //*******MESSAGE INTERFACE*********/
 class IMessage
@@ -25,6 +28,8 @@ public:
 class CompMessage
 {
 public:
+	CompMessage() {}
+	~CompMessage() {}
 	virtual COMPONENT_MESSAGE_TYPE GetType() = 0;
 };
 
@@ -33,7 +38,7 @@ class RegisterForCollisionMsg : public IMessage
 {
 public:
     int GetType() {return REGISTER_FOR_COLLISION;}    
-	CollisionComponent* m_Register;
+	CollisionComponent* mRegister;
 };
 
 // Message used to unregister a collision component for collisions
@@ -41,7 +46,7 @@ class UnregisterForCollisionMsg : public IMessage
 {
 public:
     int GetType() {return UNREGISTER_FOR_COLLISION;}    
-	CollisionComponent* m_Unregister;
+	CollisionComponent* mUnregister;
 };
 
 class EntityDirtyMsg : public CompMessage
@@ -64,6 +69,15 @@ class RegisterForLocalMsgs : public CompMessage
 class UnRegisterForLocalMsgs : public CompMessage
 {
 	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_UNREGISTER_LOCAL_MSGS;}
+};
+
+class CollidingMsg : public CompMessage
+{
+public:
+	CollidingMsg() {}
+	~CollidingMsg() {}
+	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_COLLIDING;}
+	vector<CollisionComponent*>* mCollidingWith;
 };
 
 #endif

@@ -43,6 +43,7 @@
 #include "../components/RenderComponent.h"
 #include "../components/CollisionComponent.h"
 #include "../components/MouseControllerComponent.h"
+#include "../math/vec3.h"
 #include "LevelLoader.h"
 #include "WorldManager.h"
 
@@ -223,10 +224,15 @@ bool LevelLoader::LoadLevel(std::string filename)
 
 		entity->IsActive(entityNode.attribute("active").as_bool());
 		entity->SetHP(entityNode.attribute("hp").as_int());
-		entity->SetPositionX(entityNode.attribute("posX").as_float());
-		entity->SetPositionY(entityNode.attribute("posY").as_float());
-		entity->SetVelocityX(entityNode.attribute("velX").as_float());
-		entity->SetVelocityY(entityNode.attribute("velY").as_float());
+
+		vec3<float> entityPos(entityNode.attribute("posX").as_float(), 
+			entityNode.attribute("posY").as_float(), 0.0f);
+
+		vec3<float> entityVel(entityNode.attribute("velX").as_float(),
+			entityNode.attribute("velY").as_float(), 0.0f);
+
+		entity->SetPosition(entityPos);
+		entity->SetVelocity(entityVel);
 
 		for(xml_node componentNode = entityNode.child("component"); componentNode; componentNode = componentNode.next_sibling("component"))
 		{

@@ -49,6 +49,9 @@
     <Filter Include="Source Files\shared">
       <UniqueIdentifier>{dabef79f-ecee-4c26-aa51-b2032c0b3e48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{90c94a49-a7b5-42bb-933f-47e74c8eb666}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -138,6 +141,12 @@
     <ClInclude Include="source\components\MouseControllerComponent.h">
       <Filter>Source Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="source\collision\CollisionManager.h">
+      <Filter>Source Files\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\math\vec3.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -214,6 +223,12 @@
     </ClCompile>
     <ClCompile Include="source\components\MouseControllerComponent.cpp">
       <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\collision\CollisionManager.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\math\vec3.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
