@@ -30,7 +30,7 @@ class Entity
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
-	Entity(int ID, string entityName);
+	Entity(int ID, string entityName, unsigned int initialComponentCount = 0);
 	~Entity();
 
 	/********** Public Utility Functions ************/
@@ -41,7 +41,7 @@ public:
 	void RegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
 	// Can be expensive, don't use too often
 	void UnRegisterForAllLocalMessages(IComponent* component);
-	void UnRegisterForMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
+	void UnRegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
 	void SendLocalMessage(CompMessage* msg);
 
 	void Shutdown();

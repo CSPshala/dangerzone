@@ -36,6 +36,7 @@ public:
 	/********** Public Utility Functions ************/
 	bool Initialize();
 	void Update(float deltaTime);
+	void RenderEntities();
 	void Shutdown();
 	/** WARNING do not call this unless you want ALL objects in world gone **/
 	void CleanupEntities();

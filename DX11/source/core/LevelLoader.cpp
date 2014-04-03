@@ -144,6 +144,7 @@ bool LevelLoader::LoadInitialData(string filename)
 
 	for(xml_node component = doc.child("validComponents").child("component"); component; component = component.next_sibling("component"))
 	{
+
 		CompPrototype toAdd;
 		toAdd.typeName = component.attribute("typeName").value();
 		toAdd.type = component.attribute("type").as_int();
@@ -206,10 +207,15 @@ bool LevelLoader::LoadLevel(std::string filename)
 	{  
 		Entity* entity = nullptr;
 
+		// Get the number of components
+		unsigned int componentCount = std::distance(entityNode.children("component").begin(),
+			entityNode.children("component").end());
+
 		// Throws on bad allocation and if we pass something wrong to it
 		try
 		{
-			entity = new Entity(m_nextEntityID++,entityNode.attribute("name").as_string());
+			entity = new Entity(m_nextEntityID++,entityNode.attribute("name").as_string(),
+				componentCount);
 		}
 		catch(std::invalid_argument& ia)
 		{

@@ -58,5 +58,6 @@ private:
 	/********** Private Utility Functions ************/
 	virtual void RegisterForLocalMessages();
 	virtual void _ReceiveLocalMessage(CompMessage* message);
+	void RenderEntity();
 };
 #endif

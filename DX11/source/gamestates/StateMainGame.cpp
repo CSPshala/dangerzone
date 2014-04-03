@@ -38,8 +38,6 @@ void StateMainGame::Enter()
 	m_worldManager.Initialize();
 	m_levelLoader.Initialize(m_levelListFilename,&m_worldManager);
 	m_levelLoader.NextLevel();	
-
-
 }
 
 void StateMainGame::Exit()
@@ -52,9 +50,10 @@ void StateMainGame::Exit()
 
 void StateMainGame::Update(float deltaTime)
 {
-	MessageManager::GetInstance()->Update(deltaTime);
-	m_collisionManager.Update(deltaTime);
+	MessageManager::GetInstance()->Update(deltaTime);	
 	m_worldManager.Update(deltaTime);		
+	m_collisionManager.Update(deltaTime);
+	m_worldManager.RenderEntities();
 }
 
 ////////////////////////////////////////

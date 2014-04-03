@@ -90,6 +90,7 @@ void IComponent::setParentEntity(Entity* entity)
 void IComponent::setLocalMessagesToReceieve(vector<COMPONENT_MESSAGE_TYPE>& messages)
 {
 	m_messageSubs = messages;
+	RegisterForLocalMessages();
 }
 
 ////////////////////////////////////////

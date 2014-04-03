@@ -34,11 +34,7 @@ RenderComponent::~RenderComponent()
 ////////////////////////////////////////
 void RenderComponent::Update(float deltaTime)
 {	
-	// Update render data
-	m_renderData.setPosX(getParentEntity()->GetPosition().x);
-	m_renderData.setPosY(getParentEntity()->GetPosition().y);	
-
-	Rendering::AddRenderComponentToFrame(&m_renderData);
+	
 }
 
 void RenderComponent::RegisterForMessages()
@@ -51,6 +47,7 @@ void RenderComponent::ReceiveMessage(IMessage* message)
 
 void RenderComponent::RegisterForLocalMessages()
 {
+	m_messageSubs.push_back(ENTITY_RENDER);
 }
 
 void RenderComponent::UnRegisterForMessages()
@@ -76,6 +73,23 @@ bool RenderComponent::LoadComponentAttributes(xml_node& component)
 ////////////////////////////////////////
 void RenderComponent::_ReceiveLocalMessage(CompMessage* message)
 {
+	switch(message->GetType())
+	{
+	case ENTITY_RENDER:
+		{
+			RenderEntity();
+		}
+		break;
+	}
+
+}
+
+void RenderComponent::RenderEntity()
+{
+	// Update render data and send to renderer to queue up
+	m_renderData.setPosX(getParentEntity()->GetPosition().x);
+	m_renderData.setPosY(getParentEntity()->GetPosition().y);	
+	Rendering::AddRenderComponentToFrame(&m_renderData);
 }
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS

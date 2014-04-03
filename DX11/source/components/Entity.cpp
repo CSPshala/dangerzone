@@ -21,8 +21,8 @@
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-Entity::Entity(int ID,string entityName) : m_ID(ID), m_entityName(entityName), 
-	m_hp(-1), m_width(0), m_height(0)
+Entity::Entity(int ID,string entityName, unsigned int initialComponentCount) : m_ID(ID), 
+	m_entityName(entityName), m_hp(-1), m_width(0), m_height(0)
 {
 }
 
@@ -108,7 +108,7 @@ void Entity::UnRegisterForAllLocalMessages(IComponent* component)
 	}
 }
 
-void Entity::UnRegisterForMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component)
+void Entity::UnRegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component)
 {
 	// Try to find the message type first
 	map<COMPONENT_MESSAGE_TYPE, deque<IComponent*> >::iterator findIter = m_localSubs.find(type);

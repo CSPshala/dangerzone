@@ -47,6 +47,15 @@ void WorldManager::Update(float deltaTime)
 		(*iter)->Update(deltaTime);
 }
 
+void WorldManager::RenderEntities()
+{
+	// Render message
+	RenderMsg msg;
+
+	for(deque<Entity*>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter)
+		(*iter)->SendLocalMessage(&msg);
+}
+
 void WorldManager::Shutdown()
 {	
 	CleanupEntities();
