@@ -10,8 +10,9 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "dx11rendexp.h"
-#include "dx11dllsource\TextureManager.h"
-#include "dx11dllsource\Texture.h"
+#include "dx11dllsource/ForwardRenderer.h"
+#include "dx11dllsource/TextureManager.h"
+#include "dx11dllsource/Texture.h"
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
