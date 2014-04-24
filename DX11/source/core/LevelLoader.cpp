@@ -41,7 +41,7 @@
 #include "../components/Entity.h"
 #include "../components/PlayerControllerComponent.h"
 #include "../components/RenderComponent.h"
-#include "../components/CollisionComponent.h"
+#include "../components/RectCollisionComponent.h"
 #include "../components/MouseControllerComponent.h"
 #include "../math/vec3.h"
 #include "LevelLoader.h"
@@ -346,11 +346,12 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 		}
 		break;
-    case ENUMS::COMPONENTS::COLLISION:
+	case ENUMS::COMPONENTS::POINT_COLLISION:
         {
             try
 			{
-                component = new CollisionComponent(ENUMS::COMPONENTS::COLLISION,m_nextComponentID++);
+				component = new RectCollisionComponent(
+					ENUMS::COMPONENTS::POINT_COLLISION, m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				

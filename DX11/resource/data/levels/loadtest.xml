@@ -1,23 +1,26 @@
 <entity name="player1" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	
 	<component type="player_controller" playerNumber="1"/>	
-	<component type="collision" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 	<component type="rendering" texture="vader.png" layer="0"/>
 </entity>
 <entity name="player2" active="true" hp="100" posX="900.0" posY="0.0" velX="0.0" velY="0.0" >	
 	<component type="player_controller" playerNumber="2"/>
-	<component type="collision" layer="0"/>
+	<component type="rect_collision" layer="1"/>
 	<component type="rendering" texture="donatelo.png" layer="0"/>
 </entity>
 <entity name="player3" active="true" hp="100" posX="0.0" posY="700.0" velX="0.0" velY="0.0" >
-	<component type="player_controller" playerNumber="3"/>	
+	<component type="player_controller" playerNumber="3"/>
+	<component type="rect_collision" layer="0"/>
 	<component type="rendering" texture="paperbowser.png" layer="0"/>
 </entity>	
 <entity name="player4" active="true" hp="100" posX="900.0" posY="700.0" velX="0.0" velY="0.0" >
 	<component type="player_controller" playerNumber="4"/>	
+	<component type="rect_collision" layer="0"/>
 	<component type="rendering" texture="santa.png" layer="0"/>
 </entity>
 <entity name="mousePointer" active="true" hp="100" posX="400.0" posY="300.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="mouse.png" layer="1"/>
+	<component type="point_collision" layer="1"/>
 	<component type="mouse_controller" mouseNumber="1"/>
 </entity>
 <entity name="background" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	
@@ -25,23 +28,30 @@
 </entity>
 <entity name="test" active="true" hp="100" posX="100" posY="50.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="santa.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>	
 <entity name="test" active="true" hp="100" posX="800" posY="500.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="santa.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>
 <entity name="test" active="true" hp="100" posX="400" posY="200.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="santa.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>
 <entity name="test" active="true" hp="100" posX="200" posY="200.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="santa.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>
 <entity name="test" active="true" hp="100" posX="300" posY="500.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="paperbowser.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>
 <entity name="test" active="true" hp="100" posX="900" posY="200.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="vader.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>
 <entity name="test" active="true" hp="100" posX="500" posY="10.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="paperbowser.png" layer="0"/>
+	<component type="rect_collision" layer="0"/>
 </entity>
 

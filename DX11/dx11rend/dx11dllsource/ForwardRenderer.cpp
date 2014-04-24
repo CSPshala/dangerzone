@@ -148,6 +148,10 @@ void FRenderer::Shutdown()
 
 void FRenderer::RenderQueue()
 {
+	// If we're not rendering anything, don't render
+	if(m_renderQueue.size() == 0)
+		return;
+
 	// Add components to buffer in order based on layer
 	unsigned int size = m_renderQueue.size();
 	pair<Texture*,int> pairToAdd(nullptr,0);

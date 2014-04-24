@@ -116,6 +116,8 @@
     <ClInclude Include="source\components\IComponent.h" />
     <ClInclude Include="source\components\MouseControllerComponent.h" />
     <ClInclude Include="source\components\PlayerControllerComponent.h" />
+    <ClInclude Include="source\components\PointCollisionComponent.h" />
+    <ClInclude Include="source\components\RectCollisionComponent.h" />
     <ClInclude Include="source\components\RenderComponent.h" />
     <ClInclude Include="source\core\CTimer.h" />
     <ClInclude Include="source\core\Game.h" />
@@ -147,6 +149,8 @@
     <ClCompile Include="source\components\IComponent.cpp" />
     <ClCompile Include="source\components\MouseControllerComponent.cpp" />
     <ClCompile Include="source\components\PlayerControllerComponent.cpp" />
+    <ClCompile Include="source\components\PointCollisionComponent.cpp" />
+    <ClCompile Include="source\components\RectCollisionComponent.cpp" />
     <ClCompile Include="source\components\RenderComponent.cpp" />
     <ClCompile Include="source\core\CTimer.cpp" />
     <ClCompile Include="source\core\Game.cpp" />

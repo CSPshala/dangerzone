@@ -10,9 +10,13 @@
 	</component>
 	<component typeName="rendering" type="1" >
 	</component>
-	<component typeName="collision" type="2" >
+	<component typeName="rect_collision" type="2" >
 		<messages name="entity_dirty"/>
 	</component>
 	<component typeName="mouse_controller" type="3" >
+	</component>
+	<component typeName="circle_collision" type="4" >
+	</component>
+	<component typeName="point_collision" type="5" >
 	</component>
 </validComponents>

@@ -20,8 +20,6 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-
-
 class CollisionComponent : public IComponent
 {
 public:
@@ -29,19 +27,14 @@ public:
     /** Component typbe MUST be set at construction 
 	    based on data driven component type ID from LevelLoader */
 	CollisionComponent(int componentType, int componentID = -1);
-	~CollisionComponent();
+	virtual ~CollisionComponent();
 	/********** Public Utility Functions ************/
-	virtual void Update(float deltaTime);
 	void RegisterForMessages();
 	void ReceiveMessage(IMessage* message);
 	void UnRegisterForMessages();
-	virtual bool LoadComponentAttributes(xml_node& component);
-
-	virtual bool CheckCollision(CollisionComponent* other);
+	virtual bool CheckCollision(CollisionComponent* other) = 0;
 
 	/********** Public Accessors ************/
-	virtual string getComponentName();
-    virtual rectangle getAABB() {return m_AABB;}
 	int getLayer() {return m_layer;}
     /** Returns if this entity is dirty this frame (has moved) **/
     bool isDirty() {return m_dirty;}
@@ -53,10 +46,6 @@ public:
 
 private:
 	/********** Private Members ************/
-	static const string COLLISION_COMPONENT_NAME;
-
-    // Rectangle for this entity's hit box (until multibox is implemented)
-    rectangle m_AABB;
     // dirty flag to let our quadtree know this entity needs updating
     bool m_dirty;
     // Layer we're on (might split collisions based on this)
@@ -67,14 +56,10 @@ private:
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-    void CalculateAABB();
+    
 	void RegisterForLocalMessages();
 	void _ReceiveLocalMessage(CompMessage* message);
 
-	void handleCollisions(CollidingMsg* message);
-
-	/** Check two rectangles against each other for collisions */
-	bool isRectCollision(rectangle& rectOne, rectangle& rectTwo);
-
+	virtual void handleCollisions(CollidingMsg* message) = 0;
 };
 #endif

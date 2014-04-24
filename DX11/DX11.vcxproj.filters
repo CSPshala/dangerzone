@@ -147,6 +147,12 @@
     <ClInclude Include="source\math\vec3.h">
       <Filter>Source Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="source\components\RectCollisionComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\PointCollisionComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -229,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="source\math\vec3.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\RectCollisionComponent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\PointCollisionComponent.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
