@@ -20,7 +20,7 @@
 </entity>
 <entity name="mousePointer" active="true" hp="100" posX="400.0" posY="300.0" velX="0.0" velY="0.0" >
 	<component type="rendering" texture="mouse.png" layer="1"/>
-	<component type="point_collision" layer="1"/>
+	<component type="point_collision" layer="1" offsetX="9" offsetY="4" topDownCollide="true"/>
 	<component type="mouse_controller" mouseNumber="1"/>
 </entity>
 <entity name="background" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	

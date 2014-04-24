@@ -20,7 +20,7 @@
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 CollisionComponent::CollisionComponent(int componentType, int componentID) : IComponent(componentType, componentID),
-    m_dirty(true)
+    m_dirty(true), m_ignoreLayer(false)
 {    
 }
 

@@ -67,9 +67,10 @@ void CollisionManager::Update(float deltaTime)
 {
 	// Gonna be gross for now
 
-	// Go through layers and handle their collisions
-	for(unsigned int i = 0; i < mLayeredCollidables.size(); ++i)
-		CheckLayerForCollisions(mLayeredCollidables[i]);
+	// Go through layers and handle their collisions from highest to lowest layer
+    vector<deque<CollisionComponent*> >::reverse_iterator iter = mLayeredCollidables.rbegin();
+    for(; iter != mLayeredCollidables.rend(); ++iter)
+        CheckLayerForCollisions(*iter);
 }
 
 void CollisionManager::Shutdown()
@@ -81,6 +82,13 @@ void CollisionManager::Shutdown()
 ////////////////////////////////////////
 void CollisionManager::AddComponentToLayer(CollisionComponent* comp)
 {
+    // If ignores layer than it's an omni collision object
+    if(comp->getIsIgnoringLayer())
+    {
+        mOmniCollidables.push_back(comp);
+        return;
+    }
+
 	unsigned int layer = comp->getLayer();
 	// See if our layer exists, if not add layers till it does
 	if(layer >= mLayeredCollidables.size())
@@ -95,6 +103,8 @@ void CollisionManager::AddComponentToLayer(CollisionComponent* comp)
 
 void CollisionManager::RemoveComponentFromLayer(CollisionComponent* comp)
 {
+    // TODO: Removal of OMNIs
+
 	unsigned int layer = comp->getLayer();
 	// Remove it, if it blows up, that's a problem that needs fixing
 	deque<CollisionComponent*>::iterator iter = mLayeredCollidables[layer].begin();
@@ -118,7 +128,10 @@ void CollisionManager::CheckLayerForCollisions(deque<CollisionComponent*>& layer
 	deque<CollisionComponent*>::iterator checker = layer.begin();
 	for(; checker != layer.end(); ++checker)
 	{
-		vector<CollisionComponent*> collidingWith;
+        // Check object for omni collisions
+        CheckForOmniCollision(*checker);
+
+        vector<CollisionComponent*> collidingWith;
 
 		deque<CollisionComponent*>::iterator checkee = checker + 1;
 		for(; checkee != layer.end(); ++checkee)
@@ -138,6 +151,23 @@ void CollisionManager::CheckLayerForCollisions(deque<CollisionComponent*>& layer
 		}
 	}
 
+}
+
+void CollisionManager::CheckForOmniCollision(CollisionComponent* comp)
+{    
+    unsigned int size = mOmniCollidables.size();
+    vector<CollisionComponent*> collidingWith;
+    for(unsigned int i = 0; i < size; ++i)
+    {
+        if(mOmniCollidables[i]->CheckCollision(comp))
+        {
+            CollidingMsg toSend;
+            vector<CollisionComponent*> temp;
+            temp.push_back(comp);
+            toSend.mCollidingWith = &temp;
+            mOmniCollidables[i]->ReceiveLocalMessage(&toSend);
+        }
+    }
 }
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS

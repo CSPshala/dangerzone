@@ -23,6 +23,7 @@ const string PointCollisionComponent::POINT_COLLISION_COMPONENT_NAME("point_coll
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 PointCollisionComponent::PointCollisionComponent(int componentType, int componentID) :
+    mOffset(0.0f,0.0f,0.0f), mPoint(0.0f,0.0f,0.0f), mTopDown(false), mFirstCollision(true),
 	CollisionComponent(componentType, componentID)
 {
 }
@@ -37,7 +38,10 @@ PointCollisionComponent::~PointCollisionComponent()
 void PointCollisionComponent::Update(float deltaTime)
 {
 	if(isDirty())
+    {
         CalculatePoint();
+        mFirstCollision = true;
+    }
 }
 
 bool PointCollisionComponent::LoadComponentAttributes(xml_node& component)
@@ -46,11 +50,39 @@ bool PointCollisionComponent::LoadComponentAttributes(xml_node& component)
 	setOffset(vec3<float>(component.attribute("offsetX").as_float(),
 		component.attribute("offsetY").as_float(),0.0f));
 
+    try
+    {
+        setIgnoreLayer(component.attribute("ignoreLayer").as_bool());
+    }
+    catch(std::exception e)
+    {
+        LOG("No 'ignoreLayer' attribute present on this point collision component.");
+    }
+
+    try
+    {
+        mTopDown = component.attribute("topDownCollide").as_bool();
+        // if topdown is true, then it needs to ignore layer
+        if(mTopDown)
+        {
+            setIgnoreLayer(true);
+        }
+    }
+    catch(std::exception e)
+    {
+        LOG("No 'topDownCollide' attribute present on this point collision component.");
+    }
+
     return true;
 }
 
 bool PointCollisionComponent::CheckCollision(CollisionComponent* other)
 {
+    // Skip if top down is activated and we've already collided
+    if(mTopDown && !mFirstCollision)         
+        return false;   
+    
+
 	switch(other->getComponentType())
 	{
 	case ENUMS::COMPONENTS::RECT_COLLISION:
@@ -77,8 +109,7 @@ bool PointCollisionComponent::isPointContained(vec3<float>& point, rectangle& re
 }
 
 void PointCollisionComponent::CalculatePoint()
-{
-	vec3<float> entPos(getParentEntity()->GetPosition());
+{	
 	mPoint = entPos + mOffset;
 }
 
@@ -87,14 +118,14 @@ void PointCollisionComponent::handleCollisions(CollidingMsg* message)
 	// Ease of access to colliding with vector
 	vector<CollisionComponent*>& collidingWith = *(message->mCollidingWith);
 	// Separate shape types
-	vector<PointCollisionComponent*> rectCol;
+	vector<RectCollisionComponent*> rectCol;
 	for(unsigned int i = 0; i < collidingWith.size(); ++i)
 	{
 		switch(collidingWith[i]->getComponentType())
 		{
-		case ENUMS::COMPONENTS::POINT_COLLISION:
+		case ENUMS::COMPONENTS::RECT_COLLISION:
 			{
-				rectCol.push_back(static_cast<PointCollisionComponent*>(collidingWith[i]));
+				rectCol.push_back(static_cast<RectCollisionComponent*>(collidingWith[i]));
 			}
 			break;
 		case ENUMS::COMPONENTS::CIRCLE_COLLISION:
@@ -109,60 +140,23 @@ void PointCollisionComponent::handleCollisions(CollidingMsg* message)
 	}
 
 	// Handle collision based on type
-	handlePointangleCollisions(rectCol);
+	handleRectCollisions(rectCol);
 }
 
-void PointCollisionComponent::handlePointangleCollisions(
-	vector<PointCollisionComponent*>& collidingWith)
+void PointCollisionComponent::handleRectCollisions(
+    vector<RectCollisionComponent*>& collidingWith)
 {
-	// TODO: MULTIPLE COLLISION TESTING
-	
-	vec3<float> correctionVec;
+    mFirstCollision = false;
 
-	// Handle all possible collisions, only using the smallest possible corrections
-	for(unsigned int objIndex = 0; objIndex < collidingWith.size(); ++objIndex)
-	{
-		// For now only handle the first collision
-		vec3<float> objectCenter = collidingWith[objIndex]->getParentEntity()->GetPosition();
-		rectangle objectPoint = collidingWith[objIndex]->getAABB();
-
-		// Doing 2D AABB stuff, same as 3D w/o the 3, duhhhhhhhh #STEELRESERVE
-		vec3<float> direction = getParentEntity()->GetPosition() - objectCenter;
-
-		//Get extents
-		vec3<float> ExtentOne = this->getAABB().Max - getParentEntity()->GetPosition();
-		vec3<float> ExtentTwo = objectPoint.Max - objectCenter;
-
-		float minPen = FLT_MAX;
-		int minAxis = 0;
-		float pen = 0.0f;
-
-		for(unsigned int i = 0; i < 2; ++i)
-		{
-			pen = (ExtentOne.v[i] + ExtentTwo.v[i]) - fabs(direction.v[i]);
-
-			// Make sure no correction on non overlapping objects
-			if(pen <= 0)
-				return;
-
-			if(pen < minPen)
-			{
-				minPen = pen;
-				minAxis = i;
-			}
-		}
-
-		if(direction.v[minAxis] < 0)
-			minPen = -minPen;
-
-		// Only add it if it's absolutely greater than our current penetration
-		// freakin expensive
-		if(fabs(minPen) > fabs(correctionVec.v[minAxis]))
-			correctionVec.v[minAxis] = minPen;
-	}
-
-	getParentEntity()->SetPosition(getParentEntity()->GetPosition() + correctionVec);
+	// TODO: Send a message to light up entity that is pointed at
+   cout << "CONTAINED...";
 }
+
+void PointCollisionComponent::_HandleChildMessages(CompMessage* message)
+{
+    // Do stuff here if need be.
+}
+
 
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS

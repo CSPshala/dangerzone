@@ -42,6 +42,7 @@
 #include "../components/PlayerControllerComponent.h"
 #include "../components/RenderComponent.h"
 #include "../components/RectCollisionComponent.h"
+#include "../components/PointCollisionComponent.h"
 #include "../components/MouseControllerComponent.h"
 #include "../math/vec3.h"
 #include "LevelLoader.h"
@@ -346,11 +347,28 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 		}
 		break;
-	case ENUMS::COMPONENTS::POINT_COLLISION:
+	case ENUMS::COMPONENTS::RECT_COLLISION:
         {
             try
 			{
 				component = new RectCollisionComponent(
+					ENUMS::COMPONENTS::RECT_COLLISION, m_nextComponentID++);
+			}
+			catch(std::invalid_argument& ia)
+			{				
+				LOG("A new collision component could not be allocated. invalid_argument caught: " << ia.what());		
+			}
+			catch(std::bad_alloc& ba)
+			{				
+				LOG("A new collision component could not be allocated. bad_alloc caught: " << ba.what());		
+			}
+        }
+        break;
+    case ENUMS::COMPONENTS::POINT_COLLISION:
+        {
+            try
+			{
+				component = new PointCollisionComponent(
 					ENUMS::COMPONENTS::POINT_COLLISION, m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)

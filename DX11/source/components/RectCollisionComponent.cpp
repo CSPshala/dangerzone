@@ -48,7 +48,7 @@ bool RectCollisionComponent::CheckCollision(CollisionComponent* other)
 {
 	switch(other->getComponentType())
 	{
-	case ENUMS::COMPONENTS::POINT_COLLISION:
+	case ENUMS::COMPONENTS::RECT_COLLISION:
 		{
 			return isRectCollision(m_AABB, static_cast<RectCollisionComponent*>(other)->getAABB());
 		}
@@ -92,7 +92,7 @@ void RectCollisionComponent::handleCollisions(CollidingMsg* message)
 	{
 		switch(collidingWith[i]->getComponentType())
 		{
-		case ENUMS::COMPONENTS::POINT_COLLISION:
+		case ENUMS::COMPONENTS::RECT_COLLISION:
 			{
 				rectCol.push_back(static_cast<RectCollisionComponent*>(collidingWith[i]));
 			}
@@ -162,6 +162,13 @@ void RectCollisionComponent::handleRectangleCollisions(
 	}
 
 	getParentEntity()->SetPosition(getParentEntity()->GetPosition() + correctionVec);
+    // refresh our AABB
+    CalculateAABB();
+}
+
+void RectCollisionComponent::_HandleChildMessages(CompMessage* message)
+{
+    // Do stuff here if need be.
 }
 
 ////////////////////////////////////////

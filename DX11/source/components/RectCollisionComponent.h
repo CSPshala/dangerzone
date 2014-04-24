@@ -59,5 +59,7 @@ private:
 
 	/** Check two rectangles against each other for collisions */
 	bool isRectCollision(rectangle& rectOne, rectangle& rectTwo);
+
+    virtual void _HandleChildMessages(CompMessage* message);
 };
 #endif

@@ -15,7 +15,7 @@
 ////////////////////////////////////////
 //		   FORWARD DECLARATIONS
 ////////////////////////////////////////
-
+class RectCollisionComponent;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -50,6 +50,12 @@ private:
 	// Absolute position of the point
     vec3<float> mPoint;
 
+    // Is top down collision enabled?
+    // Mainly used for mouse to select first collision as only collision (top down)
+    bool mTopDown;  
+    // Refreshed on update to true to let us know we haven't collided yet this frame
+    bool mFirstCollision;
+
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
@@ -59,10 +65,11 @@ private:
 
 	virtual void handleCollisions(CollidingMsg* message);
 
-	void handleRectangleCollisions(vector<PointCollisionComponent*>& collidingWith);
-	
+	void handleRectCollisions(vector<RectCollisionComponent*>& collidingWith);	
 
 	/** Check two rectangles against each other for collisions */
 	bool isPointContained(vec3<float>& point, rectangle& rect);
+
+    virtual void _HandleChildMessages(CompMessage* message);
 };
 #endif

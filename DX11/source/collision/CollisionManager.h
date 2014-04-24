@@ -54,6 +54,9 @@ private:
 	// Vector of queues for layers
 	vector<deque<CollisionComponent* > > mLayeredCollidables;
 
+    // These components are outside the bounds of layers and get checked against all
+    vector<CollisionComponent*> mOmniCollidables;
+
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
@@ -62,5 +65,7 @@ private:
 	void AddComponentToLayer(CollisionComponent* comp);
 	void RemoveComponentFromLayer(CollisionComponent* comp);
 	void CheckLayerForCollisions(deque<CollisionComponent*>& layer);
+    // Checks for collisions w/ omni objects. Omni object will handle collision
+    void CheckForOmniCollision(CollisionComponent* comp);
 };
 #endif
