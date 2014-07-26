@@ -110,7 +110,7 @@ bool PointCollisionComponent::isPointContained(vec3<float>& point, rectangle& re
 
 void PointCollisionComponent::CalculatePoint()
 {	
-	mPoint = entPos + mOffset;
+	mPoint = getParentEntity()->GetPosition() + mOffset;
 }
 
 void PointCollisionComponent::handleCollisions(CollidingMsg* message)

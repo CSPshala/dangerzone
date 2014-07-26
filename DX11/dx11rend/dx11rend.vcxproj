@@ -98,6 +98,7 @@
     <ClInclude Include="dx11dllsource\D3D.h" />
     <ClInclude Include="dx11dllsource\defines.h" />
     <ClInclude Include="dx11dllsource\dx11shared\RenderComponentData.h" />
+    <ClInclude Include="dx11dllsource\DXRenderExports.h" />
     <ClInclude Include="dx11dllsource\ForwardRenderer.h" />
     <ClInclude Include="dx11dllsource\render contexts\ContextManager.h" />
     <ClInclude Include="dx11dllsource\render contexts\DiffuseContext.h" />
