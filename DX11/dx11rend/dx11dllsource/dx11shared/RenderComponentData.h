@@ -33,6 +33,8 @@ public:
 	/********** Public Accessors ************/
     unsigned int getTexture();
 	unsigned int getTexture() const;
+	unsigned int getShader();
+	unsigned int getShader() const;
 	int getLayer();
 	int getLayer() const;
     int getWidth();
@@ -46,6 +48,7 @@ public:
 
 	/********** Public Mutators  ************/	
     void setTexture(unsigned int texture);
+	void setShader(unsigned int shader);
     void setLayer(int layer);
     void setWidth(int width);
     void setHeight(int height);
@@ -55,6 +58,7 @@ public:
 private:
 	/********** Private Members ************/
     unsigned int m_texture;
+	unsigned int m_shader;
 	int   m_layer;
     int   m_width, m_height;
     float m_posX, m_posY;

@@ -1,0 +1,4 @@
+<validShaders>
+<shader typeName="diffuse" type="0"/>
+<shader typeName="outline" type="1"/>
+</validShaders>
