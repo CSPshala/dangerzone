@@ -36,9 +36,10 @@ public:
 	~OutlineBoxContext();
 
 	/********** Public Utility Functions ************/
-	bool Initialize(HWND hWnd);
+	bool Initialize(HWND hWnd);	
+	void RenderBuffers(unsigned int layer);
+	void PrepareBuffers(LayerQueue& renderQueue);
 	bool UpdateBuffers();
-	void RenderBuffers();
 	void Shutdown();
 
 	/********** Public Accessors ************/	
@@ -49,6 +50,7 @@ public:
 
 private:
 	static const int QUAD_VERT_COUNT;
+	static const unsigned int OUTLINEBOXCONTEXTTYPE;
 	/********** Private Members ************/
 	struct bitmapVertex
 	{
@@ -60,14 +62,17 @@ private:
 	bitmapVertex* m_vertexInfo;	
 
 	// Shaders
-	DiffuseShader* m_boxShade;
+	DiffuseShader* m_diffuseShade;
 
 	/********** Private Accessors ************/
+	unsigned int GetContextType();
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
+	
 	bool InitializeBuffers();
+
 };
 
 }

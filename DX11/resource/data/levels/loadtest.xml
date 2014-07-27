@@ -1,12 +1,12 @@
 <entity name="player1" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	
 	<component type="player_controller" playerNumber="1"/>	
 	<component type="rect_collision" layer="0"/>
-	<component  type="rendering" shader="diffuse" shader="diffuse" texture="vader.png" layer="0"/>
+	<component  type="rendering" shader="outlineBox" texture="vader.png" layer="0"/>
 </entity>
 <entity name="player2" active="true" hp="100" posX="900.0" posY="0.0" velX="0.0" velY="0.0" >	
 	<component type="player_controller" playerNumber="2"/>
 	<component type="rect_collision" layer="1"/>
-	<component   type="rendering" shader="diffuse" shader="diffuse" texture="donatelo.png" layer="0"/>
+	<component   type="rendering" shader="diffuse" texture="donatelo.png" layer="0"/>
 </entity>
 <entity name="player3" active="true" hp="100" posX="0.0" posY="700.0" velX="0.0" velY="0.0" >
 	<component type="player_controller" playerNumber="3"/>

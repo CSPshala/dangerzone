@@ -3,7 +3,7 @@
 //	
 //	Author Name	:	JC Ricks
 //	
-//	Purpose		:	Handles rendering of a selection box
+//	Purpose		:	Handles rendering of a sprite
 ///////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////
@@ -20,10 +20,11 @@ namespace Renderer
 {
 
 const int OutlineBoxContext::QUAD_VERT_COUNT(6);
+const unsigned int OutlineBoxContext::OUTLINEBOXCONTEXTTYPE(1);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-OutlineBoxContext::OutlineBoxContext() : m_vertexInfo(nullptr), m_boxShade(nullptr)
+OutlineBoxContext::OutlineBoxContext() : m_vertexInfo(nullptr), m_diffuseShade(nullptr)
 {
 	m_vertexInfo = new bitmapVertex[QUAD_VERT_COUNT * GraphicsGlobals::g_MaxRenderComponents];	
 }
@@ -47,19 +48,19 @@ bool OutlineBoxContext::Initialize(HWND hWnd)
 	result = InitializeBuffers();
 	if(!result)
 	{
-		MessageBox(hWnd, L"Could not initialize an OutlineBox context.", L"Error", MB_OK);
+		MessageBox(hWnd, L"Could not initialize a sprite context.", L"Error", MB_OK);
 		return false;
 	}
 
 	// Create the color shader object.
-	m_boxShade = new DiffuseShader("diffuse","diffuse");
-	if(!m_boxShade)
+	m_diffuseShade = new DiffuseShader("diffuse","diffuse");
+	if(!m_diffuseShade)
 	{
 		return false;
 	}
 
 	// Initialize the color shader object.
-	result = m_boxShade->Initialize(GraphicsGlobals::g_Device, hWnd);
+	result = m_diffuseShade->Initialize(GraphicsGlobals::g_Device, hWnd);
 	if(!result)
 	{
 		MessageBox(hWnd, L"Could not initialize the diffuse shader object.", L"Error", MB_OK);
@@ -67,6 +68,48 @@ bool OutlineBoxContext::Initialize(HWND hWnd)
 	}
 
 	return true;
+}
+
+void OutlineBoxContext::PrepareBuffers(LayerQueue& renderQueue)
+{
+	// Add components to buffer in order based on layer but bounce if we run into another context
+	// on the same layer, we'll come back.
+	unsigned int size = renderQueue.size();
+	// save the layer and what index it's at
+	unsigned int layer = renderQueue.top()->getLayer();
+
+	// Save what layers we have entities on
+	m_activeOnLayers.push_back(layer);
+
+	// The Texture and count of how many in a row and what layer
+	textureLayerAndCount tlc;
+	
+	for(unsigned int i = 0; i < size && 
+		renderQueue.top()->getShader() == GetContextType() && 
+		renderQueue.top()->getLayer() == layer; ++i)
+	{
+		if(tlc.texture == nullptr)
+		{
+            // MAGIC! (Nah seriously doe it's just derpy DLL crap)
+			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+			tlc.count = 1;
+			tlc.layer = layer;
+		}
+		else if(tlc.texture == reinterpret_cast<Texture*>(renderQueue.top()->getTexture()))
+		{			
+			tlc.count++;
+		}
+		else 
+		{
+			GetShader()->AddTextureLayerAndCount(tlc);
+			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+			tlc.count = 1;
+		}
+		AddRenderCompToCurrentRenderBuffer(renderQueue.top());
+		renderQueue.pop();
+	}
+	// Add remaining pair
+	GetShader()->AddTextureLayerAndCount(tlc);
 }
 
 void OutlineBoxContext::Shutdown()
@@ -78,11 +121,11 @@ void OutlineBoxContext::Shutdown()
 	}
 
 	// Release the color shader object.
-	if(m_boxShade)
+	if(m_diffuseShade)
 	{
-		m_boxShade->Shutdown();
-		delete m_boxShade;
-		m_boxShade = nullptr;
+		m_diffuseShade->Shutdown();
+		delete m_diffuseShade;
+		m_diffuseShade = nullptr;
 	}
 
 	IRenderContext::Shutdown();
@@ -167,8 +210,13 @@ bool OutlineBoxContext::UpdateBuffers()
 	return true;
 }
 
-void OutlineBoxContext::RenderBuffers()
+void OutlineBoxContext::RenderBuffers(unsigned int layer)
 {
+	if(m_activeOnLayers.front() != layer)
+		return;
+	else
+		m_activeOnLayers.pop_front();
+
 	unsigned int stride = sizeof(bitmapVertex);
 	unsigned int offset = 0;
 
@@ -188,8 +236,8 @@ void OutlineBoxContext::RenderBuffers()
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	GraphicsGlobals::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_boxShade->Render(0);
-
+	m_diffuseShade->Render(layer);
+	
 	m_entityCount = 0;
 }
 
@@ -198,7 +246,12 @@ void OutlineBoxContext::RenderBuffers()
 ////////////////////////////////////////
 DiffuseShader* OutlineBoxContext::GetShader()
 {
-	return m_boxShade;
+	return m_diffuseShade;
+}
+
+unsigned int OutlineBoxContext::GetContextType()
+{
+	return OUTLINEBOXCONTEXTTYPE;
 }
 
 void OutlineBoxContext::AddRenderCompToCurrentRenderBuffer(RenderComponentData* component)

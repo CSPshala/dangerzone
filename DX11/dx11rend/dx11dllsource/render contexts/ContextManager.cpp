@@ -130,8 +130,8 @@ bool ContextManager::LoadContexts(HWND hWnd)
 			}
 			else if(contextName == "outlineBox")
 			{
-				//m_contextArray.push_back(new OutlineBoxContext);
-				//(*m_contextArray.end())->Initialize(hWnd);
+				m_contextArray.push_back(new OutlineBoxContext);
+				m_contextArray.back()->Initialize(hWnd);
 			}
 		}
 
