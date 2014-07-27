@@ -29,6 +29,8 @@ IShader::IShader(char* vertexShaderName, char* pixelShaderName, char* geometrySh
 	m_pixelShader = nullptr;
 	m_vertexShader = nullptr;
 
+	m_LastIndex = 0;
+
 	string shaderPath = "resource/shaders/";
 
 	m_VertexShaderPath = shaderPath + vertexShaderName + ".vs";
@@ -70,7 +72,7 @@ void IShader::Shutdown()
 	return;
 }
 
-bool IShader::Render()
+bool IShader::Render(const unsigned int layer)
 {
 	// Set the shader parameters that it will use for rendering.
 	// TODO: Implement
@@ -82,7 +84,7 @@ bool IShader::Render()
 	}*/
 
 	// Now render the prepared buffers with the shader.
-	RenderShader();
+	RenderShader(layer);
 
 	return true;
 }

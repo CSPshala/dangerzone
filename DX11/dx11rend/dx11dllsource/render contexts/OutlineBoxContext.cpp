@@ -188,7 +188,7 @@ void OutlineBoxContext::RenderBuffers()
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	GraphicsGlobals::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_boxShade->Render();
+	m_boxShade->Render(0);
 
 	m_entityCount = 0;
 }

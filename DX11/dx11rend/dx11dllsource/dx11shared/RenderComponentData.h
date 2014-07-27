@@ -31,19 +31,13 @@ public:
 	/********** Public Utility Functions ************/
 
 	/********** Public Accessors ************/
-    unsigned int getTexture();
+
 	unsigned int getTexture() const;
-	unsigned int getShader();
 	unsigned int getShader() const;
-	int getLayer();
 	int getLayer() const;
-    int getWidth();
     int getWidth() const;
-    int getHeight();
     int getHeight() const;
-    float getPosX();
     float getPosX() const;
-    float getPosY();
     float getPosY() const;
 
 	/********** Public Mutators  ************/	

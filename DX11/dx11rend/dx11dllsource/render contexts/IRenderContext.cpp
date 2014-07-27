@@ -20,8 +20,8 @@ namespace Renderer
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-IRenderContext::IRenderContext() : m_entityCount(0), m_vertexBuffer(nullptr), 
-	m_indexBuffer(nullptr)
+IRenderContext::IRenderContext() : m_entityCount(0),
+	m_vertexBuffer(nullptr), m_indexBuffer(nullptr)
 {
 }
 
@@ -58,11 +58,17 @@ void IRenderContext::ShutdownBuffers()
 	return;
 }
 
+bool IRenderContext::AreLayersToRender()
+{
+	return (m_activeOnLayers.size() > 0);
 }
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
 
+
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS
 ////////////////////////////////////////
+
+}

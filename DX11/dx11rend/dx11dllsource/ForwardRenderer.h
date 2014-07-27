@@ -12,10 +12,8 @@
 //				INCLUDES
 ////////////////////////////////////////
 
-#include "dx11shared\RenderComponentData.h"
 #include "defines.h"
 #include "D3D.h"
-#include <queue>
 using namespace std;
 
 namespace Renderer
@@ -67,13 +65,7 @@ private:
 
 	D3D* m_D3D;
 	Camera*     m_Camera;
-
-	class layerCompare
-	{
-	public:
-		bool operator() (const RenderComponentData* e1, const RenderComponentData* e2) const;
-	};
-
+	
 	struct MatrixBufferType
 	{
 		D3DXMATRIX world;
@@ -92,12 +84,9 @@ private:
 	bool m_vsync;
 	bool m_fullscreen;
 
-	// Contexts
-	DiffuseContext* m_diffuseContext;
-	OutlineBoxContext* m_outlineBoxContext;
 	// Vector of textures for diffuse context
 	// Staging priority queue for render components
-	priority_queue<RenderComponentData*,vector<RenderComponentData*>,layerCompare> m_renderQueue;
+	LayerQueue m_renderQueue;
 
 	/********** Private Accessors ************/
 

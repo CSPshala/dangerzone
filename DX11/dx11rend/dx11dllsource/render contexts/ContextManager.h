@@ -12,7 +12,11 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include <string>
-#include <map>
+#include <vector>
+#include "../xml/pugixml.hpp"
+#include "../defines.h"
+
+using namespace pugi;
 using namespace std;
 
 namespace Renderer
@@ -33,9 +37,8 @@ public:
 	/********** Public Utility Functions ************/
 	static ContextManager* GetInstance();
 	static void DeleteInstance();
-	/** Returns a render context corresponding to passed in context name
-	  NOTE: Will return nullptr if context not found **/
-	IRenderContext* GetRenderContext(string contextName);
+	void PrepareContexts(LayerQueue& renderQueue);
+	void RenderContexts();
 
 	/** Inits the context manager */
 	bool Initialize(HWND hWnd);
@@ -55,14 +58,18 @@ private:
 	// Singleton Instance
 	static ContextManager* m_instance;
 	// map of contexts
-	map<string,IRenderContext*> m_contextMap;
-	// window handle
-	HWND m_hWnd;
+	vector<IRenderContext*> m_contextArray;
+
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
+	bool LoadContexts(HWND hWnd);
+	bool LoadXMLFile(xml_document& doc,const string& filePath) const;
+	/** Returns a render context corresponding to passed in context name
+	  NOTE: Will return nullptr if context not found **/
+	IRenderContext* GetRenderContext(unsigned int contextIndex);
 	void CleanupContexts();
 };
 

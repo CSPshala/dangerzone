@@ -58,6 +58,7 @@ private:
 	/********** Private Utility Functions ************/
 	virtual void RegisterForLocalMessages();
 	virtual void _ReceiveLocalMessage(CompMessage* message);
+	unsigned int GetShaderType(std::string typeName);
 	void RenderEntity();
 };
 #endif

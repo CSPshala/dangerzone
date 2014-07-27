@@ -13,6 +13,9 @@
 #include "ContextManager.h"
 #include "IRenderContext.h"
 #include "DiffuseContext.h"
+#include "OutlineBoxContext.h"
+
+using namespace pugi;
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
@@ -38,31 +41,52 @@ ContextManager::~ContextManager()
 ////////////////////////////////////////
 bool ContextManager::Initialize(HWND hWnd)
 {
-	m_hWnd = hWnd;
+	if(LoadContexts(hWnd))	
+		return true;	
+	else	
+		LOG("ContextManager Initialize failed...");
+	
 
-	IRenderContext* toAdd = new DiffuseContext;
-	toAdd->Initialize(m_hWnd);
-	m_contextMap["diffuse"] = toAdd;
-
-	return true;
+	return false;
 }
 
-IRenderContext* ContextManager::GetRenderContext(string contextName)
+void ContextManager::PrepareContexts(LayerQueue& renderQueue)
 {
-	IRenderContext* context = nullptr;
-
-	map<string,IRenderContext*>::iterator iter = m_contextMap.find(contextName);
-
-	if(iter == m_contextMap.end())
+	while(renderQueue.size() > 0)
 	{
-		LOG("Couldn't load context with name: " << contextName);
-	}
-	else
-	{
-		context = m_contextMap[contextName];
+		GetRenderContext(renderQueue.top()->getShader())->PrepareBuffers(renderQueue);
 	}
 
-	return context;
+	for(unsigned int i = 0; i < m_contextArray.size(); ++i)
+	{
+		m_contextArray[i]->UpdateBuffers();
+	}
+}
+
+void ContextManager::RenderContexts()
+{
+	// Render until all layers have been rendered in every context
+	// w/o this counter this would be infinite CAUSE I WANT ALL THE LAYYERRRRSSS
+	unsigned int contextsDone(0);
+	unsigned int arraySize = m_contextArray.size();
+
+	for(unsigned int layer = 0; contextsDone < arraySize; ++layer)
+	{
+		// Now render this layer per context (if applicable)
+		for(unsigned int i = 0; i < arraySize; ++i)
+		{
+			if(m_contextArray[i]->AreLayersToRender())
+			{
+				m_contextArray[i]->RenderBuffers(layer);
+			}
+			else
+			{
+				contextsDone++;
+			}				
+		}
+
+
+	}
 }
 
 ContextManager* ContextManager::GetInstance()
@@ -85,13 +109,76 @@ void ContextManager::DeleteInstance()
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
+bool ContextManager::LoadContexts(HWND hWnd)
+{
+	xml_document doc;
+	string filePath("resource/data/shadertypes.xml");
+	
+	if(!LoadXMLFile(doc,filePath))
+		return false;
+
+	try
+	{
+
+		for(xml_node shader = doc.child("validShaders").child("shader"); shader; shader = shader.next_sibling("shader"))
+		{
+			string contextName = shader.attribute("typeName").as_string();
+			if(contextName == "diffuse")
+			{
+				m_contextArray.push_back(new DiffuseContext);
+				m_contextArray.back()->Initialize(hWnd);
+			}
+			else if(contextName == "outlineBox")
+			{
+				//m_contextArray.push_back(new OutlineBoxContext);
+				//(*m_contextArray.end())->Initialize(hWnd);
+			}
+		}
+
+	}
+	catch(...)
+	{
+		LOG("Unexpected exception caught in ContextManager::LoadContexts...");
+		return false;
+	}
+
+	return true;
+}
+
+IRenderContext* ContextManager::GetRenderContext(unsigned int contextIndex)
+{
+	return m_contextArray[contextIndex];
+}
+
+bool ContextManager::LoadXMLFile(xml_document& doc,const string& filePath) const
+{
+	xml_parse_result result = doc.load_file(filePath.c_str());
+
+	bool returnResult = false;
+
+	if (result)
+	{
+		LOG("XML [" << filePath << "] parsed without errors\n");
+		returnResult = true;
+	}
+	else
+	{
+		LOG("XML [" << filePath << "] parsed with errors\n");
+		LOG("Error description: " << result.description() << "\n");
+		LOG("Error offset: " << result.offset << "\n");
+		returnResult = false;
+	}
+
+	return returnResult;
+}
+
 void ContextManager::CleanupContexts()
 {
-	map<string,IRenderContext*>::iterator iter = m_contextMap.begin();
-	for(;iter != m_contextMap.end(); ++iter)
+	vector<IRenderContext*>::iterator iter = m_contextArray.begin();
+	for(;iter != m_contextArray.end(); ++iter)
 	{
-		(*iter).second->Shutdown();
-		delete (*iter).second;
+		(*iter)->Shutdown();
+		delete (*iter);
 	}
 }
 

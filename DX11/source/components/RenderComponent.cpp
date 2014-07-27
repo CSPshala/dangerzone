@@ -59,6 +59,7 @@ bool RenderComponent::LoadComponentAttributes(xml_node& component)
     // TODO: DLL Interface will have gettexture but will return uINT
 	m_renderData.setTexture(Rendering::GetTexture((char*)(component.attribute("texture").as_string())));
 	m_renderData.setLayer(component.attribute("layer").as_int());
+	m_renderData.setShader(GetShaderType(component.attribute("shader").as_string()));
 
     //TODO: Texture manager can return this in DLL
 	m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
@@ -90,6 +91,21 @@ void RenderComponent::RenderEntity()
 	m_renderData.setPosX(getParentEntity()->GetPosition().x);
 	m_renderData.setPosY(getParentEntity()->GetPosition().y);	
 	Rendering::AddRenderComponentToFrame(&m_renderData);
+}
+
+unsigned int RenderComponent::GetShaderType(std::string typeName)
+{
+	// Returns the shader type (matches up with shaderTypes.xml cause I love magic numbers)
+	if(typeName == "diffuse")
+	{
+		return 0;
+	}
+	else if(typeName == "outlineBox")
+	{
+		return 1;
+	}
+
+	return 0;
 }
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS

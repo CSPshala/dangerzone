@@ -22,6 +22,9 @@
     <Filter Include="Source Files\dx11shared">
       <UniqueIdentifier>{1eddb826-69d1-4f05-af59-782319f4b345}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\xml">
+      <UniqueIdentifier>{eb7f0337-8305-43fd-a032-02263bdc7cfe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -73,6 +76,12 @@
     <ClInclude Include="dx11dllsource\DXRenderExports.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="dx11dllsource\xml\pugiconfig.hpp">
+      <Filter>Source Files\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="dx11dllsource\xml\pugixml.hpp">
+      <Filter>Source Files\xml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dx11rend.cpp">
@@ -119,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="dx11dllsource\render contexts\OutlineBoxContext.cpp">
       <Filter>Source Files\contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\xml\pugixml.cpp">
+      <Filter>Source Files\xml</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

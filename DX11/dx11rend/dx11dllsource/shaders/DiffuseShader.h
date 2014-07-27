@@ -12,7 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IShader.h"
-#include "../Texture.h"
+#include "../defines.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -34,7 +34,7 @@ public:
 	~DiffuseShader();
 
 	/********** Public Utility Functions ************/
-	void AddTextureAndCountPair(pair<Texture*,int> add);
+	void AddTextureLayerAndCount(textureLayerAndCount add);
 
 	/********** Public Accessors ************/	
 
@@ -44,7 +44,7 @@ private:
 	/********** Private Members ************/
 	ID3D11SamplerState* m_sampleState;
 	// Textures and # of entities
-	vector<pair<Texture*,int> > m_TextureAndCountPairs;
+	deque<textureLayerAndCount> m_TextureAndCountPairs;
 
 	/********** Private Accessors ************/
 
@@ -55,7 +55,7 @@ private:
 	virtual void ShutdownShader();	
 	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 					   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix);
-	virtual void RenderShader();
+	virtual void RenderShader(const unsigned int layer);
 };
 
 }

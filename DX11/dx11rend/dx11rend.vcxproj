@@ -108,6 +108,8 @@
     <ClInclude Include="dx11dllsource\shaders\IShader.h" />
     <ClInclude Include="dx11dllsource\Texture.h" />
     <ClInclude Include="dx11dllsource\TextureManager.h" />
+    <ClInclude Include="dx11dllsource\xml\pugiconfig.hpp" />
+    <ClInclude Include="dx11dllsource\xml\pugixml.hpp" />
     <ClInclude Include="dx11rendexp.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -134,6 +136,7 @@
     <ClCompile Include="dx11dllsource\shaders\IShader.cpp" />
     <ClCompile Include="dx11dllsource\Texture.cpp" />
     <ClCompile Include="dx11dllsource\TextureManager.cpp" />
+    <ClCompile Include="dx11dllsource\xml\pugixml.cpp" />
     <ClCompile Include="dx11rend.cpp" />
     <ClCompile Include="dx11rendexp.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -30,6 +30,11 @@
 #include <tchar.h>
 #include <iostream>
 #include <sstream>
+#include <queue>
+#include <vector>
+
+#include "dx11shared/RenderComponentData.h"
+#include "Texture.h"
 
 namespace Renderer
 {
@@ -62,6 +67,24 @@ public:
 	static const int   g_MaxRenderComponents;
 	static Camera*	   g_Camera;
 };
+
+/** Typedefs and common classes/structs **/
+class layerCompare
+{
+public:
+	bool operator() (const RenderComponentData* e1, const RenderComponentData* e2) const;
+};
+
+struct textureLayerAndCount
+{
+	textureLayerAndCount() : texture(nullptr), layer(0), count(0) {}
+
+	Texture* texture;
+	unsigned int layer;
+	unsigned int count;
+};
+
+typedef std::priority_queue<RenderComponentData*,std::vector<RenderComponentData*>,layerCompare> LayerQueue;
 
 }
 

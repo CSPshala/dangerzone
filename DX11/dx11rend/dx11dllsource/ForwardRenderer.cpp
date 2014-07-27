@@ -96,11 +96,15 @@ bool FRenderer::Initialize(HWND hWnd, int resW, int resH, bool vsync, bool fulls
 	UpdateConstantShaderBuffer();
 
 	// Init context manager
-	ContextManager::GetInstance()->Initialize(m_hWnd);
-	
-	m_diffuseContext = static_cast<DiffuseContext*>(ContextManager::GetInstance()->GetRenderContext("diffuse"));
-
-	LOG("Renderer initialization successfully completed.");
+	if(ContextManager::GetInstance()->Initialize(m_hWnd))	
+	{
+		LOG("Renderer initialization successfully completed.");
+	}
+	else
+	{
+		LOG("Render init failed...");
+		return false;
+	}
 
 	return true;
 }
@@ -152,45 +156,18 @@ void FRenderer::RenderQueue()
 	if(m_renderQueue.size() == 0)
 		return;
 
-	// Add components to buffer in order based on layer
-	unsigned int size = m_renderQueue.size();
-	pair<Texture*,int> pairToAdd(nullptr,0);
-	for(unsigned int i = 0; i < size; ++i)
-	{
-		if(pairToAdd.first == nullptr)
-		{
-            // MAGIC! (Nah seriously doe it's just derpy DLL crap)
-			pairToAdd.first = reinterpret_cast<Texture*>(m_renderQueue.top()->getTexture());
-			pairToAdd.second = 1;
-		}
-		else if(pairToAdd.first == reinterpret_cast<Texture*>(m_renderQueue.top()->getTexture()))
-		{			
-			pairToAdd.second++;
-		}
-		else
-		{
-			m_diffuseContext->GetShader()->AddTextureAndCountPair(pairToAdd);
-			pairToAdd.first = reinterpret_cast<Texture*>(m_renderQueue.top()->getTexture());
-			pairToAdd.second = 1;
-		}
-		m_diffuseContext->AddRenderCompToCurrentRenderBuffer(m_renderQueue.top());
-		m_renderQueue.pop();
-	}
-	// Add remaining pair
-	m_diffuseContext->GetShader()->AddTextureAndCountPair(pairToAdd);
-
-	m_diffuseContext->UpdateBuffers();
+	ContextManager::GetInstance()->PrepareContexts(m_renderQueue);
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.2f, 0.2f, 0.0f, 1.0f);
 
-	m_diffuseContext->RenderBuffers();
+	ContextManager::GetInstance()->RenderContexts();
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 
 	// Get rid of old priority queue
-	m_renderQueue = priority_queue<RenderComponentData*,vector<RenderComponentData*>,FRenderer::layerCompare>();
+	m_renderQueue = LayerQueue();
 }
 
 FRenderer* FRenderer::GetInstance()
@@ -289,21 +266,6 @@ bool FRenderer::UpdateConstantShaderBuffer()
 	GraphicsGlobals::g_constantShaderBuffer = m_matrixBuffer;
 
 	return true;
-}
-
-bool FRenderer::layerCompare::operator() (const RenderComponentData* e1, const RenderComponentData* e2) const
-{
-	// If layers are same and pointer to texture address is lower (cause reasons)
-	// trying to order same texture components together
-	if(e1->getLayer() == e2->getLayer())
-	{
-		if(e1->getTexture() < e2->getTexture())
-			return true;
-		else
-			return false;
-	}		
-	// If not, compare layers (we want larger layer # on top, 0 == bottom)
-	return e1->getLayer() > e2->getLayer();
 }
 
 ////////////////////////////////////////

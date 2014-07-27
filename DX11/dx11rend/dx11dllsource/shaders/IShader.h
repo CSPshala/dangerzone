@@ -16,6 +16,7 @@
 #include <d3dx11async.h>
 #include <fstream>
 #include <string>
+#include "../defines.h"
 using namespace std;
 
 namespace Renderer
@@ -42,7 +43,7 @@ public:
 	bool Initialize(ID3D11Device* device, HWND hWnd);
 	void Shutdown();
 	/** number of indicies to render, offset into buffer, optional voidptr **/
-	bool Render();
+	bool Render(const unsigned int layer);
 
 	/********** Public Accessors ************/
 
@@ -55,6 +56,7 @@ protected:
 	string		m_PixelShaderPath;
 	string		m_VertexShaderPath;
 	string		m_GeometryShaderPath;
+	int			m_LastIndex;
 	
 	ID3D11VertexShader* m_vertexShader;
 	ID3D11PixelShader* m_pixelShader;
@@ -71,7 +73,7 @@ protected:
 		virtual bool InitializeShader(ID3D11Device* device, HWND hwnd, const char* vsFilename, const char* psFilename, const char* gsFilename = nullptr) = 0;		
 		virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DXMATRIX& worldMatrix, 
 						   D3DXMATRIX& viewMatrix, D3DXMATRIX& projectionMatrix) = 0;
-		virtual void RenderShader() = 0;
+		virtual void RenderShader(const unsigned int layer) = 0;
 		virtual void ShutdownShader();
 		void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const char* shaderFilename);
 };

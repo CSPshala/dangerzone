@@ -33,7 +33,7 @@ DiffuseShader::~DiffuseShader()
 ////////////////////////////////////////
 //		PUBLIC UTILITY FUNCTIONS
 ////////////////////////////////////////
-void DiffuseShader::AddTextureAndCountPair(pair<Texture*,int> add)
+void DiffuseShader::AddTextureLayerAndCount(textureLayerAndCount add)
 {
 	m_TextureAndCountPairs.push_back(add);
 }
@@ -189,7 +189,7 @@ bool DiffuseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, D3DX
 	return true;		
 }
 
-void DiffuseShader::RenderShader()
+void DiffuseShader::RenderShader(const unsigned int layer)
 {
 	// Set the vertex input layout.
 	GraphicsGlobals::g_DeviceContext->IASetInputLayout(m_layout);
@@ -200,13 +200,12 @@ void DiffuseShader::RenderShader()
 	GraphicsGlobals::g_DeviceContext->PSSetSamplers(0,1,&m_sampleState);	
 
 	int renderCount = 0;
-	int lastIndex = 0;
+	int lastIndex = m_LastIndex;
 	unsigned int count = m_TextureAndCountPairs.size();
-	pair<Texture*,int>* ptr = (count > 0) ? &m_TextureAndCountPairs.front() : nullptr;
-	for(unsigned int i = 0; i < count; ++i)
+	for(unsigned int i = 0; i < count && m_TextureAndCountPairs.front().layer == layer; ++i)
 	{
-		ID3D11ShaderResourceView* theTex = ptr[i].first->GetTexture();
-		renderCount = ptr[i].second * 6;
+		ID3D11ShaderResourceView* theTex = m_TextureAndCountPairs.front().texture->GetTexture();
+		renderCount = m_TextureAndCountPairs.front().count * 6;
 		// Set texture to sample
 		GraphicsGlobals::g_DeviceContext->PSSetShaderResources(0,1,&theTex);
 
@@ -214,8 +213,14 @@ void DiffuseShader::RenderShader()
 		GraphicsGlobals::g_DeviceContext->DrawIndexed( renderCount, lastIndex, 0);
 
 		lastIndex += renderCount;
+
+		m_TextureAndCountPairs.pop_front();
 	}
-	m_TextureAndCountPairs.clear();
+
+	if(m_TextureAndCountPairs.size() == 0)
+		m_LastIndex = 0;
+	else
+		m_LastIndex = lastIndex;
 }
 
 ////////////////////////////////////////

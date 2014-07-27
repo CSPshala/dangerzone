@@ -1,4 +1,6 @@
+<!-- These message types are hard coded in the engine
+     don't fuck around w/ 'em if you don't know PT2 BEEEEEITCH -->
 <validShaders>
-<shader typeName="diffuse" type="0"/>
-<shader typeName="outline" type="1"/>
+<shader typeName="diffuse"/>
+<shader typeName="outlineBox"/>
 </validShaders>

@@ -41,14 +41,9 @@ unsigned int RenderComponentData::getTexture() const
 	return m_texture;
 }
 
-unsigned int RenderComponentData::getTexture()
+unsigned int RenderComponentData::getShader() const
 {
-	return m_texture;
-}
-
-int RenderComponentData::getLayer()
-{
-	return m_layer;
+	return m_shader;
 }
 
 int RenderComponentData::getLayer() const
@@ -56,19 +51,9 @@ int RenderComponentData::getLayer() const
 	return m_layer;
 }
 
-int RenderComponentData::getWidth()
-{
-    return m_width;
-}
-
 int RenderComponentData::getWidth() const
 {
     return m_width;
-}
-
-int RenderComponentData::getHeight()
-{
-    return m_height;
 }
 
 int RenderComponentData::getHeight() const
@@ -76,19 +61,9 @@ int RenderComponentData::getHeight() const
     return m_height;
 }
 
-float RenderComponentData::getPosX()
-{
-    return m_posX;
-}
-
 float RenderComponentData::getPosX() const
 {
     return m_posX;
-}
-
-float RenderComponentData::getPosY()
-{
-    return m_posY;
 }
 
 float RenderComponentData::getPosY() const
@@ -109,6 +84,11 @@ void RenderComponentData::setPosY(float y)
 void RenderComponentData::setTexture(unsigned int texture)
 {
     m_texture = texture;
+}
+
+void RenderComponentData::setShader(unsigned int shader)
+{
+	m_shader = shader;
 }
 
 void RenderComponentData::setLayer(int layer)

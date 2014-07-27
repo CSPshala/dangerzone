@@ -20,6 +20,7 @@ namespace Renderer
 {
 
 const int DiffuseContext::QUAD_VERT_COUNT(6);
+const unsigned int DiffuseContext::DIFFUSECONTEXTTYPE(0);
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
@@ -67,6 +68,48 @@ bool DiffuseContext::Initialize(HWND hWnd)
 	}
 
 	return true;
+}
+
+void DiffuseContext::PrepareBuffers(LayerQueue& renderQueue)
+{
+	// Add components to buffer in order based on layer but bounce if we run into another context
+	// on the same layer, we'll come back.
+	unsigned int size = renderQueue.size();
+	// save the layer and what index it's at
+	unsigned int layer = renderQueue.top()->getLayer();
+
+	// Save what layers we have entities on
+	m_activeOnLayers.push_back(layer);
+
+	// The Texture and count of how many in a row and what layer
+	textureLayerAndCount tlc;
+	
+	for(unsigned int i = 0; i < size && 
+		renderQueue.top()->getShader() == GetContextType() && 
+		renderQueue.top()->getLayer() == layer; ++i)
+	{
+		if(tlc.texture == nullptr)
+		{
+            // MAGIC! (Nah seriously doe it's just derpy DLL crap)
+			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+			tlc.count = 1;
+			tlc.layer = layer;
+		}
+		else if(tlc.texture == reinterpret_cast<Texture*>(renderQueue.top()->getTexture()))
+		{			
+			tlc.count++;
+		}
+		else 
+		{
+			GetShader()->AddTextureLayerAndCount(tlc);
+			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+			tlc.count = 1;
+		}
+		AddRenderCompToCurrentRenderBuffer(renderQueue.top());
+		renderQueue.pop();
+	}
+	// Add remaining pair
+	GetShader()->AddTextureLayerAndCount(tlc);
 }
 
 void DiffuseContext::Shutdown()
@@ -167,8 +210,13 @@ bool DiffuseContext::UpdateBuffers()
 	return true;
 }
 
-void DiffuseContext::RenderBuffers()
+void DiffuseContext::RenderBuffers(unsigned int layer)
 {
+	if(m_activeOnLayers.front() != layer)
+		return;
+	else
+		m_activeOnLayers.pop_front();
+
 	unsigned int stride = sizeof(bitmapVertex);
 	unsigned int offset = 0;
 
@@ -188,8 +236,8 @@ void DiffuseContext::RenderBuffers()
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	GraphicsGlobals::g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_diffuseShade->Render();
-
+	m_diffuseShade->Render(layer);
+	
 	m_entityCount = 0;
 }
 
@@ -199,6 +247,11 @@ void DiffuseContext::RenderBuffers()
 DiffuseShader* DiffuseContext::GetShader()
 {
 	return m_diffuseShade;
+}
+
+unsigned int DiffuseContext::GetContextType()
+{
+	return DIFFUSECONTEXTTYPE;
 }
 
 void DiffuseContext::AddRenderCompToCurrentRenderBuffer(RenderComponentData* component)
