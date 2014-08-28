@@ -1,4 +1,3 @@
-// http://www.rastertek.com/dx11tut04.html
 /////////////
 // GLOBALS //
 /////////////
@@ -13,49 +12,33 @@ cbuffer MatrixBuffer
 //////////////
 // TYPEDEFS //
 //////////////
-struct VertexInputType
+struct ColorVertexInputType
 {
-    float4 position : POSITION;
-    float4 color : COLOR;
+    float3 position : POSITION;
+    float3 color : COLOR;
 };
 
-struct PixelInputType
+struct ColorPixelInputType
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float3 color : COLOR;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Vertex Shader
 ////////////////////////////////////////////////////////////////////////////////
-PixelInputType ColorVertexShader(VertexInputType input)
+ColorPixelInputType ColorVertexShader(ColorVertexInputType input)
 {
-    PixelInputType output;
-    
+    ColorPixelInputType output;    
 
-    // Change the position vector to be 4 units for proper matrix calculations.
-    input.position.w = 1.0f;
-	
-	matrix WVPMat = { {1,0,0,0},  
-					  {0,1,0,0},  
-					  {0,0,1,0},  
-					  {0,0,0,1}  };  
-					  
-	WVPMat = mul(WVPMat, worldMatrix);
-	WVPMat = mul(WVPMat, viewMatrix);
-	WVPMat = mul(WVPMat, projectionMatrix);
+	float4 pos = float4(input.position,1.0f);
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
-    //output.position = mul(input.position, worldMatrix);
-    //output.position = mul(output.position, viewMatrix);
-    //output.position = mul(output.position, projectionMatrix);
-	//output.position = mul(worldMatrix,input.position);
-    //output.position = mul(viewMatrix,output.position);
-    //output.position = mul(projectionMatrix,output.position);
-	
-	output.position = mul(input.position, WVPMat);
-    
-    // Store the input color for the pixel shader to use.
+    output.position = mul(pos, worldMatrix);
+    output.position = mul(output.position, viewMatrix);
+    output.position = mul(output.position, projectionMatrix);
+
+    // Store the color for the pixel shader.
     output.color = input.color;
     
     return output;

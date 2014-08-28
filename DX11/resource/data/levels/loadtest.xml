@@ -1,12 +1,14 @@
-<entity name="player1" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	
-	<component type="player_controller" playerNumber="1"/>	
-	<component type="rect_collision" layer="0"/>
-	<component  type="rendering" shader="outlineBox" texture="vader.png" layer="0"/>
-</entity>
+
 <entity name="player2" active="true" hp="100" posX="900.0" posY="0.0" velX="0.0" velY="0.0" >	
 	<component type="player_controller" playerNumber="2"/>
 	<component type="rect_collision" layer="1"/>
 	<component   type="rendering" shader="diffuse" texture="donatelo.png" layer="0"/>
+</entity>
+<entity name="player1" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	
+	<component type="player_controller" playerNumber="1"/>	
+	<component type="rect_collision" layer="0"/>
+	<component type="rendering" shader="diffuse" texture="vader.png" layer="0"/>
+	<component type="rendering" shader="outlineBox" layer="0"/>
 </entity>
 <entity name="player3" active="true" hp="100" posX="0.0" posY="700.0" velX="0.0" velY="0.0" >
 	<component type="player_controller" playerNumber="3"/>
@@ -20,8 +22,9 @@
 </entity>
 <entity name="mousePointer" active="true" hp="100" posX="400.0" posY="300.0" velX="0.0" velY="0.0" >
 	<component  type="rendering" shader="diffuse" texture="mouse.png" layer="1"/>
-	<component type="point_collision" layer="1" offsetX="9" offsetY="4" topDownCollide="true"/>
+	<component type="point_collision" layer="1" offsetX="-25" offsetY="-30" topDownCollide="true"/>
 	<component type="mouse_controller" mouseNumber="1"/>
+	<component type="rendering" shader="outlineBox" layer="0"/>
 </entity>
 <entity name="background" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" >	
 	<component  type="rendering" shader="diffuse" texture="tempbg.jpg" layer="0"/>
@@ -32,7 +35,7 @@
 </entity>	
 <entity name="test" active="true" hp="100" posX="800" posY="500.0" velX="0.0" velY="0.0" >
 	<component  type="rendering" shader="diffuse" texture="santa.png" layer="0"/>
-	<component type="rect_collision" layer="0"/>
+	
 </entity>
 <entity name="test" active="true" hp="100" posX="400" posY="200.0" velX="0.0" velY="0.0" >
 	<component  type="rendering" shader="diffuse" texture="santa.png" layer="0"/>

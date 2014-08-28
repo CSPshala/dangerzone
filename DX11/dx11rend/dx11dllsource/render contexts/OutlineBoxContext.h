@@ -12,7 +12,7 @@
 //				INCLUDES
 ////////////////////////////////////////
 #include "IRenderContext.h"
-#include "../shaders/DiffuseShader.h"
+#include "../shaders/ColorShader.h"
 #include "../Texture.h"
 #include "../dx11shared/RenderComponentData.h"
 #include <vector>
@@ -43,26 +43,26 @@ public:
 	void Shutdown();
 
 	/********** Public Accessors ************/	
-	DiffuseShader* GetShader();
+	ColorShader* GetShader();
 
 	/********** Public Mutators  ************/
 	void AddRenderCompToCurrentRenderBuffer(RenderComponentData* component);
 
 private:
-	static const int QUAD_VERT_COUNT;
+	static const int LINE_VERT_COUNT;
 	static const unsigned int OUTLINEBOXCONTEXTTYPE;
 	/********** Private Members ************/
-	struct bitmapVertex
+	struct lineVertex
 	{
 		D3DXVECTOR3 position;
-		D3DXVECTOR2 texture;
+		D3DXVECTOR3 color;
 	};
 	
 	// Buffer for verticies
-	bitmapVertex* m_vertexInfo;	
+	lineVertex* m_vertexInfo;	
 
 	// Shaders
-	DiffuseShader* m_diffuseShade;
+	ColorShader* m_colorShade;
 
 	/********** Private Accessors ************/
 	unsigned int GetContextType();

@@ -3,17 +3,17 @@
 //////////////
 // TYPEDEFS //
 //////////////
-struct PixelInputType
+struct ColorPixelInputType
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float3 color : COLOR;
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pixel Shader
 ////////////////////////////////////////////////////////////////////////////////
-float4 ColorPixelShader(PixelInputType input) : SV_TARGET
+float4 ColorPixelShader(ColorPixelInputType input) : SV_TARGET
 {
-    return input.color;
+    return float4(input.color, 1.0);
 }

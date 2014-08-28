@@ -104,6 +104,7 @@
     <ClInclude Include="dx11dllsource\render contexts\DiffuseContext.h" />
     <ClInclude Include="dx11dllsource\render contexts\IRenderContext.h" />
     <ClInclude Include="dx11dllsource\render contexts\OutlineBoxContext.h" />
+    <ClInclude Include="dx11dllsource\shaders\ColorShader.h" />
     <ClInclude Include="dx11dllsource\shaders\DiffuseShader.h" />
     <ClInclude Include="dx11dllsource\shaders\IShader.h" />
     <ClInclude Include="dx11dllsource\Texture.h" />
@@ -132,6 +133,7 @@
     <ClCompile Include="dx11dllsource\render contexts\DiffuseContext.cpp" />
     <ClCompile Include="dx11dllsource\render contexts\IRenderContext.cpp" />
     <ClCompile Include="dx11dllsource\render contexts\OutlineBoxContext.cpp" />
+    <ClCompile Include="dx11dllsource\shaders\ColorShader.cpp" />
     <ClCompile Include="dx11dllsource\shaders\DiffuseShader.cpp" />
     <ClCompile Include="dx11dllsource\shaders\IShader.cpp" />
     <ClCompile Include="dx11dllsource\Texture.cpp" />

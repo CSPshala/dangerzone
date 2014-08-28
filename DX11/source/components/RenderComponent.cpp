@@ -57,15 +57,20 @@ void RenderComponent::UnRegisterForMessages()
 bool RenderComponent::LoadComponentAttributes(xml_node& component)
 {
     // TODO: DLL Interface will have gettexture but will return uINT
-	m_renderData.setTexture(Rendering::GetTexture((char*)(component.attribute("texture").as_string())));
 	m_renderData.setLayer(component.attribute("layer").as_int());
 	m_renderData.setShader(GetShaderType(component.attribute("shader").as_string()));
 
     //TODO: Texture manager can return this in DLL
-	m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
-	m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
-	getParentEntity()->SetWidth(m_renderData.getWidth());
-	getParentEntity()->SetHeight(m_renderData.getHeight());
+	char* texture = (char*)(component.attribute("texture").as_string());
+
+	if(texture != "")
+	{
+		m_renderData.setTexture(Rendering::GetTexture(texture));
+		m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
+		m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
+		getParentEntity()->SetWidth(m_renderData.getWidth());
+		getParentEntity()->SetHeight(m_renderData.getHeight());
+	}
 	
 	return true;
 }
@@ -90,6 +95,8 @@ void RenderComponent::RenderEntity()
 	// Update render data and send to renderer to queue up
 	m_renderData.setPosX(getParentEntity()->GetPosition().x);
 	m_renderData.setPosY(getParentEntity()->GetPosition().y);	
+	m_renderData.setWidth(getParentEntity()->GetWidth());
+	m_renderData.setHeight(getParentEntity()->GetHeight());
 	Rendering::AddRenderComponentToFrame(&m_renderData);
 }
 

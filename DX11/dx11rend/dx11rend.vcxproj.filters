@@ -82,6 +82,9 @@
     <ClInclude Include="dx11dllsource\xml\pugixml.hpp">
       <Filter>Source Files\xml</Filter>
     </ClInclude>
+    <ClInclude Include="dx11dllsource\shaders\ColorShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dx11rend.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="dx11dllsource\xml\pugixml.cpp">
       <Filter>Source Files\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11dllsource\shaders\ColorShader.cpp">
+      <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

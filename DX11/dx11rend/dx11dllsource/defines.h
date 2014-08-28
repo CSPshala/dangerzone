@@ -84,6 +84,15 @@ struct textureLayerAndCount
 	unsigned int count;
 };
 
+struct colorLayerAndCount
+{
+	colorLayerAndCount() : layer(0), count(0) {}
+
+	D3DXVECTOR3 color;
+	unsigned int layer;
+	unsigned int count;
+};
+
 typedef std::priority_queue<RenderComponentData*,std::vector<RenderComponentData*>,layerCompare> LayerQueue;
 
 }

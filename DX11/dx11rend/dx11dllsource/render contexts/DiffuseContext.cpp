@@ -73,7 +73,8 @@ bool DiffuseContext::Initialize(HWND hWnd)
 void DiffuseContext::PrepareBuffers(LayerQueue& renderQueue)
 {
 	// Add components to buffer in order based on layer but bounce if we run into another context
-	// on the same layer, we'll come back.
+	// on the same layer (because of ordering we wont have any more of our context on that
+	// layer), we'll come back on the next layer.
 	unsigned int size = renderQueue.size();
 	// save the layer and what index it's at
 	unsigned int layer = renderQueue.top()->getLayer();
@@ -101,15 +102,24 @@ void DiffuseContext::PrepareBuffers(LayerQueue& renderQueue)
 		}
 		else 
 		{
+			//TODO: BUG? Look at harder. Might be adding old texture as new texture
 			GetShader()->AddTextureLayerAndCount(tlc);
-			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
-			tlc.count = 1;
+
+			if(renderQueue.top()->getTexture())
+			{
+				tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+				tlc.count = 1;
+			}
 		}
 		AddRenderCompToCurrentRenderBuffer(renderQueue.top());
 		renderQueue.pop();
 	}
-	// Add remaining pair
-	GetShader()->AddTextureLayerAndCount(tlc);
+
+	// Add left over tlc (if same shader)
+	if(renderQueue.size() == 0 || renderQueue.top()->getShader() != GetContextType())
+	{
+		GetShader()->AddTextureLayerAndCount(tlc);
+	}
 }
 
 void DiffuseContext::Shutdown()
