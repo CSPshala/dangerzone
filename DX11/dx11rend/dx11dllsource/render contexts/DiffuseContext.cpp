@@ -75,51 +75,73 @@ void DiffuseContext::PrepareBuffers(LayerQueue& renderQueue)
 	// Add components to buffer in order based on layer but bounce if we run into another context
 	// on the same layer (because of ordering we wont have any more of our context on that
 	// layer), we'll come back on the next layer.
-	unsigned int size = renderQueue.size();
+
 	// save the layer and what index it's at
 	unsigned int layer = renderQueue.top()->getLayer();
 
 	// Save what layers we have entities on
 	m_activeOnLayers.push_back(layer);
 
-	// The Texture and count of how many in a row and what layer
+	// Add the first render component
 	textureLayerAndCount tlc;
-	
-	for(unsigned int i = 0; i < size && 
-		renderQueue.top()->getShader() == GetContextType() && 
-		renderQueue.top()->getLayer() == layer; ++i)
-	{
-		if(tlc.texture == nullptr)
-		{
-            // MAGIC! (Nah seriously doe it's just derpy DLL crap)
-			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
-			tlc.count = 1;
-			tlc.layer = layer;
-		}
-		else if(tlc.texture == reinterpret_cast<Texture*>(renderQueue.top()->getTexture()))
-		{			
-			tlc.count++;
-		}
-		else 
-		{
-			//TODO: BUG? Look at harder. Might be adding old texture as new texture
-			GetShader()->AddTextureLayerAndCount(tlc);
+	// MAGIC! (nah it's me over thinking pointers and DLLs)
+	tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+	tlc.count = 1;
+	tlc.layer = layer;
+	AddRenderCompToCurrentRenderBuffer(renderQueue.top());
+	renderQueue.pop();
 
-			if(renderQueue.top()->getTexture())
-			{
-				tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
-				tlc.count = 1;
-			}
-		}
-		AddRenderCompToCurrentRenderBuffer(renderQueue.top());
-		renderQueue.pop();
-	}
-
-	// Add left over tlc (if same shader)
-	if(renderQueue.size() == 0 || renderQueue.top()->getShader() != GetContextType())
+	if(renderQueue.size() == 0)
 	{
 		GetShader()->AddTextureLayerAndCount(tlc);
+		return;
 	}
+	
+	while(renderQueue.size() > 0)
+	{
+		// Quit if next context isn't diffuse or on diff layer
+		if(renderQueue.top()->getShader() != GetContextType() || 
+			renderQueue.top()->getLayer() != layer)
+		{
+			if(tlc.texture != nullptr)
+			{
+				GetShader()->AddTextureLayerAndCount(tlc);
+			}
+
+			return;
+		}
+
+		if(tlc.texture == reinterpret_cast<Texture*>(renderQueue.top()->getTexture()))
+		{			
+			tlc.count++;
+			AddRenderCompToCurrentRenderBuffer(renderQueue.top());
+			renderQueue.pop();
+
+			if(renderQueue.size() == 0)
+			{
+				GetShader()->AddTextureLayerAndCount(tlc);
+				tlc.texture = nullptr;
+			}
+		}
+		else if(tlc.texture == nullptr)
+		{
+			tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
+			tlc.count = 1;
+			AddRenderCompToCurrentRenderBuffer(renderQueue.top());
+			renderQueue.pop();
+
+			if(renderQueue.size() == 0)
+			{
+				GetShader()->AddTextureLayerAndCount(tlc);
+				tlc.texture = nullptr;
+			}
+		}
+		else
+		{
+			GetShader()->AddTextureLayerAndCount(tlc);
+			tlc.texture = nullptr;		
+		}		
+	}	
 }
 
 void DiffuseContext::Shutdown()
