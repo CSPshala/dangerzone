@@ -84,7 +84,7 @@ void DiffuseContext::PrepareBuffers(LayerQueue& renderQueue)
 
 	// Add the first render component
 	textureLayerAndCount tlc;
-	// MAGIC! (nah it's me over thinking pointers and DLLs)
+	// MAGIC! (nah it's me disgusing a pointer on the engine side as an int)
 	tlc.texture = reinterpret_cast<Texture*>(renderQueue.top()->getTexture());
 	tlc.count = 1;
 	tlc.layer = layer;
