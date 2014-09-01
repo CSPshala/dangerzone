@@ -61,11 +61,10 @@ struct rectangle
 
 namespace ENUMS
 {
-	// Add enums here for created components
-	namespace COMPONENTS {
-		enum {PLAYER_CONTROLLER = 0, RENDERING, RECT_COLLISION, MOUSE_CONTROLLER,
+	// Add enums here for created components	
+		enum COMPONENTS {PLAYER_CONTROLLER = 0, RENDERING, RECT_COLLISION, MOUSE_CONTROLLER,
 			CIRCLE_COLLISION, POINT_COLLISION, INVALID_COMPONENT};
-	};
+	
 };
 
 //* Global helper functions */

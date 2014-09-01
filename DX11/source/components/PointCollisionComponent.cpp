@@ -85,7 +85,7 @@ bool PointCollisionComponent::CheckCollision(CollisionComponent* other)
 
 	switch(other->getComponentType())
 	{
-	case ENUMS::COMPONENTS::RECT_COLLISION:
+	case ENUMS::RECT_COLLISION:
 		{
 			return isPointContained(mPoint, static_cast<RectCollisionComponent*>(other)->getAABB());
 		}
@@ -123,12 +123,12 @@ void PointCollisionComponent::handleCollisions(CollidingMsg* message)
 	{
 		switch(collidingWith[i]->getComponentType())
 		{
-		case ENUMS::COMPONENTS::RECT_COLLISION:
+		case ENUMS::RECT_COLLISION:
 			{
 				rectCol.push_back(static_cast<RectCollisionComponent*>(collidingWith[i]));
 			}
 			break;
-		case ENUMS::COMPONENTS::CIRCLE_COLLISION:
+		case ENUMS::CIRCLE_COLLISION:
 			{
 			}
 			break;

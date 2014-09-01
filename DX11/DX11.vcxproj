@@ -112,6 +112,7 @@
     <ClInclude Include="source\collision\CollisionManager.h" />
     <ClInclude Include="source\collision\CollisionQuadTree.h" />
     <ClInclude Include="source\components\CollisionComponent.h" />
+    <ClInclude Include="source\components\ComponentFactory.h" />
     <ClInclude Include="source\components\Entity.h" />
     <ClInclude Include="source\components\IComponent.h" />
     <ClInclude Include="source\components\MouseControllerComponent.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="source\collision\CollisionManager.cpp" />
     <ClCompile Include="source\collision\CollisionQuadTree.cpp" />
     <ClCompile Include="source\components\CollisionComponent.cpp" />
+    <ClCompile Include="source\components\ComponentFactory.cpp" />
     <ClCompile Include="source\components\Entity.cpp" />
     <ClCompile Include="source\components\IComponent.cpp" />
     <ClCompile Include="source\components\MouseControllerComponent.cpp" />

@@ -25,7 +25,7 @@
 ///////////////////////////////////////////////
 WorldManager::WorldManager()
 {	
-	for(int i = 0; i < ENUMS::COMPONENTS::INVALID_COMPONENT; ++i)
+	for(int i = 0; i < ENUMS::INVALID_COMPONENT; ++i)
 		m_componentCategories.push_back(deque<IComponent*>());
 }
 
@@ -110,7 +110,7 @@ void WorldManager::AddEntity(Entity* entity)
 {
 	m_entities.push_back(entity);
 	
-	for(unsigned int i = 0; i < ENUMS::COMPONENTS::INVALID_COMPONENT; ++i)
+	for(unsigned int i = 0; i < ENUMS::INVALID_COMPONENT; ++i)
 	{
 		IComponent* toAdd = entity->GetComponent(i);
 		if(toAdd)

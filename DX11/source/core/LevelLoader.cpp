@@ -315,11 +315,11 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 
 	switch(type)
 	{
-	case ENUMS::COMPONENTS::PLAYER_CONTROLLER:
+	case ENUMS::PLAYER_CONTROLLER:
 		{
 			try
 			{
-				component = new PlayerControllerComponent(ENUMS::COMPONENTS::PLAYER_CONTROLLER,m_nextComponentID++);
+				component = new PlayerControllerComponent(ENUMS::PLAYER_CONTROLLER,m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				
@@ -331,11 +331,11 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 		}
 		break;
-	case ENUMS::COMPONENTS::RENDERING:
+	case ENUMS::RENDERING:
 		{
 			try
 			{
-				component = new RenderComponent(ENUMS::COMPONENTS::RENDERING,m_nextComponentID++);
+				component = new RenderComponent(ENUMS::RENDERING,m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				
@@ -347,12 +347,12 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
 		}
 		break;
-	case ENUMS::COMPONENTS::RECT_COLLISION:
+	case ENUMS::RECT_COLLISION:
         {
             try
 			{
 				component = new RectCollisionComponent(
-					ENUMS::COMPONENTS::RECT_COLLISION, m_nextComponentID++);
+					ENUMS::RECT_COLLISION, m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				
@@ -364,12 +364,12 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
         }
         break;
-    case ENUMS::COMPONENTS::POINT_COLLISION:
+    case ENUMS::POINT_COLLISION:
         {
             try
 			{
 				component = new PointCollisionComponent(
-					ENUMS::COMPONENTS::POINT_COLLISION, m_nextComponentID++);
+					ENUMS::POINT_COLLISION, m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				
@@ -381,11 +381,11 @@ IComponent*	LevelLoader::CreateComponentType(const int type)
 			}
         }
         break;
-	case ENUMS::COMPONENTS::MOUSE_CONTROLLER:
+	case ENUMS::MOUSE_CONTROLLER:
 		{
 			try
 			{
-				component = new MouseControllerComponent(ENUMS::COMPONENTS::MOUSE_CONTROLLER,m_nextComponentID++);
+				component = new MouseControllerComponent(ENUMS::MOUSE_CONTROLLER,m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				

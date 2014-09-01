@@ -153,6 +153,9 @@
     <ClInclude Include="source\components\PointCollisionComponent.h">
       <Filter>Source Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="source\components\ComponentFactory.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -240,6 +243,9 @@
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="source\components\PointCollisionComponent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\ComponentFactory.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
