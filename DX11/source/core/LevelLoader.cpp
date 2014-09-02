@@ -175,9 +175,7 @@ bool LevelLoader::LoadLevel(std::string filename)
 			entityNode.attribute("velY").as_float(), 0.0f);
 
 		entity->SetPosition(entityPos);
-		entity->SetVelocity(entityVel);		
-
-		std::vector<xml_attribute> compAttributes;
+		entity->SetVelocity(entityVel);			
 
 		for(xml_node componentNode = entityNode.child("component"); componentNode; componentNode = componentNode.next_sibling("component"))
 		{
@@ -192,7 +190,13 @@ bool LevelLoader::LoadLevel(std::string filename)
 			}
 			
 			// Grab all attributes for this component and give to the component factory to construct
-			for(xml_attribute attributeNode = componentNode.first_attribute(); attributeNode; attributeNode = attributeNode.next_attribute())
+			// Iteration is starting at second attribute since first is type and we already have that
+			xml_attribute attributeNode = componentNode.first_attribute();
+			attributeNode = attributeNode.next_attribute();
+
+			std::vector<xml_attribute> compAttributes;
+
+			for(; attributeNode; attributeNode = attributeNode.next_attribute())
 			{
 				compAttributes.push_back(attributeNode);
 			}

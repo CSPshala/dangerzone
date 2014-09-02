@@ -149,7 +149,7 @@ void PointCollisionComponent::handleRectCollisions(
     mFirstCollision = false;
 
 	// TODO: Send a message to light up entity that is pointed at
-   cout << "CONTAINED...";
+	
 }
 
 void PointCollisionComponent::_HandleChildMessages(CompMessage* message)
