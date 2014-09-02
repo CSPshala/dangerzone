@@ -15,6 +15,8 @@
 #include <sstream>
 
 #include "math/vec3.h"
+#include "xml/pugixml.hpp"
+using namespace pugi;
 
 #ifdef _DEBUG
 class DEBUGLOG
@@ -59,6 +61,23 @@ struct rectangle
 	float Height();
 };
 
+// Structure used to hold attribute info used for internal
+// creation of components aka it's handled in code and we know the types
+struct ComponentAttribute
+{
+	std::string name;
+	std::string valueString;
+
+	union
+	{
+		double valueD;
+		float valueF;
+		int valueI;
+		bool valueB;
+	};
+};
+
+
 namespace ENUMS
 {
 	// Add enums here for created components	
@@ -71,5 +90,8 @@ namespace ENUMS
 
 /** Determine whether two floats are within FLT_EPSILON of each other */
 bool G_FLOAT_EPSILON(float left, float right);
+
+bool LoadXMLFile(xml_document& doc,const std::string& filePath);
+
 
 #endif

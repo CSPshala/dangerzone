@@ -104,21 +104,29 @@ void MouseControllerComponent::ReceiveAndHandleMouseEvent(InputEventSystem::Mous
 	mDelta.y = static_cast<float>(event.mDeltaY);
 }
 
-bool MouseControllerComponent::LoadComponentAttributes(xml_node& component)
+bool MouseControllerComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
 {
-	// Currently no attributes to assign
-	m_playerNumber = component.attribute("mouseNumber").as_int();
-
-	if(m_playerNumber <= 0 || m_playerNumber > InputEventSystem::NUM_ALLOWED_MICE)
+	if(attribute.name == "mouseNumber")
 	{
-		LOG("A player controller tried to register an invalid mouse#: " << m_playerNumber);
+		m_playerNumber = attribute.valueI;
+
+		if(m_playerNumber <= 0 || m_playerNumber > InputEventSystem::NUM_ALLOWED_MICE)
+		{
+			LOG("A player controller tried to register an invalid mouse#: " << m_playerNumber);
+			return false;
+		}
+
+		// Register for mouse move and generic events
+		InputEventSystem::GetInstance()->RegisterMouseProcessor(this);
+
+		return true;
+	}
+	else
+	{
+		LOG("Something tried to register an invalid attribute to a MouseControllerComponent.");
+
 		return false;
 	}
-
-	// Register for mouse move and generic events
-	InputEventSystem::GetInstance()->RegisterMouseProcessor(this);
-
-	return true;
 }
 
 ////////////////////////////////////////

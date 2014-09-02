@@ -81,20 +81,28 @@ void PlayerControllerComponent::UnRegisterForMessages()
 }
 
 
-bool PlayerControllerComponent::LoadComponentAttributes(xml_node& component)
+bool PlayerControllerComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
 {
-	// Currently no attributes to assign
-	m_playerNumber = component.attribute("playerNumber").as_int();
-
-	if(m_playerNumber <= 0 || m_playerNumber > InputEventSystem::NUM_ALLOWED_PLAYERS)
+	if(attribute.name == "playerNumber")
 	{
-		LOG("A player controller tried to register an invalid player#: " << m_playerNumber);
+		m_playerNumber = attribute.valueI;
+
+		if(m_playerNumber <= 0 || m_playerNumber > InputEventSystem::NUM_ALLOWED_PLAYERS)
+		{
+			LOG("A player controller tried to register an invalid player#: " << m_playerNumber);
+			return false;
+		}		
+
+		// We can safely register for events here since we only have a single attribute
+		RegisterForEvents();
+
+	    return true;
+	}
+	else
+	{
+		LOG("Something tried to register an invalid attribute to a PlayerControllerComponent.");
 		return false;
 	}
-
-	RegisterForEvents();
-
-	return true;
 }
 
 void PlayerControllerComponent::ReceiveAndHandleEvent(int event)

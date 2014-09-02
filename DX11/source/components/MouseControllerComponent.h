@@ -34,7 +34,7 @@ public:
 	virtual void RegisterForMessages();
 	virtual void ReceiveMessage(IMessage* message);    
 	virtual void UnRegisterForMessages();
-	virtual bool LoadComponentAttributes(xml_node& component);
+	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
 	virtual void ReceiveAndHandleEvent(int event);
 	virtual void ReceiveAndHandleJoystickEvent(InputEventSystem::JoystickInfo& event) {};
 	virtual void ReceiveAndHandleMouseEvent(InputEventSystem::MouseInfo& event);

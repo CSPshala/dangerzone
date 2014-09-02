@@ -33,3 +33,25 @@ bool G_FLOAT_EPSILON(float left, float right)
 	float dif = left - right;
 	return (dif < FLT_EPSILON && dif > -FLT_EPSILON);	
 }
+
+bool LoadXMLFile(xml_document& doc,const std::string& filePath)
+{
+	xml_parse_result result = doc.load_file(filePath.c_str());
+
+	bool returnResult = false;
+
+	if (result)
+	{
+		LOG("XML [" << filePath << "] parsed without errors\n");
+		returnResult = true;
+	}
+	else
+	{
+		LOG("XML [" << filePath << "] parsed with errors\n");
+		LOG("Error description: " << result.description() << "\n");
+		LOG("Error offset: " << result.offset << "\n");
+		returnResult = false;
+	}
+
+	return returnResult;
+}

@@ -53,31 +53,16 @@ public:
 
 private:	
 	/********** Private Members ************/
-	static const string VALID_COMPONENTS_FILEPATH;
-
-	struct CompPrototype
-	{
-		int		type;
-		string	typeName;
-		vector<COMPONENT_MESSAGE_TYPE> localMsgTypes;
-	};
-
-	struct MessageType
-	{
-		COMPONENT_MESSAGE_TYPE value;
-		string name;
-	};
+	
 
 	// List of levels to load
 	vector<string> m_levelList;
 	vector<string> m_levelNames;
-	vector<MessageType>  m_messages;
-	vector<CompPrototype> m_validComponents;
+	
 	// Currently loaded level
 	int m_currentLevel;
 	// Unique Entity and component IDs for this world and level loader
-	int m_nextEntityID;
-	int m_nextComponentID;
+	int m_nextEntityID;	
 	// Pointer to our world manager
 	WorldManager* m_worldMan;
 	/********** Private Accessors ************/
@@ -86,10 +71,6 @@ private:
 
 	/********** Private Utility Functions ************/
 	bool LoadInitialData(std::string filename);
-	bool LoadXMLFile(xml_document& doc,const string& filePath) const;
-	bool LoadLevel(std::string filename);	
-	IComponent* FindAndCreateComponentType(const string type);
-	IComponent* CreateComponentType(const int type);
-
+	bool LoadLevel(std::string filename);
 };
 #endif

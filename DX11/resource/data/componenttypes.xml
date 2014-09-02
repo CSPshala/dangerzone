@@ -5,6 +5,7 @@
 	<message name="entity_resize" value="3" />
 </messageTypes>
 
+<!-- valid components and their pre-registered local messages -->
 <validComponents>
 	<component typeName="player_controller" type="0">
 	</component>
@@ -20,3 +21,24 @@
 	<component typeName="point_collision" type="5" >
 	</component>
 </validComponents>
+
+<!-- The types of entity and component attributes -->
+<attributeTypes>
+<!-- Entity Attributes -->
+<attribute name="name" type="string"/>
+<attribute name="active" type="bool"/>
+<attribute name="hp" type="int"/>
+<attribute name="posX" type="float"/>
+<attribute name="posY" type="float"/>
+<attribute name="velX" type="float"/>
+<attribute name="velY" type="float"/>
+<!-- Component Attributes -->
+<attribute name="playerNumber" type="int"/>
+<attribute name="layer" type="int"/>
+<attribute name="shader" type="string"/>
+<attribute name="texture" type="string"/>
+<attribute name="offsetX" type="int"/>
+<attribute name="offsetY" type="int"/>
+<attribute name="topDownCollide" type="bool"/>
+<attribute name="mouseNumber" type="int"/>
+</attributeTypes>

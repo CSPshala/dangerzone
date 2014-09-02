@@ -44,7 +44,7 @@ public:
 	virtual void ReceiveMessage(IMessage* message) = 0;	
     virtual void ReceiveLocalMessage(CompMessage* message);
 	virtual void UnRegisterForMessages() = 0;
-	virtual bool LoadComponentAttributes(xml_node& component) = 0;
+	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute) = 0;
 
 	/********** Public Accessors ************/	
 	virtual string getComponentName() = 0;

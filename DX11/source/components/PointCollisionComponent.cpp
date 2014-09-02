@@ -44,34 +44,34 @@ void PointCollisionComponent::Update(float deltaTime)
     }
 }
 
-bool PointCollisionComponent::LoadComponentAttributes(xml_node& component)
+bool PointCollisionComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
 {    
-	setLayer(component.attribute("layer").as_int());
-	setOffset(vec3<float>(component.attribute("offsetX").as_float(),
-		component.attribute("offsetY").as_float(),0.0f));
-
-    try
-    {
-        setIgnoreLayer(component.attribute("ignoreLayer").as_bool());
-    }
-    catch(std::exception e)
-    {
-        LOG("No 'ignoreLayer' attribute present on this point collision component.");
-    }
-
-    try
-    {
-        mTopDown = component.attribute("topDownCollide").as_bool();
-        // if topdown is true, then it needs to ignore layer
-        if(mTopDown)
-        {
-            setIgnoreLayer(true);
-        }
-    }
-    catch(std::exception e)
-    {
-        LOG("No 'topDownCollide' attribute present on this point collision component.");
-    }
+	if(attribute.name == "layer")
+	{
+		setLayer(attribute.valueI);
+		return true;
+	}
+	else if(attribute.name == "offsetX")
+	{
+		mOffset.x = attribute.valueF;
+		return true;
+	}
+	else if(attribute.name == "offsetY")
+	{
+		mOffset.y = attribute.valueF;
+		return true;
+	}
+	else if(attribute.name == "topDownCollide")
+	{
+		mTopDown = attribute.valueB;
+		setIgnoreLayer(attribute.valueB);
+		return true;
+	}
+	else
+	{
+		LOG("Something tried to register an invalid attribute to a PointCollisionComponent.");
+		return false;
+	}
 
     return true;
 }

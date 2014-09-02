@@ -38,12 +38,7 @@
 ////////////////////////////////////////
 #include "../Globals.h"
 #include <iostream>
-#include "../components/Entity.h"
-#include "../components/PlayerControllerComponent.h"
-#include "../components/RenderComponent.h"
-#include "../components/RectCollisionComponent.h"
-#include "../components/PointCollisionComponent.h"
-#include "../components/MouseControllerComponent.h"
+#include "../components/ComponentFactory.h"
 #include "../math/vec3.h"
 #include "LevelLoader.h"
 #include "WorldManager.h"
@@ -52,13 +47,12 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-const string LevelLoader::VALID_COMPONENTS_FILEPATH("resource/data/componenttypes.xml");
+
 
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-LevelLoader::LevelLoader() : m_currentLevel(-1), m_nextEntityID(0), m_nextComponentID(0),
-	m_worldMan(nullptr)
+LevelLoader::LevelLoader() : m_currentLevel(-1), m_nextEntityID(0), m_worldMan(nullptr)
 {		
 }
 
@@ -131,66 +125,8 @@ bool LevelLoader::LoadInitialData(string filename)
 		}
 	}
 
-	// Get valid components
-	if(!LoadXMLFile(doc,LevelLoader::VALID_COMPONENTS_FILEPATH))
-		return false;
-
-	for(xml_node messages = doc.child("messageTypes").child("message"); messages; messages = messages.next_sibling("message"))
-	{
-		MessageType toAdd;
-		toAdd.name = messages.attribute("name").value();
-		toAdd.value = static_cast<COMPONENT_MESSAGE_TYPE>(messages.attribute("value").as_int());
-		m_messages.push_back(toAdd);
-	}
-
-	for(xml_node component = doc.child("validComponents").child("component"); component; component = component.next_sibling("component"))
-	{
-
-		CompPrototype toAdd;
-		toAdd.typeName = component.attribute("typeName").value();
-		toAdd.type = component.attribute("type").as_int();
-
-		// Add whatever messages are needed
-		for(xml_attribute_iterator messages = component.child("messages").attributes_begin(); 
-			messages != component.child("messages").attributes_end(); ++messages)
-		{
-			// Get attribute name and add value
-			for(unsigned int i = 0; i < m_messages.size(); ++i)
-			{
-				if(m_messages[i].name == messages->value())
-				{
-					toAdd.localMsgTypes.push_back(m_messages[i].value);
-				}
-			}
-		}
-
-		m_validComponents.push_back(toAdd);	
-	}
-
 
 	return true;
-}
-
-bool LevelLoader::LoadXMLFile(xml_document& doc,const string& filePath) const
-{
-	xml_parse_result result = doc.load_file(filePath.c_str());
-
-	bool returnResult = false;
-
-	if (result)
-	{
-		LOG("XML [" << filePath << "] parsed without errors\n");
-		returnResult = true;
-	}
-	else
-	{
-		LOG("XML [" << filePath << "] parsed with errors\n");
-		LOG("Error description: " << result.description() << "\n");
-		LOG("Error offset: " << result.offset << "\n");
-		returnResult = false;
-	}
-
-	return returnResult;
 }
 
 bool LevelLoader::LoadLevel(std::string filename)
@@ -239,42 +175,29 @@ bool LevelLoader::LoadLevel(std::string filename)
 			entityNode.attribute("velY").as_float(), 0.0f);
 
 		entity->SetPosition(entityPos);
-		entity->SetVelocity(entityVel);
+		entity->SetVelocity(entityVel);		
+
+		std::vector<xml_attribute> compAttributes;
 
 		for(xml_node componentNode = entityNode.child("component"); componentNode; componentNode = componentNode.next_sibling("component"))
 		{
-			IComponent* component = FindAndCreateComponentType(componentNode.attribute("type").as_string());
-			if(!component)
+			ComponentAttribute compAt;
+			std::string componentName = componentNode.attribute("type").as_string();
+						
+			if(componentName == "")
 			{
 				LOG("Tried to load invalid component type on Entity: " << entityNode.attribute("name").as_string() <<
 					" Invalid Component Type: " << componentNode.attribute("type").as_string());
 				continue;
 			}
-
-			component->setParentEntity(entity);
-
-			// Set component's default registered local messages
-			for(unsigned int i = 0; i < m_validComponents.size(); ++i)
-			{
-				if(m_validComponents[i].type == component->getComponentType())
-				{
-					component->setLocalMessagesToReceieve(m_validComponents[i].localMsgTypes);
-				}
-			}
-
-			if(!component->LoadComponentAttributes(componentNode))
-			{
-				LOG("Component couldn't load attributes for Entity: " << entityNode.attribute("name").as_string() <<
-					" Component Type: " << componentNode.attribute("type").as_string());
-
-				delete component;
-				continue;
-			}
-
-			// Register the component for it's system messages (if any)
-			component->RegisterForMessages();
 			
-			entity->AttachComponent(component);
+			// Grab all attributes for this component and give to the component factory to construct
+			for(xml_attribute attributeNode = componentNode.first_attribute(); attributeNode; attributeNode = attributeNode.next_attribute())
+			{
+				compAttributes.push_back(attributeNode);
+			}
+
+			ComponentFactory::GetInstance().AddComponentToEntity(*entity, componentName, compAttributes);
 		}
 
 		m_worldMan->AddEntity(entity);
@@ -290,117 +213,7 @@ bool LevelLoader::LoadLevel(std::string filename)
 	return true;
 }
 
-IComponent*	LevelLoader::FindAndCreateComponentType(const string type)
-{
-	IComponent* component = nullptr;
 
-	// Validate component type then allocate
-	const int num = m_validComponents.size();
-	const CompPrototype* ptr = (num != 0) ? &m_validComponents.front() : NULL;
-	for(int i = 0; i < num; i++)
-	{
-		if(m_validComponents[i].typeName == type)
-		{
-			component = CreateComponentType(m_validComponents[i].type);
-			break;
-		}
-	}
-
-	return component;
-}
-
-IComponent*	LevelLoader::CreateComponentType(const int type)
-{
-	IComponent* component = nullptr;
-
-	switch(type)
-	{
-	case ENUMS::PLAYER_CONTROLLER:
-		{
-			try
-			{
-				component = new PlayerControllerComponent(ENUMS::PLAYER_CONTROLLER,m_nextComponentID++);
-			}
-			catch(std::invalid_argument& ia)
-			{				
-				LOG("A new player controller component could not be allocated. invalid_argument caught: " << ia.what());			
-			}
-			catch(std::bad_alloc& ba)
-			{				
-				LOG("A new player controller component could not be allocated. bad_alloc caught: " << ba.what());				
-			}
-		}
-		break;
-	case ENUMS::RENDERING:
-		{
-			try
-			{
-				component = new RenderComponent(ENUMS::RENDERING,m_nextComponentID++);
-			}
-			catch(std::invalid_argument& ia)
-			{				
-				LOG("A new render component could not be allocated. invalid_argument caught: " << ia.what());		
-			}
-			catch(std::bad_alloc& ba)
-			{				
-				LOG("A new render component be allocated. bad_alloc caught: " << ba.what());		
-			}
-		}
-		break;
-	case ENUMS::RECT_COLLISION:
-        {
-            try
-			{
-				component = new RectCollisionComponent(
-					ENUMS::RECT_COLLISION, m_nextComponentID++);
-			}
-			catch(std::invalid_argument& ia)
-			{				
-				LOG("A new collision component could not be allocated. invalid_argument caught: " << ia.what());		
-			}
-			catch(std::bad_alloc& ba)
-			{				
-				LOG("A new collision component could not be allocated. bad_alloc caught: " << ba.what());		
-			}
-        }
-        break;
-    case ENUMS::POINT_COLLISION:
-        {
-            try
-			{
-				component = new PointCollisionComponent(
-					ENUMS::POINT_COLLISION, m_nextComponentID++);
-			}
-			catch(std::invalid_argument& ia)
-			{				
-				LOG("A new collision component could not be allocated. invalid_argument caught: " << ia.what());		
-			}
-			catch(std::bad_alloc& ba)
-			{				
-				LOG("A new collision component could not be allocated. bad_alloc caught: " << ba.what());		
-			}
-        }
-        break;
-	case ENUMS::MOUSE_CONTROLLER:
-		{
-			try
-			{
-				component = new MouseControllerComponent(ENUMS::MOUSE_CONTROLLER,m_nextComponentID++);
-			}
-			catch(std::invalid_argument& ia)
-			{				
-				LOG("A new mouse controller component could not be allocated. invalid_argument caught: " << ia.what());		
-			}
-			catch(std::bad_alloc& ba)
-			{				
-				LOG("A new mouse controller component could not be allocated. bad_alloc caught: " << ba.what());		
-			}
-		}
-		break;
-	}
-
-	return component;
-}
 
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
@@ -427,24 +240,6 @@ string LevelLoader::GetNextLevelName()
 		return m_levelNames[m_currentLevel + 1];
 
 	return "invalid_level";
-}
-
-int LevelLoader::GetComponentValue(string componentName)
-{
-	// Fast vector iteration and access
-	int retVal = -1;
-	const int num = m_validComponents.size();
-	const CompPrototype* ptr = (num != 0) ? &m_validComponents.front() : NULL;
-	for(int i = 0; i < num; i++)
-	{
-		if(m_validComponents[i].typeName == componentName)
-		{
-			retVal = m_validComponents[i].type;
-			break;
-		}
-	}
-
-	return retVal;
 }
 
 ////////////////////////////////////////

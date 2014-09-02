@@ -35,7 +35,7 @@ public:
 	virtual void RegisterForMessages();
 	virtual void ReceiveMessage(IMessage* message);	
 	virtual void UnRegisterForMessages();
-	virtual bool LoadComponentAttributes(xml_node& component);
+	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
 	/********** Public Accessors ************/
 	virtual string getComponentName();
 	unsigned int getTexture();

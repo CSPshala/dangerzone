@@ -54,25 +54,36 @@ void RenderComponent::UnRegisterForMessages()
 {
 }
 
-bool RenderComponent::LoadComponentAttributes(xml_node& component)
+bool RenderComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
 {
-    // TODO: DLL Interface will have gettexture but will return uINT
-	m_renderData.setLayer(component.attribute("layer").as_int());
-	m_renderData.setShader(GetShaderType(component.attribute("shader").as_string()));
-
-    //TODO: Texture manager can return this in DLL
-	char* texture = (char*)(component.attribute("texture").as_string());
-
-	if(texture != "")
+	if(attribute.name == "layer")
 	{
-		m_renderData.setTexture(Rendering::GetTexture(texture));
-		m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
-		m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
-		getParentEntity()->SetWidth(m_renderData.getWidth());
-		getParentEntity()->SetHeight(m_renderData.getHeight());
+		m_renderData.setLayer(attribute.valueI);
+		return true;
 	}
-	
-	return true;
+	else if(attribute.name == "shader")
+	{
+		m_renderData.setShader(GetShaderType(attribute.valueString));
+		return true;
+	}
+	else if(attribute.name == "texture")
+	{
+		if(attribute.valueString != "")
+		{
+			m_renderData.setTexture(Rendering::GetTexture(attribute.valueString.c_str()));
+			m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
+			m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
+			getParentEntity()->SetWidth(m_renderData.getWidth());
+			getParentEntity()->SetHeight(m_renderData.getHeight());
+		}
+
+		return true;
+	}
+	else
+	{
+		LOG("Something tried to register an invalid attribute to a RenderComponent.");
+		return false;
+	}	
 }
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS

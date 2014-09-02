@@ -53,7 +53,7 @@ void Rendering::AddRenderComponentToFrame(Renderer::RenderComponentData* compone
 	Renderer::FRenderer::GetInstance()->AddRenderComponentToFrame(component);
 }
 
-unsigned int Rendering::GetTexture(char* textureName)
+unsigned int Rendering::GetTexture(const char* textureName)
 {
 	return Renderer::TextureManager::GetInstance()->GetTexture(textureName);
 }

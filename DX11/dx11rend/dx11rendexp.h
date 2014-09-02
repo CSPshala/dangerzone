@@ -41,7 +41,7 @@ public:
 
 	/********** Public Accessors ************/
 	static RENDER_API void AddRenderComponentToFrame(Renderer::RenderComponentData* component);
-	static RENDER_API unsigned int GetTexture(char* textureName);
+	static RENDER_API unsigned int GetTexture(const char* textureName);
 	static RENDER_API int GetTextureWidth(unsigned int texture);
 	static RENDER_API int GetTextureHeight(unsigned int texture);
 	/********** Public Mutators  ************/	

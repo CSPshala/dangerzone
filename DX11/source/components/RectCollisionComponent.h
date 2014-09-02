@@ -29,7 +29,7 @@ public:
 	virtual ~RectCollisionComponent();
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
-	virtual bool LoadComponentAttributes(xml_node& component);
+	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
 	virtual bool CheckCollision(CollisionComponent* other);
 
 	/********** Public Accessors ************/
