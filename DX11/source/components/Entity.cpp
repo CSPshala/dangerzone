@@ -46,11 +46,13 @@ void Entity::AttachComponent(IComponent* component)
 void Entity::RemoveComponent(IComponent* component)
 {
 	for(deque<IComponent*>::iterator iter = m_components.begin(); iter != m_components.end(); ++iter)
+	{
 		if((*iter) == component)
 		{
 			iter = m_components.erase(iter);
 			break;
 		}
+	}
 }
 
 void Entity::Update(float deltaTime)
@@ -296,9 +298,10 @@ void Entity::HandleMouseHover()
 	shader.valueString = "outlineBox";
 	attributes.push_back(shader);
 
-	ComponentFactory::GetInstance().AddComponentToEntity(*this,ENUMS::RENDERING,attributes);
+	//ComponentFactory::GetInstance().AddComponentToEntity(*this,ENUMS::RENDERING,attributes);
 }
 
 void Entity::HandleMouseStopHover()
 {
+	
 }

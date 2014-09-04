@@ -16,13 +16,13 @@
 ////////////////////////////////////////
 //				MISC
 ////////////////////////////////////////
-const string RenderComponent::RENDERING_COMPONENT_NAME("rendering");
 ///////////////////////////////////////////////
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
-RenderComponent::RenderComponent(int componentType, int componentID): 
+RenderComponent::RenderComponent(int shaderType, int componentType, int componentID): 
 	IComponent(componentType,componentID)
-{
+{	
+	m_renderData.setShader(shaderType);
 }
 
 RenderComponent::~RenderComponent()
@@ -54,32 +54,6 @@ void RenderComponent::UnRegisterForMessages()
 {
 }
 
-bool RenderComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
-{
-	if(attribute.name == "shader")
-	{
-		m_renderData.setShader(GetShaderType(attribute.valueString));
-		return true;
-	}
-	else if(attribute.name == "texture")
-	{
-		if(attribute.valueString != "")
-		{
-			m_renderData.setTexture(Rendering::GetTexture(attribute.valueString.c_str()));
-			m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
-			m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
-			getParentEntity()->SetWidth(m_renderData.getWidth());
-			getParentEntity()->SetHeight(m_renderData.getHeight());
-		}
-
-		return true;
-	}
-	else
-	{
-		LOG("Something tried to register an invalid attribute to a RenderComponent.");
-		return false;
-	}	
-}
 ////////////////////////////////////////
 //		PRIVATE UTILITY FUNCTIONS
 ////////////////////////////////////////
@@ -107,38 +81,10 @@ void RenderComponent::RenderEntity()
 	Rendering::AddRenderComponentToFrame(&m_renderData);
 }
 
-unsigned int RenderComponent::GetShaderType(std::string typeName)
-{
-	// Returns the shader type (matches up with shaderTypes.xml cause I love magic numbers)
-	if(typeName == "diffuse")
-	{
-		return 0;
-	}
-	else if(typeName == "outlineBox")
-	{
-		return 1;
-	}
 
-	return 0;
-}
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
-string RenderComponent::getComponentName()
-{
-	return RENDERING_COMPONENT_NAME;
-}
-
-unsigned int RenderComponent::getTexture() const
-{
-	return m_renderData.getTexture();
-}
-
-unsigned int RenderComponent::getTexture()
-{
-	return m_renderData.getTexture();
-}
-
 int RenderComponent::getLayer()
 {
 	return m_renderData.getLayer();

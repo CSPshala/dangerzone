@@ -28,28 +28,26 @@ public:
 	/********** Construct / Deconstruct / OP Overloads ************/
 	/** Component typbe MUST be set at construction 
 	    based on data driven component type ID from LevelLoader */
-	RenderComponent(int componentType, int componentID = -1);
+	RenderComponent(int shaderType, int componentType, int componentID = -1);
 	~RenderComponent();
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
 	virtual void RegisterForMessages();
 	virtual void ReceiveMessage(IMessage* message);	
 	virtual void UnRegisterForMessages();
-	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
 	/********** Public Accessors ************/
-	virtual string getComponentName();
-	unsigned int getTexture();
-	unsigned int getTexture() const;
+	virtual string getComponentName() = 0;
+	
 	int getLayer();
 	int getLayer() const;
 	/********** Public Mutators  ************/
 	void setLayer(int layer);
-
-private:
-	/********** Private Members ************/
-	static const string RENDERING_COMPONENT_NAME;
+protected:
 	/** Shared DLL class from renderer, holding relevant info */
 	Renderer::RenderComponentData m_renderData;
+
+private:
+	/********** Private Members ************/	
 
 	/********** Private Accessors ************/
 
@@ -58,7 +56,7 @@ private:
 	/********** Private Utility Functions ************/
 	virtual void RegisterForLocalMessages();
 	virtual void _ReceiveLocalMessage(CompMessage* message);
-	unsigned int GetShaderType(std::string typeName);
+	virtual unsigned int GetShaderType() = 0;
 	void RenderEntity();
 };
 #endif

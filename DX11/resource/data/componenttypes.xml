@@ -9,7 +9,7 @@
 <validComponents>
 	<component typeName="player_controller" type="0">
 	</component>
-	<component typeName="rendering" type="1" >
+	<component typeName="diffuse_render" type="1" >
 	</component>
 	<component typeName="rect_collision" type="2" >
 		<messages name="entity_dirty"/>
@@ -19,6 +19,8 @@
 	<component typeName="circle_collision" type="4" >
 	</component>
 	<component typeName="point_collision" type="5" >
+	</component>
+	<component typeName="outlinebox_render" type="6" >
 	</component>
 </validComponents>
 

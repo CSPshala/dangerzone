@@ -156,6 +156,12 @@
     <ClInclude Include="source\components\ComponentFactory.h">
       <Filter>Source Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="source\components\DiffuseRenderComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\components\OutlineBoxRenderComponent.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11.cpp">
@@ -246,6 +252,12 @@
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="source\components\ComponentFactory.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\DiffuseRenderComponent.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\components\OutlineBoxRenderComponent.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>

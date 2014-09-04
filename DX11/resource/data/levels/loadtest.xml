@@ -1,57 +1,58 @@
 <entity name="player2" active="true" hp="100" posX="900.0" posY="0.0" velX="0.0" velY="0.0" layer="1">	
 	<component type="player_controller" playerNumber="2"/>
 	<component type="rect_collision"/>
-	<component   type="rendering" shader="diffuse" texture="donatelo.png"/>
+	<component type="diffuse_render"  texture="donatelo.png"/>
 </entity>
 <entity name="player1" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0" layer="0">	
 	<component type="player_controller" playerNumber="1"/>	
 	<component type="rect_collision"/>
-	<component type="rendering" shader="diffuse" texture="vader.png"/>
+	<component type="diffuse_render"  texture="vader.png"/>
 </entity>
 <entity name="player3" active="true" hp="100" posX="0.0" posY="700.0" velX="0.0" velY="0.0" layer="0">
 	<component type="player_controller" playerNumber="3"/>
 	<component type="rect_collision" />
-	<component  type="rendering" shader="diffuse" texture="paperbowser.png" />
+	<component type="diffuse_render"  texture="paperbowser.png" />
 </entity>	
 <entity name="player4" active="true" hp="100" posX="900.0" posY="700.0" velX="0.0" velY="0.0" layer="0">
 	<component type="player_controller" playerNumber="4"/>	
 	<component type="rect_collision" />
-	<component  type="rendering" shader="diffuse" texture="santa.png" />
+	<component type="diffuse_render"  texture="santa.png" />
 </entity>
 <entity name="mousePointer" active="true" hp="100" posX="400.0" posY="300.0" velX="0.0" velY="0.0"  layer="1">	
-	<component type="point_collision" layer="1" offsetX="-25" offsetY="-30" topDownCollide="true"/>
+	<component type="point_collision" offsetX="-25" offsetY="-30" topDownCollide="true"/>
 	<component type="mouse_controller" mouseNumber="1"/>
-	<component  type="rendering" shader="diffuse" texture="mouse.png"/>
+	<component type="diffuse_render"  texture="mouse.png"/>
+	<component type="outlinebox_render"/>
 </entity>
 <entity name="background" active="true" hp="100" posX="0.0" posY="0.0" velX="0.0" velY="0.0"  layer="0">	
-	<component  type="rendering" shader="diffuse" texture="tempbg.jpg" />
+	<component type="diffuse_render"  texture="tempbg.jpg" />
 </entity>
 <entity name="test" active="true" hp="100" posX="100" posY="50.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="santa.png" />
+	<component type="diffuse_render"  texture="santa.png" />
 	<component type="rect_collision" />
 </entity>	
 <entity name="test" active="true" hp="100" posX="800" posY="500.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="santa.png" />
+	<component type="diffuse_render"  texture="santa.png" />
 	
 </entity>
 <entity name="test" active="true" hp="100" posX="400" posY="200.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="santa.png" />
+	<component type="diffuse_render"  texture="santa.png" />
 	<component type="rect_collision" />
 </entity>
 <entity name="test" active="true" hp="100" posX="200" posY="200.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="santa.png" />
+	<component type="diffuse_render"  texture="santa.png" />
 	<component type="rect_collision" />
 </entity>
 <entity name="test" active="true" hp="100" posX="300" posY="500.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="paperbowser.png" />
+	<component type="diffuse_render"  texture="paperbowser.png" />
 	<component type="rect_collision" />
 </entity>
 <entity name="test" active="true" hp="100" posX="900" posY="200.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="vader.png" />
+	<component type="diffuse_render"  texture="vader.png" />
 	<component type="rect_collision" />
 </entity>
 <entity name="test" active="true" hp="100" posX="500" posY="10.0" velX="0.0" velY="0.0" layer="0">
-	<component  type="rendering" shader="diffuse" texture="paperbowser.png" />
+	<component type="diffuse_render"  texture="paperbowser.png" />
 	<component type="rect_collision" />
 </entity>
 

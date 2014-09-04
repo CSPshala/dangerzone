@@ -11,11 +11,11 @@
 ////////////////////////////////////////
 #include "ComponentFactory.h"
 #include "../components/PlayerControllerComponent.h"
-#include "../components/RenderComponent.h"
+#include "../components/DiffuseRenderComponent.h"
 #include "../components/RectCollisionComponent.h"
 #include "../components/PointCollisionComponent.h"
 #include "../components/MouseControllerComponent.h"
-
+#include "../components/OutlineBoxRenderComponent.h"
 #include "../xml/pugixml.hpp"
 using namespace pugi;
 
@@ -247,19 +247,19 @@ IComponent*	ComponentFactory::CreateComponentType(const int type)
 			}
 		}
 		break;
-	case ENUMS::RENDERING:
+	case ENUMS::DIFFUSE_RENDER:
 		{
 			try
 			{
-				component = new RenderComponent(ENUMS::RENDERING,m_nextComponentID++);
+				component = new DiffuseRenderComponent(ENUMS::DIFFUSE_RENDER,m_nextComponentID++);
 			}
 			catch(std::invalid_argument& ia)
 			{				
-				LOG("A new render component could not be allocated. invalid_argument caught: " << ia.what());		
+				LOG("A new diffuse render component could not be allocated. invalid_argument caught: " << ia.what());		
 			}
 			catch(std::bad_alloc& ba)
 			{				
-				LOG("A new render component be allocated. bad_alloc caught: " << ba.what());		
+				LOG("A new diffuse render component be allocated. bad_alloc caught: " << ba.what());		
 			}
 		}
 		break;
@@ -310,6 +310,22 @@ IComponent*	ComponentFactory::CreateComponentType(const int type)
 			catch(std::bad_alloc& ba)
 			{				
 				LOG("A new mouse controller component could not be allocated. bad_alloc caught: " << ba.what());		
+			}
+		}
+		break;
+	case ENUMS::OUTLINEBOX_RENDER:
+		{
+			try
+			{
+				component = new OutlineBoxRenderComponent(ENUMS::OUTLINEBOX_RENDER,m_nextComponentID++);
+			}
+			catch(std::invalid_argument& ia)
+			{				
+				LOG("A new diffuse render component could not be allocated. invalid_argument caught: " << ia.what());		
+			}
+			catch(std::bad_alloc& ba)
+			{				
+				LOG("A new diffuse render component be allocated. bad_alloc caught: " << ba.what());		
 			}
 		}
 		break;
