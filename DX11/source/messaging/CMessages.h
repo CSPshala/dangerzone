@@ -8,21 +8,30 @@
 #ifndef _CMESSAGES_H
 #define _CMESSAGES_H
 
+#include "../Globals.h"
 #include <vector>
 using namespace std;
 
 // FWD DECL
 class CollisionComponent;
 
-enum MESSAGE_TYPE{ REGISTER_FOR_COLLISION = 0, UNREGISTER_FOR_COLLISION, TOTAL_MESSAGE_COUNT};
+enum MESSAGE_TYPE{ REGISTER_FOR_COLLISION = 0, UNREGISTER_FOR_COLLISION, MOUSE_HOVER, MOUSE_STOP_HOVER, TOTAL_MESSAGE_COUNT};
 enum COMPONENT_MESSAGE_TYPE{ ENTITY_REGISTER_LOCAL_MSGS = 0, ENTITY_UNREGISTER_LOCAL_MSGS, 
-	ENTITY_DIRTY, ENTITY_RESIZE, ENTITY_COLLIDING, ENTITY_RENDER, ENTITY_HOVER, TOTAL_COMPONENT_MESSAGES };
+	ENTITY_DIRTY, ENTITY_RESIZE, ENTITY_COLLIDING, ENTITY_RENDER, TOTAL_COMPONENT_MESSAGES };
 
 //*******MESSAGE INTERFACE*********/
 class IMessage
 {
 public:
-	virtual int GetType() = 0;    
+	IMessage() : mEntityID(-1) {}
+
+	virtual int GetType() = 0;
+	virtual bool IsBroadcast() { return false; }
+	int GetEntityID() { return mEntityID; }
+	void SetEntityID(int id) { mEntityID = id; }
+protected:
+	// Intended entity ID (for broadcasts)
+	int mEntityID;
 };
 
 class CompMessage
@@ -31,6 +40,22 @@ public:
 	CompMessage() {}
 	~CompMessage() {}
 	virtual COMPONENT_MESSAGE_TYPE GetType() = 0;
+};
+
+//lets entity know mouse is hovering over it
+class MouseHover : public IMessage
+{
+public:
+	int GetType() {return MOUSE_HOVER;}
+	bool IsBroadcast() { return true; }	
+};
+
+// mouse is no longer hovering
+class MouseStopHover : public IMessage
+{
+public:
+	int GetType() {return MOUSE_STOP_HOVER;}
+	bool IsBroadcast() {return true;}
 };
 
 // Message used to register a collision component for collisions
@@ -84,12 +109,6 @@ class RenderMsg : public CompMessage
 {
 public:
 	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_RENDER;}
-};
-
-class HoverMsg : public CompMessage
-{
-public:
-	COMPONENT_MESSAGE_TYPE GetType() {return ENTITY_HOVER;}
 };
 
 #endif

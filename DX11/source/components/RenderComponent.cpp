@@ -56,12 +56,7 @@ void RenderComponent::UnRegisterForMessages()
 
 bool RenderComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
 {
-	if(attribute.name == "layer")
-	{
-		m_renderData.setLayer(attribute.valueI);
-		return true;
-	}
-	else if(attribute.name == "shader")
+	if(attribute.name == "shader")
 	{
 		m_renderData.setShader(GetShaderType(attribute.valueString));
 		return true;
@@ -108,6 +103,7 @@ void RenderComponent::RenderEntity()
 	m_renderData.setPosY(getParentEntity()->GetPosition().y);	
 	m_renderData.setWidth(getParentEntity()->GetWidth());
 	m_renderData.setHeight(getParentEntity()->GetHeight());
+	m_renderData.setLayer(getParentEntity()->GetLayer());
 	Rendering::AddRenderComponentToFrame(&m_renderData);
 }
 

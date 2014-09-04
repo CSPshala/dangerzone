@@ -46,12 +46,7 @@ void PointCollisionComponent::Update(float deltaTime)
 
 bool PointCollisionComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
 {    
-	if(attribute.name == "layer")
-	{
-		setLayer(attribute.valueI);
-		return true;
-	}
-	else if(attribute.name == "offsetX")
+	if(attribute.name == "offsetX")
 	{
 		mOffset.x = attribute.valueF;
 		return true;

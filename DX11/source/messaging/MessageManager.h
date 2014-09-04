@@ -35,6 +35,9 @@ public:
 	void SubscribeForMessageType(IMessageListener* sub, int messageType);
 	void UnsubscribeForAllMessages(IMessageListener* unsub);
 
+	void SubscribeForBroadcastMessages(IMessageListener* sub);
+	void UnsubscribeForBroadcastMessages(IMessageListener* unsub);
+
 	bool Initialize();
 	bool Update(float deltaTime);
 	void Shutdown();
@@ -57,8 +60,12 @@ private:
 
 	// vector of subscribers based on message type (follows message type enum for [] access)
 	vector< deque<IMessageListener*> > m_subscribers;
-	// deque of messages
+	// deque of broadcast subscribers
+	deque<IMessageListener*> m_broadcastSubscribers;
+	// deque of subscribed messages
 	deque<IMessage*> m_messagesToSend;
+	// deque of broadcast messages
+	deque<IMessage*> m_broadcastMessages;
 
 	/********** Private Accessors ************/
 

@@ -80,6 +80,10 @@ void CollisionComponent::_ReceiveLocalMessage(CompMessage* message)
 ////////////////////////////////////////
 //	    PUBLIC ACCESSORS / MUTATORS
 ////////////////////////////////////////
+int CollisionComponent::getLayer()
+{
+	return getParentEntity()->GetLayer();
+}
 
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS

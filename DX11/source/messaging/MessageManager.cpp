@@ -55,6 +55,24 @@ void MessageManager::UnsubscribeForAllMessages(IMessageListener* unsub)
 	}
 }
 
+void MessageManager::SubscribeForBroadcastMessages(IMessageListener* sub)
+{
+	m_broadcastSubscribers.push_back(sub);
+}
+
+void MessageManager::UnsubscribeForBroadcastMessages(IMessageListener* unsub)
+{
+	deque<IMessageListener*>::iterator iter = m_broadcastSubscribers.begin();
+	for(; iter != m_broadcastSubscribers.end(); ++iter)
+	{
+		if((*iter) == unsub)
+		{
+			m_broadcastSubscribers.erase(iter);
+			break;
+		}
+	}
+}
+
 bool MessageManager::Initialize()
 {
 	return true;
@@ -62,6 +80,26 @@ bool MessageManager::Initialize()
 
 bool MessageManager::Update(float deltaTime)
 {
+	deque<IMessage*>::iterator broadIter = m_broadcastMessages.begin();
+
+	for(;broadIter != m_broadcastMessages.end(); ++broadIter)
+	{
+		deque<IMessageListener*>::iterator subIter = m_broadcastSubscribers.begin();
+		for(;subIter != m_broadcastSubscribers.end(); ++subIter)
+		{
+			(*subIter)->ReceiveMessage((*broadIter));
+		}
+
+		// Clean up this message
+		delete (*broadIter);
+		broadIter = m_broadcastMessages.erase(broadIter);
+
+		if(broadIter == m_broadcastMessages.end())
+		{
+			break;
+		}
+	}
+
 	deque<IMessage*>::iterator msgIter = m_messagesToSend.begin();
 
 	for(;msgIter != m_messagesToSend.end(); ++msgIter)
@@ -78,15 +116,26 @@ bool MessageManager::Update(float deltaTime)
 		msgIter = m_messagesToSend.erase(msgIter);
 
 		if(msgIter == m_messagesToSend.end())
+		{
 			break;
+		}
 	};
+
+	
 
 	return true;
 }
 
 void MessageManager::Send(IMessage* msg)
 {
-    m_messagesToSend.push_back(msg);
+	if(msg->IsBroadcast())
+	{
+		m_broadcastMessages.push_back(msg);
+	}
+	else
+	{
+		m_messagesToSend.push_back(msg);
+	}
 }
 
 
@@ -96,6 +145,12 @@ void MessageManager::Shutdown()
 	{		
 		delete m_messagesToSend.front();
 		m_messagesToSend.pop_front();
+	}
+
+	while(m_broadcastMessages.size() > 0)
+	{		
+		delete m_broadcastMessages.front();
+		m_broadcastMessages.pop_front();
 	}
 }
 

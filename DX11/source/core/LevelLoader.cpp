@@ -167,6 +167,7 @@ bool LevelLoader::LoadLevel(std::string filename)
 
 		entity->IsActive(entityNode.attribute("active").as_bool());
 		entity->SetHP(entityNode.attribute("hp").as_int());
+		entity->SetLayer(entityNode.attribute("layer").as_int());
 
 		vec3<float> entityPos(entityNode.attribute("posX").as_float(), 
 			entityNode.attribute("posY").as_float(), 0.0f);

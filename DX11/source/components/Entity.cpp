@@ -11,7 +11,9 @@
 ////////////////////////////////////////
 #include "../Globals.h"
 #include "Entity.h"
+#include "ComponentFactory.h"
 #include "IComponent.h"
+#include "../messaging/MessageManager.h"
 #include "../messaging/CMessages.h"
 
 ////////////////////////////////////////
@@ -22,7 +24,7 @@
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 Entity::Entity(int ID,string entityName, unsigned int initialComponentCount) : m_ID(ID), 
-	m_entityName(entityName), m_hp(-1), m_width(0), m_height(0)
+	m_entityName(entityName), m_hp(-1), m_width(0), m_height(0), m_layer(0)
 {
 }
 
@@ -154,6 +156,36 @@ void Entity::SendLocalMessage(CompMessage* msg)
 	}
 }
 
+void Entity::RegisterForMessages()
+{
+	MessageManager::GetInstance()->SubscribeForBroadcastMessages(this);
+}
+
+void Entity::ReceiveMessage(IMessage* message)
+{
+	// Ignore if broadcast and not for us
+	if(message->IsBroadcast() && message->GetEntityID() == GetEntityID())
+	{
+		// Do broadcast message stuff
+		switch(message->GetType())
+		{
+			case MOUSE_HOVER:
+			{
+				HandleMouseHover();
+			}
+			break;
+			case MOUSE_STOP_HOVER:
+			{
+				HandleMouseStopHover();
+			}
+			break;
+		}
+	}
+}
+
+void Entity::UnRegisterForMessages()
+{
+}
 
 
 void Entity::Shutdown()
@@ -208,6 +240,11 @@ int Entity::GetHeight()
 	return m_height;
 }
 
+int Entity::GetLayer()
+{
+	return m_layer;
+}
+
 bool  Entity::IsActive()
 {
 	return m_active;
@@ -237,6 +274,11 @@ void Entity::SetHeight(int height)
 	m_height = height;
 }
 
+void Entity::SetLayer(int layer)
+{
+	m_layer = layer;
+}
+
 void Entity::IsActive(bool active)
 {
 	m_active = active;
@@ -245,3 +287,18 @@ void Entity::IsActive(bool active)
 ////////////////////////////////////////
 //	    PRIVATE ACCESSORS / MUTATORS
 ////////////////////////////////////////
+void Entity::HandleMouseHover()
+{
+	// Create a outline box component and add
+	std::vector<ComponentAttribute> attributes;
+	ComponentAttribute shader;
+	shader.name = "shader";
+	shader.valueString = "outlineBox";
+	attributes.push_back(shader);
+
+	ComponentFactory::GetInstance().AddComponentToEntity(*this,ENUMS::RENDERING,attributes);
+}
+
+void Entity::HandleMouseStopHover()
+{
+}

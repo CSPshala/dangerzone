@@ -35,13 +35,12 @@ public:
 	virtual bool CheckCollision(CollisionComponent* other) = 0;
 
 	/********** Public Accessors ************/
-	int getLayer() {return m_layer;}
+	int getLayer();
     bool getIsIgnoringLayer() {return m_ignoreLayer;}
     /** Returns if this entity is dirty this frame (has moved) **/
     bool isDirty() {return m_dirty;}
 
 	/********** Public Mutators  ************/
-	void setLayer(int layer) {m_layer = layer;}
     void setIgnoreLayer(bool ignore) {m_ignoreLayer = ignore;}
     /** Overload to set if entity is dirty **/
     void isDirty(bool dirty) {m_dirty = dirty;}

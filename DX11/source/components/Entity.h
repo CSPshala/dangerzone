@@ -14,6 +14,7 @@
 #include <queue>
 #include <map>
 using namespace std;
+#include "../messaging/IMessageListener.h"
 #include "../messaging/CMessages.h"
 #include "../math/vec3.h"
 ////////////////////////////////////////
@@ -26,7 +27,7 @@ class IMessage;
 ////////////////////////////////////////
 
 
-class Entity
+class Entity : public IMessageListener
 {
 public:
 	/********** Construct / Deconstruct / OP Overloads ************/
@@ -44,6 +45,10 @@ public:
 	void UnRegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
 	void SendLocalMessage(CompMessage* msg);
 
+	void RegisterForMessages();
+	void ReceiveMessage(IMessage* message);
+	void UnRegisterForMessages();
+
 	void Shutdown();
 	/********** Public Accessors ************/
 	IComponent* GetComponent(int componentType);
@@ -55,6 +60,7 @@ public:
 	vec3<float> GetPosition();
 	int   GetWidth();
 	int   GetHeight();
+	int   GetLayer();
 	bool  IsActive();
 
 	/********** Public Mutators  ************/	
@@ -64,6 +70,7 @@ public:
     void SetPosition(vec3<float> pos);
 	void SetWidth(int width);
 	void SetHeight(int height);
+	void SetLayer(int layer);
 	void IsActive(bool active);
 
 private:
@@ -83,12 +90,14 @@ private:
 	vec3<float> mVel;
 	vec3<float> mPos;
 	int   m_width, m_height;
+	int m_layer;
 
 	/********** Private Accessors ************/
 
 	/********** Private Mutators ************/
 
 	/********** Private Utility Functions ************/
-
+	void HandleMouseHover();
+	void HandleMouseStopHover();
 };
 #endif
