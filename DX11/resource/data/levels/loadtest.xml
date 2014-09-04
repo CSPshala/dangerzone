@@ -19,7 +19,7 @@
 	<component type="diffuse_render"  texture="santa.png" />
 </entity>
 <entity name="mousePointer" active="true" hp="100" posX="400.0" posY="300.0" velX="0.0" velY="0.0"  layer="1">	
-	<component type="point_collision" offsetX="-25" offsetY="-30" topDownCollide="true"/>
+	<component type="point_collision" offsetX="-25.0" offsetY="-30.0" topDownCollide="true"/>
 	<component type="mouse_controller" mouseNumber="1"/>
 	<component type="diffuse_render"  texture="mouse.png"/>
 	<component type="outlinebox_render"/>

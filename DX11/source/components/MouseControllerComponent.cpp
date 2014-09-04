@@ -104,11 +104,11 @@ void MouseControllerComponent::ReceiveAndHandleMouseEvent(InputEventSystem::Mous
 	mDelta.y = static_cast<float>(event.mDeltaY);
 }
 
-bool MouseControllerComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
+bool MouseControllerComponent::AddAttributeAndValue(const ComponentAttribute* attribute)
 {
-	if(attribute.name == "mouseNumber")
+	if(attribute->name == "mouseNumber")
 	{
-		m_playerNumber = attribute.valueI;
+		m_playerNumber = attribute->valueI;
 
 		if(m_playerNumber <= 0 || m_playerNumber > InputEventSystem::NUM_ALLOWED_MICE)
 		{

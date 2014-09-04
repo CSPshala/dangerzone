@@ -28,7 +28,7 @@ public:
 	OutlineBoxRenderComponent(int componentType, int componentID = -1);
 	~OutlineBoxRenderComponent();
 	/********** Public Utility Functions ************/
-	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
+	virtual bool AddAttributeAndValue(const ComponentAttribute* attribute);
 
 	/********** Public Accessors ************/
 	string getComponentName();

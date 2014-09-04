@@ -34,13 +34,12 @@
 <attribute name="posY" type="float"/>
 <attribute name="velX" type="float"/>
 <attribute name="velY" type="float"/>
+<attribute name="layer" type="int"/>
 <!-- Component Attributes -->
 <attribute name="playerNumber" type="int"/>
-<attribute name="layer" type="int"/>
-<attribute name="shader" type="string"/>
 <attribute name="texture" type="string"/>
-<attribute name="offsetX" type="int"/>
-<attribute name="offsetY" type="int"/>
+<attribute name="offsetX" type="float"/>
+<attribute name="offsetY" type="float"/>
 <attribute name="topDownCollide" type="bool"/>
 <attribute name="mouseNumber" type="int"/>
 </attributeTypes>

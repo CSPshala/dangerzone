@@ -38,6 +38,8 @@ public:
 		// Destructor handles component cleanup
 	void AttachComponent(IComponent* component);
 	void RemoveComponent(IComponent* component);
+	// Overload to remove by type since you only want one type of component on each entity
+	void RemoveComponent(ENUMS::COMPONENTS componentType);
 	void Update(float deltaTime);
 	void RegisterForLocalMessage(COMPONENT_MESSAGE_TYPE type, IComponent* component);
 	// Can be expensive, don't use too often

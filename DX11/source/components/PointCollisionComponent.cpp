@@ -13,6 +13,7 @@
 #include "PointCollisionComponent.h"
 #include "RectCollisionComponent.h"
 #include "Entity.h"
+#include "../messaging/MessageManager.h"
 
 ////////////////////////////////////////
 //				MISC
@@ -23,7 +24,7 @@ const string PointCollisionComponent::POINT_COLLISION_COMPONENT_NAME("point_coll
 //  CONSTRUCTOR / DECONSTRUCT / OP OVERLOADS
 ///////////////////////////////////////////////
 PointCollisionComponent::PointCollisionComponent(int componentType, int componentID) :
-    mOffset(0.0f,0.0f,0.0f), mPoint(0.0f,0.0f,0.0f), mTopDown(false), mFirstCollision(true),
+	mOffset(0.0f,0.0f,0.0f), mPoint(0.0f,0.0f,0.0f), mTopDown(false), mFirstCollision(true), mLastColID(-1),
 	CollisionComponent(componentType, componentID)
 {
 }
@@ -40,26 +41,38 @@ void PointCollisionComponent::Update(float deltaTime)
 	if(isDirty())
     {
         CalculatePoint();
+
+		// We've made it a whole round w/o colliding
+		// Let object know
+		if(mFirstCollision == true && mLastColID != -1)
+		{
+			MouseStopHover* msg(new MouseStopHover);
+			msg->SetEntityID(mLastColID);
+			MessageManager::GetInstance()->Send(msg);
+
+			mLastColID = -1;
+		}
+
         mFirstCollision = true;
     }
 }
 
-bool PointCollisionComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
+bool PointCollisionComponent::AddAttributeAndValue(const ComponentAttribute* attribute)
 {    
-	if(attribute.name == "offsetX")
+	if(attribute->name == "offsetX")
 	{
-		mOffset.x = attribute.valueF;
+		mOffset.x = attribute->valueF;
 		return true;
 	}
-	else if(attribute.name == "offsetY")
+	else if(attribute->name == "offsetY")
 	{
-		mOffset.y = attribute.valueF;
+		mOffset.y = attribute->valueF;
 		return true;
 	}
-	else if(attribute.name == "topDownCollide")
+	else if(attribute->name == "topDownCollide")
 	{
-		mTopDown = attribute.valueB;
-		setIgnoreLayer(attribute.valueB);
+		mTopDown = attribute->valueB;
+		setIgnoreLayer(attribute->valueB);
 		return true;
 	}
 	else
@@ -140,11 +153,33 @@ void PointCollisionComponent::handleCollisions(CollidingMsg* message)
 
 void PointCollisionComponent::handleRectCollisions(
     vector<RectCollisionComponent*>& collidingWith)
-{
-    mFirstCollision = false;
+{	
+	// Means we collided last frame w/ this object, bail
+	// only want to handle this once on entry
+
+	int possibleNewID(collidingWith.front()->getParentEntity()->GetEntityID());
+
+	mFirstCollision = false;
+
+	if(mLastColID == possibleNewID)
+	{
+		return;
+	}
+	else if(mLastColID != -1) 
+	{
+		// Possible case where objects over lap and we don't just
+		// hop from colliding to not colliding, but with a new object
+		MouseStopHover* msg(new MouseStopHover);
+		msg->SetEntityID(mLastColID);
+		MessageManager::GetInstance()->Send(msg);
+	}	
+    
+	mLastColID = possibleNewID;
 
 	// TODO: Send a message to light up entity that is pointed at
-	
+	MouseHover* msg(new MouseHover);
+	msg->SetEntityID(mLastColID);
+	MessageManager::GetInstance()->Send(msg);
 }
 
 void PointCollisionComponent::_HandleChildMessages(CompMessage* message)

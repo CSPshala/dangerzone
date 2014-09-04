@@ -29,7 +29,7 @@ public:
 	virtual ~PointCollisionComponent();
 	/********** Public Utility Functions ************/
 	virtual void Update(float deltaTime);
-	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
+	virtual bool AddAttributeAndValue(const ComponentAttribute* attribute);
 	virtual bool CheckCollision(CollisionComponent* other);
 
 	/********** Public Accessors ************/
@@ -55,6 +55,8 @@ private:
     bool mTopDown;  
     // Refreshed on update to true to let us know we haven't collided yet this frame
     bool mFirstCollision;
+	// Last colliding ID
+	int mLastColID;
 
 	/********** Private Accessors ************/
 

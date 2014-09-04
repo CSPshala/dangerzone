@@ -38,18 +38,10 @@ void RectCollisionComponent::Update(float deltaTime)
         CalculateAABB();
 }
 
-bool RectCollisionComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
+bool RectCollisionComponent::AddAttributeAndValue(const ComponentAttribute* attribute)
 {    
-	/*if(attribute.name == "layer")
-	{
-		setLayer(attribute.valueI);
-		return true;
-	}
-	else
-	{*/
-		LOG("Something tried to register an invalid attribute to a RectCollisionComponent.");
-		return false;
-	//}
+	LOG("Something tried to register an invalid attribute to a RectCollisionComponent.");
+	return false;
 }
 
 bool RectCollisionComponent::CheckCollision(CollisionComponent* other)

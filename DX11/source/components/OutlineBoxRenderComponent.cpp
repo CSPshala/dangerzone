@@ -34,7 +34,7 @@ string OutlineBoxRenderComponent::getComponentName()
 	return string("OutlineBoxRender");
 }
 
-bool OutlineBoxRenderComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
+bool OutlineBoxRenderComponent::AddAttributeAndValue(const ComponentAttribute* attribute)
 {		
 	LOG("Something tried to register an invalid attribute to a RenderComponent.");
 	return false;	

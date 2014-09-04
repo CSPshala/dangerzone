@@ -49,6 +49,21 @@ void Entity::RemoveComponent(IComponent* component)
 	{
 		if((*iter) == component)
 		{
+			delete *iter;
+			iter = m_components.erase(iter);
+			break;
+		}
+	}
+}
+
+void Entity::RemoveComponent(ENUMS::COMPONENTS componentType)
+{
+	for(deque<IComponent*>::iterator iter = m_components.begin(); iter != m_components.end(); ++iter)
+	{
+		if((*iter)->getComponentType() == componentType)
+		{
+			UnRegisterForAllLocalMessages(*iter);
+			delete *iter;
 			iter = m_components.erase(iter);
 			break;
 		}
@@ -291,17 +306,10 @@ void Entity::IsActive(bool active)
 ////////////////////////////////////////
 void Entity::HandleMouseHover()
 {
-	// Create a outline box component and add
-	std::vector<ComponentAttribute> attributes;
-	ComponentAttribute shader;
-	shader.name = "shader";
-	shader.valueString = "outlineBox";
-	attributes.push_back(shader);
-
-	//ComponentFactory::GetInstance().AddComponentToEntity(*this,ENUMS::RENDERING,attributes);
+	ComponentFactory::GetInstance().AddComponentToEntity(this,ENUMS::OUTLINEBOX_RENDER);
 }
 
 void Entity::HandleMouseStopHover()
 {
-	
+	RemoveComponent(ENUMS::OUTLINEBOX_RENDER);
 }

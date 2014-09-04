@@ -81,11 +81,11 @@ void PlayerControllerComponent::UnRegisterForMessages()
 }
 
 
-bool PlayerControllerComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
+bool PlayerControllerComponent::AddAttributeAndValue(const ComponentAttribute* attribute)
 {
-	if(attribute.name == "playerNumber")
+	if(attribute->name == "playerNumber")
 	{
-		m_playerNumber = attribute.valueI;
+		m_playerNumber = attribute->valueI;
 
 		if(m_playerNumber <= 0 || m_playerNumber > InputEventSystem::NUM_ALLOWED_PLAYERS)
 		{

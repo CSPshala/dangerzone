@@ -47,49 +47,55 @@ ComponentFactory& ComponentFactory::GetInstance()
 ////////////////////////////////////////
 
 //TODO: Fix code dupe here.  Just don't care enough right now.
-void ComponentFactory::AddComponentToEntity(Entity& entity, const ENUMS::COMPONENTS componentType, 
-		const std::vector<ComponentAttribute>& compAttributes)
+void ComponentFactory::AddComponentToEntity(Entity* entity, const ENUMS::COMPONENTS componentType, 
+		const std::vector<ComponentAttribute>* compAttributes)
 {
 	// Create the component type by type
 	IComponent* component = CreateComponentType(componentType);
 
-	component->setParentEntity(&entity);
+	component->setParentEntity(entity);
 
-	SetDefaultLocalMessages(*component);
+	SetDefaultLocalMessages(component);
 
-	AddAttributesToComponent(*component, compAttributes);
-
+	if(compAttributes != nullptr && compAttributes->size() > 0)
+	{
+		AddAttributesToComponent(component, compAttributes);
+	}
 	// Register component for any system messages it may have
 	component->RegisterForMessages();
 
-	entity.AttachComponent(component);
+	entity->AttachComponent(component);
 }
 
-void ComponentFactory::AddComponentToEntity(Entity& entity, const std::string name, 
-		const std::vector<xml_attribute>& compAttributes)
+void ComponentFactory::AddComponentToEntity(Entity* entity, const std::string name, 
+		const std::vector<xml_attribute>* compAttributes)
 {
 	// Create the component type by name
 	IComponent* component = FindAndCreateComponentType(name);
 
-	component->setParentEntity(&entity);
+	component->setParentEntity(entity);
 
-	SetDefaultLocalMessages(*component);
+	SetDefaultLocalMessages(component);
 
-	std::vector<ComponentAttribute> internalAttributes;
-
-	// Convert XML strings to actual types and add to a vector to add
-	for(unsigned int i = 0; i < compAttributes.size(); ++i)
+	if(compAttributes != nullptr && compAttributes->size() > 0)
 	{
-		ComponentAttribute comp(ConvertXmlAttributeToInternal(compAttributes[i]));
-		internalAttributes.push_back(comp);
-	}
+		std::vector<ComponentAttribute> internalAttributes;
 
-	AddAttributesToComponent(*component, internalAttributes);
+		// Convert XML strings to actual types and add to a vector to add
+		for(unsigned int i = 0; i < compAttributes->size(); ++i)
+		{
+			ComponentAttribute comp(ConvertXmlAttributeToInternal((*compAttributes)[i]));
+			internalAttributes.push_back(comp);
+		}
+
+
+		AddAttributesToComponent(component, &internalAttributes);
+	}
 
 	// Register component for any system messages it may have
 	component->RegisterForMessages();
 
-	entity.AttachComponent(component);
+	entity->AttachComponent(component);
 }
 
 ////////////////////////////////////////
@@ -152,24 +158,24 @@ bool ComponentFactory::Initialize()
 	return true;
 }
 
-void ComponentFactory::SetDefaultLocalMessages(IComponent& comp)
+void ComponentFactory::SetDefaultLocalMessages(IComponent* comp)
 {
 	// Set component's default registered local messages
 	for(unsigned int i = 0; i < m_validComponents.size(); ++i)
 	{
-		if(m_validComponents[i].type == comp.getComponentType())
+		if(m_validComponents[i].type == comp->getComponentType())
 		{
-			comp.setLocalMessagesToReceieve(m_validComponents[i].localMsgTypes);
+			comp->setLocalMessagesToReceieve(m_validComponents[i].localMsgTypes);
 		}
 	}
 }
 
-void ComponentFactory::AddAttributesToComponent(IComponent& comp, 
-												const std::vector<ComponentAttribute>& compAttributes)
+void ComponentFactory::AddAttributesToComponent(IComponent* comp, 
+												const std::vector<ComponentAttribute>* compAttributes)
 {
-	for(unsigned int i = 0; i < compAttributes.size(); ++i)
+	for(unsigned int i = 0; i < compAttributes->size(); ++i)
 	{
-		comp.AddAttributeAndValue(compAttributes[i]);
+		comp->AddAttributeAndValue(&((*compAttributes)[i]));
 	}
 }
 

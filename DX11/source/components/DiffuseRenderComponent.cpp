@@ -44,13 +44,13 @@ unsigned int DiffuseRenderComponent::GetShaderType()
 	return 0;
 }
 
-bool DiffuseRenderComponent::AddAttributeAndValue(const ComponentAttribute& attribute)
+bool DiffuseRenderComponent::AddAttributeAndValue(const ComponentAttribute* attribute)
 {	
-	if(attribute.name == "texture")
+	if(attribute->name == "texture")
 	{
-		if(attribute.valueString != "")
+		if(attribute->valueString != "")
 		{
-			m_renderData.setTexture(Rendering::GetTexture(attribute.valueString.c_str()));
+			m_renderData.setTexture(Rendering::GetTexture(attribute->valueString.c_str()));
 			m_renderData.setWidth(Rendering::GetTextureWidth(m_renderData.getTexture()));
 			m_renderData.setHeight(Rendering::GetTextureHeight(m_renderData.getTexture()));
 			getParentEntity()->SetWidth(m_renderData.getWidth());

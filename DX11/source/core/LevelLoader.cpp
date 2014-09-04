@@ -201,9 +201,11 @@ bool LevelLoader::LoadLevel(std::string filename)
 			{
 				compAttributes.push_back(attributeNode);
 			}
-
-			ComponentFactory::GetInstance().AddComponentToEntity(*entity, componentName, compAttributes);
+			
+			ComponentFactory::GetInstance().AddComponentToEntity(entity, componentName, &compAttributes);
 		}
+
+		entity->RegisterForMessages();
 
 		m_worldMan->AddEntity(entity);
 		anythingLoaded = true;

@@ -36,16 +36,16 @@ public:
 
 	// Adds a component of type to the passed entity with attributes listed (if valid)
 	// Used when manually adding components where types are known (usually some component adding to another entity)
-	void AddComponentToEntity(Entity& entity, const ENUMS::COMPONENTS componentType, 
-		const std::vector<ComponentAttribute>& compAttributes);
+	void AddComponentToEntity(Entity* entity, const ENUMS::COMPONENTS componentType, 
+		const std::vector<ComponentAttribute>* compAttributes = nullptr);
 
 	// Adds a component of name to the passed entity with the attributes listed (if valid)
 	// Used for loading from XML files
 	// Is slower than Non-XML variant so don't use unless you need to
-	void AddComponentToEntity(Entity& entity, const std::string name, 
-		const std::vector<xml_attribute>& compAttributes);
+	void AddComponentToEntity(Entity* entity, const std::string name, 
+		const std::vector<xml_attribute>* compAttributes = nullptr);
 
-	void RemoveComponentFromEntity(Entity& entity, ENUMS::COMPONENTS componentType);
+	void RemoveComponentFromEntity(Entity* entity, ENUMS::COMPONENTS componentType);
 
 	/********** Public Accessors ************/
 
@@ -88,8 +88,8 @@ private:
 
 	IComponent*	FindAndCreateComponentType(const std::string type);
 	IComponent*	CreateComponentType(const int type);
-	void AddAttributesToComponent(IComponent& comp, const std::vector<ComponentAttribute>& compAttributes);
-	void SetDefaultLocalMessages(IComponent& comp);
+	void AddAttributesToComponent(IComponent* comp, const std::vector<ComponentAttribute>* compAttributes);
+	void SetDefaultLocalMessages(IComponent* comp);
 	int GetComponentValue(string componentName);
 	ComponentAttribute ConvertXmlAttributeToInternal(const xml_attribute& attribAuto);	
 };

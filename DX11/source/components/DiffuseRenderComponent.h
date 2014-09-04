@@ -28,7 +28,7 @@ public:
 	DiffuseRenderComponent(int componentType, int componentID = -1);
 	~DiffuseRenderComponent();
 	/********** Public Utility Functions ************/
-	virtual bool AddAttributeAndValue(const ComponentAttribute& attribute);
+	virtual bool AddAttributeAndValue(const ComponentAttribute* attribute);
 
 	/********** Public Accessors ************/
 	string getComponentName();	
